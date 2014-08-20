@@ -23,7 +23,7 @@ gulp.task 'compile', =>
         .pipe($.coffeelint.reporter())
         .pipe($.coffeelintThreshold 0, 0, onCoffeelintFailure)
         .pipe($.coffee({bare:true}))
-        .pipe(gulp.dest('./'))
+        .pipe(gulp.dest('./dist'))
 
 gulp.task 'test', ['compile'], =>
     gulp.src(tests)
