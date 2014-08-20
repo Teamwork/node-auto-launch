@@ -7,7 +7,30 @@ Launch node-webkit apps at login (mac & windows)
 
 `npm install auto-launch`
 
+## General
+
+So far the api consists only `enable` `disable` and `isEnabled`.
+
 ## Usage
+
+For node-webkit apps you don't have to specify the path. It gets read from `process.execPath` :)
+
+```javascript
+var AutoLaunch = require('auto-launch');
+
+var nwAppLauncher = new AutoLaunch({
+	name: 'My node webkit app yao'
+});
+
+nwAppLauncher.isEnabled(function(enabled){
+	if(enabled) return;
+
+	nwAppLauncher.enable(function(err){
+
+	});
+	
+});
+```
 
 For general apps
 
@@ -22,30 +45,6 @@ var minecraftAutoLauncher = new AutoLaunch({
 
 minecraftAutoLauncher.enable();
 ```
-
-For node-webkit apps you don't have to specify the path. It gets read from `process.execPath` :)
-
-
-```javascript
-var AutoLaunch = require('auto-launch');
-
-var nwAppLauncher = new AutoLaunch({
-	name: 'My node webkit app yao'
-});
-
-nwAppLauncher.isEnabled(function(enabled){
-	if(!enabled) return;
-
-	nwAppLauncher.enable(function(err){
-
-	});
-	
-});
-```
-
-## General
-
-So far the api consists only `enable` `disable` and `isEnabled`.
 
 ## TODO:
 
