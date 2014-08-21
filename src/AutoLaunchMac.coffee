@@ -23,6 +23,6 @@ module.exports =
         command = tellTo + "get the name of every login item"
 
         applescript.execString command, (err, loginItems) ->
-            console.log(arguments)
+            return false unless loginItems?
 
             cb(loginItems.indexOf(opts.appName) > -1)
