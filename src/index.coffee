@@ -15,12 +15,29 @@ module.exports = class AutoLaunch
         @opts.isHiddenOnLaunch = if opts.isHidden? then opts.isHidden else false
         @opts.appPath = if opts.path? then opts.path else process.execPath
 
+        @fixOpts()
+
         @api = null
 
         if /^win/.test process.platform
             @api = require './AutoLaunchWindows'
         else if /darwin/.test process.platform
             @api = require './AutoLaunchMac'
+
+    fixOpts: =>
+        if /darwin/.test process.platform
+            @opts.appPath = @opts.appPath.replace '/Contents/Frameworks/node-webkit Helper.app/Contents/MacOS/node-webkit Helper', ''
+
+        if @opts.appPath.indexOf '/' isnt -1
+            tempPath = @opts.appPath.split '/'
+            @opts.appName = tempPath[tempPath.length - 1]
+        else if @opts.appPath.indexOf '\\' isnt -1
+            tempPath = @opts.appPath.split '\\'
+            @opts.appName = tempPath[tempPath.length - 1]
+
+        if /darwin/.test process.platform
+            @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.app'.length)
+
 
     # enable
     enable: (cb=()=>) =>
