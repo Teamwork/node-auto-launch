@@ -34,6 +34,7 @@ module.exports = class AutoLaunch
         else if @opts.appPath.indexOf('\\') isnt -1
             tempPath = @opts.appPath.split '\\'
             @opts.appName = tempPath[tempPath.length - 1]
+            @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.exe'.length)
 
         if /darwin/.test process.platform
             @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.app'.length)
