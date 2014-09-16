@@ -2,7 +2,7 @@ gulp = require 'gulp'
 $ = require('gulp-load-plugins')()
 
 sourceDirectory = './src/'
-testDirectory = './test/'
+testDirectory = './tests/'
 scripts = sourceDirectory + '*.coffee'
 tests = testDirectory + '*.coffee'
 coffeeLintRules = './node_modules/teamwork-coffeelint-rules/coffeelint.json'
