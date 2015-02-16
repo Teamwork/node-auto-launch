@@ -9,7 +9,7 @@ module.exports =
     regKey: regKey
 
     enable: (opts, cb) ->
-        regKey.set opts.appName, Winreg.REG_SZ, opts.appPath, cb
+        regKey.set opts.appName, Winreg.REG_SZ, "\"#{opts.appPath}\"", cb
 
 
     disable: (opts, cb) ->
