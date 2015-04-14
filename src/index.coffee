@@ -24,9 +24,24 @@ module.exports = class AutoLaunch
         else if /darwin/.test process.platform
             @api = require './AutoLaunchMac'
 
+    fixNwExecPath: (path) ->
+        possiblePaths = [
+            path.replace '/Contents/Frameworks/node-webkit Helper.app/Contents/MacOS/node-webkit Helper', ''
+            path.replace '/Contents/Frameworks/nwjs Helper.app/Contents/MacOS/nwjs Helper', ''
+        ]
+
+        for possible in possiblePaths
+            return possible if possible isnt process.execPath
+
+        return path
+
+    removeNwjsLoginItem: ->
+        @api.disable
+            name: 'nwjs Helper'
+
     fixOpts: =>
         if /darwin/.test process.platform
-            @opts.appPath = @opts.appPath.replace '/Contents/Frameworks/node-webkit Helper.app/Contents/MacOS/node-webkit Helper', ''
+            @opts.appPath = @fixNwExecPath(@opts.appPath)
 
         if @opts.appPath.indexOf('/') isnt -1
             tempPath = @opts.appPath.split '/'
