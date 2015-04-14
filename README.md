@@ -28,9 +28,11 @@ nwAppLauncher.isEnabled(function(enabled){
 	nwAppLauncher.enable(function(err){
 
 	});
-	
+
 });
 ```
+
+I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login item that might have been added to peoples accounts since the name change from node-webkit.
 
 For general apps
 
@@ -49,4 +51,4 @@ minecraftAutoLauncher.enable();
 ## TODO:
 
 - Figure out what's wrong with the damn tests.
-- Add `getCurrentPath` - So you can check if the app has moved a roundabout. 
+- Add `getCurrentPath` - So you can check if the app has moved a roundabout.
