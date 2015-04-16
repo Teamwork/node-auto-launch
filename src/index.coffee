@@ -36,7 +36,7 @@ module.exports = class AutoLaunch
         return path
 
     removeNwjsLoginItem: ->
-        @api.disable {name: 'nwjs Helper'}, ->
+        @api.disable {appName: 'nwjs Helper'}, ->
             return null
 
     fixOpts: =>
