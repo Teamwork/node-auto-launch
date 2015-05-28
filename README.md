@@ -46,6 +46,7 @@ var minecraftAutoLauncher = new AutoLaunch({
 });
 
 minecraftAutoLauncher.enable();
+//minecraftAutoLauncher.disable();
 ```
 
 ## TODO:
