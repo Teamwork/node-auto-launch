@@ -1,0 +1,98 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files (x86)\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'winreg',
+1 verbose cli   '--save' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.36
+4 verbose node symlink C:\Program Files (x86)\nodejs\\node.exe
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'winreg@0.0.12', null ]
+7 verbose cache add name=undefined spec="winreg@0.0.12" args=["winreg@0.0.12",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'winreg@0.0.12',
+8 verbose parsed url   path: 'winreg@0.0.12',
+8 verbose parsed url   href: 'winreg@0.0.12' }
+9 verbose cache add name="winreg" spec="0.0.12" args=["winreg","0.0.12"]
+10 verbose parsed url { protocol: null,
+10 verbose parsed url   slashes: null,
+10 verbose parsed url   auth: null,
+10 verbose parsed url   host: null,
+10 verbose parsed url   port: null,
+10 verbose parsed url   hostname: null,
+10 verbose parsed url   hash: null,
+10 verbose parsed url   search: null,
+10 verbose parsed url   query: null,
+10 verbose parsed url   pathname: '0.0.12',
+10 verbose parsed url   path: '0.0.12',
+10 verbose parsed url   href: '0.0.12' }
+11 verbose addNamed [ 'winreg', '0.0.12' ]
+12 verbose addNamed [ '0.0.12', '0.0.12' ]
+13 silly lockFile ca0921e6-winreg-0-0-12 winreg@0.0.12
+14 verbose lock winreg@0.0.12 C:\Users\Emmet\AppData\Roaming\npm-cache\ca0921e6-winreg-0-0-12.lock
+15 verbose request where is /winreg
+16 verbose request registry https://registry.npmjs.org/
+17 verbose request id 7ed18a9ca231cffd
+18 verbose url raw /winreg
+19 verbose url resolving [ 'https://registry.npmjs.org/', './winreg' ]
+20 verbose url resolved https://registry.npmjs.org/winreg
+21 verbose request where is https://registry.npmjs.org/winreg
+22 info trying registry request attempt 1 at 09:56:48
+23 http GET https://registry.npmjs.org/winreg
+24 http 401 https://registry.npmjs.org/winreg
+25 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+25 verbose headers   'content-type': 'application/json',
+25 verbose headers   'cache-control': 'max-age=60',
+25 verbose headers   'content-length': '66',
+25 verbose headers   'accept-ranges': 'bytes',
+25 verbose headers   date: 'Fri, 29 May 2015 08:56:52 GMT',
+25 verbose headers   via: '1.1 varnish',
+25 verbose headers   connection: 'keep-alive',
+25 verbose headers   'x-served-by': 'cache-lcy1125-LCY',
+25 verbose headers   'x-cache': 'MISS',
+25 verbose headers   'x-cache-hits': '0',
+25 verbose headers   'x-timer': 'S1432889812.477413,VS0,VE81' }
+26 silly registry.get cb [ 401,
+26 silly registry.get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+26 silly registry.get     'content-type': 'application/json',
+26 silly registry.get     'cache-control': 'max-age=60',
+26 silly registry.get     'content-length': '66',
+26 silly registry.get     'accept-ranges': 'bytes',
+26 silly registry.get     date: 'Fri, 29 May 2015 08:56:52 GMT',
+26 silly registry.get     via: '1.1 varnish',
+26 silly registry.get     connection: 'keep-alive',
+26 silly registry.get     'x-served-by': 'cache-lcy1125-LCY',
+26 silly registry.get     'x-cache': 'MISS',
+26 silly registry.get     'x-cache-hits': '0',
+26 silly registry.get     'x-timer': 'S1432889812.477413,VS0,VE81' } ]
+27 silly lockFile ca0921e6-winreg-0-0-12 winreg@0.0.12
+28 silly lockFile ca0921e6-winreg-0-0-12 winreg@0.0.12
+29 error Error: unauthorized Name or password is incorrect.: winreg
+29 error     at RegClient.<anonymous> (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:308:14)
+29 error     at Request._callback (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:246:65)
+29 error     at Request.self.callback (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\request.js:236:22)
+29 error     at Request.emit (events.js:98:17)
+29 error     at Request.<anonymous> (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\request.js:1142:14)
+29 error     at Request.emit (events.js:117:20)
+29 error     at IncomingMessage.<anonymous> (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\request.js:1096:12)
+29 error     at IncomingMessage.emit (events.js:117:20)
+29 error     at _stream_readable.js:944:16
+29 error     at process._tickCallback (node.js:442:13)
+30 error If you need help, you may report this *entire* log,
+30 error including the npm and node versions, at:
+30 error     <http://github.com/npm/npm/issues>
+31 error System Windows_NT 6.2.9200
+32 error command "C:\\Program Files (x86)\\nodejs\\\\node.exe" "C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "winreg" "--save"
+33 error cwd C:\git\node-auto-launch
+34 error node -v v0.10.36
+35 error npm -v 1.4.28
+36 verbose exit [ 1, true ]
