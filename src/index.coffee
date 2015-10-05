@@ -52,7 +52,9 @@ module.exports = class AutoLaunch
             @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.exe'.length)
 
         if /darwin/.test process.platform
-            @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.app'.length)
+            # Remove ".app" from the appName if it exists
+            if @opts.appName.indexOf('.app', @opts.appName.length - '.app'.length) isnt -1
+                @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.app'.length)
 
     # enable
     enable: (cb=()=>) =>
