@@ -1,6 +1,6 @@
 {
   "name": "auto-launch",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "Launch node-webkit apps at login (mac & windows)",
   "main": "dist/index.js",
   "scripts": {
