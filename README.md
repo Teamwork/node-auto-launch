@@ -1,11 +1,11 @@
 node-auto-launch
 ==============
 
-[![NPM version][npm-image]][npm-url] [![Windows Build Status][appveyor-image]][appveyor-url] [![Dependency Status][depstat-image]][depstat-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Windows Build Status][appveyor-image]][appveyor-url] [![Dependency Status][depstat-image]][depstat-url]
 
 ---
 
-Launch node-webkit apps at login (mac & windows)
+Launch node-webkit apps at login (Mac, Windows and Linux)
 
 ## Installation
 
@@ -64,6 +64,9 @@ minecraftAutoLauncher.enable();
 
 [appveyor-url]: https://ci.appveyor.com/project/adam-lynch/node-auto-launch/branch/master
 [appveyor-image]: https://ci.appveyor.com/api/projects/status/0sraxp65vrj2axc3/branch/master?svg=true
+
+[appveyor-url]: https://ci.appveyor.com/project/teamwork/auto-launch/branch/master
+[appveyor-image]: https://ci.appveyor.com/api/projects/status/9hv1ts9fm2g8d6rj/branch/master?svg=true
 
 [depstat-url]: https://david-dm.org/teamwork/auto-launch
 [depstat-image]: https://david-dm.org/teamwork/auto-launch.svg?style=flat

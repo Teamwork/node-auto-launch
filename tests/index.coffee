@@ -5,10 +5,12 @@ AutoLaunch = require '../src/'
 
 if /^win/.test process.platform
     executablePath = path.resolve path.join './tests/executables', 'GitHubSetup.exe'
-    console.log executablePath
 else if /darwin/.test process.platform
     executablePath = '/Applications/Calculator.app'
+else # linux
+    executablePath = path.resolve path.join './tests/executables', 'hv3-linux-x86'
 
+console.log "Executable being used for tests:", executablePath
 autoLaunch = new AutoLaunch
     name: 'node-auto-launch test'
     path: executablePath
