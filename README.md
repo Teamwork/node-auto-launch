@@ -65,8 +65,8 @@ minecraftAutoLauncher.enable();
 [appveyor-url]: https://ci.appveyor.com/project/adam-lynch/node-auto-launch/branch/master
 [appveyor-image]: https://ci.appveyor.com/api/projects/status/0sraxp65vrj2axc3/branch/master?svg=true
 
-[appveyor-url]: https://ci.appveyor.com/project/teamwork/auto-launch/branch/master
-[appveyor-image]: https://ci.appveyor.com/api/projects/status/9hv1ts9fm2g8d6rj/branch/master?svg=true
+[travis-url]: http://travis-ci.org/Teamwork/node-auto-launch
+[travis-image]: http://img.shields.io/travis/Teamwork/node-auto-launch.svg?style=flat
 
 [depstat-url]: https://david-dm.org/teamwork/auto-launch
 [depstat-image]: https://david-dm.org/teamwork/auto-launch.svg?style=flat
