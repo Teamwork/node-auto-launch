@@ -5,7 +5,7 @@ node-auto-launch
 
 ---
 
-Launch node-webkit apps at login (mac & windows)
+Launch node-webkit apps at login (Mac, Windows and Linux)
 
 ## Installation
 
