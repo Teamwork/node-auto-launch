@@ -23,6 +23,8 @@ module.exports = class AutoLaunch
             @api = require './AutoLaunchWindows'
         else if /darwin/.test process.platform
             @api = require './AutoLaunchMac'
+        else if /linux/.test process.platform
+            @api = require './AutoLaunchLinux'
 
     fixNwExecPath: (path) ->
         possiblePaths = [
