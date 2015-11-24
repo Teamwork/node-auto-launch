@@ -1,10 +1,17 @@
 chai = require 'chai'
+path = require 'path'
 expect = chai.expect
 AutoLaunch = require '../src/'
 
+if /^win/.test process.platform
+    executablePath = path.resolve path.join './tests/executables', 'GitHubSetup.exe'
+    console.log executablePath
+else if /darwin/.test process.platform
+    executablePath = '/Applications/Calculator.app'
+
 autoLaunch = new AutoLaunch
     name: 'node-auto-launch test'
-    path: '/Applications/Calculator.app'
+    path: executablePath
 
 
 describe 'node-auto-launch', ->
@@ -17,23 +24,27 @@ describe 'node-auto-launch', ->
 
                 expect(enabled).to.equal false
                 done()
-                describe '.enabled', ->
 
-                    it 'should enable auto launch', (done) ->
 
-                        autoLaunch.enable () ->
+    describe '.enable', ->
 
-                            autoLaunch.isEnabled (enabled) ->
+        it 'should enable auto launch', (done) ->
 
-                                expect(enabled).to.equal true
-                                done()
-                                describe '.disabled', ->
+            autoLaunch.enable () ->
 
-                                    it 'should disable auto launch', (done) ->
+                autoLaunch.isEnabled (enabled) ->
 
-                                        autoLaunch.disable () ->
+                    expect(enabled).to.equal true
+                    done()
 
-                                            autoLaunch.isEnabled (enabled) ->
 
-                                                expect(enabled).to.equal false
-                                                done()
+    describe '.disable', ->
+
+        it 'should disable auto launch', (done) ->
+
+            autoLaunch.disable () ->
+
+                autoLaunch.isEnabled (enabled) ->
+
+                    expect(enabled).to.equal false
+                    done()
