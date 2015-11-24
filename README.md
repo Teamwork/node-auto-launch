@@ -1,7 +1,7 @@
 node-auto-launch
 ==============
 
-[![NPM version][npm-image]][npm-url] [![Windows Build Status][appveyor-image]][appveyor-url] [![Dependency Status][depstat-image]][depstat-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Windows Build Status][appveyor-image]][appveyor-url] [![Dependency Status][depstat-image]][depstat-url]
 
 ---
 
@@ -61,6 +61,9 @@ minecraftAutoLauncher.enable();
 
 [npm-url]: https://npmjs.org/package/auto-launch
 [npm-image]: http://img.shields.io/npm/v/auto-launch.svg?style=flat
+
+[travis-url]: http://travis-ci.org/teamwork/node-auto-launch
+[travis-image]: http://img.shields.io/travis/teamwork/node-auto-launch.svg?style=flat
 
 [appveyor-url]: https://ci.appveyor.com/project/teamwork/auto-launch/branch/master
 [appveyor-image]: https://ci.appveyor.com/api/projects/status/9hv1ts9fm2g8d6rj/branch/master?svg=true
