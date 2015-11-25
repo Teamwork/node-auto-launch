@@ -55,7 +55,6 @@ minecraftAutoLauncher.enable();
 
 ## TODO:
 
-- Figure out what's wrong with the damn tests.
 - Add `getCurrentPath` - So you can check if the app has moved a roundabout.
 
 
