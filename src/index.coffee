@@ -42,6 +42,8 @@ module.exports = class AutoLaunch
             return null
 
     fixOpts: =>
+        @opts.appPath = @opts.appPath.replace /\/$/, ''
+
         if /darwin/.test process.platform
             @opts.appPath = @fixNwExecPath(@opts.appPath)
 
