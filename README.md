@@ -5,7 +5,7 @@ node-auto-launch
 
 ---
 
-Launch node-webkit apps at login (Mac, Windows and Linux)
+Launch applications or executables at login (Mac, Windows and Linux). Perfect for [NW.js](https://github.com/nwjs/nw.js) and [Electron](http://electron.atom.io/) apps.
 
 ## Installation
 
@@ -17,26 +17,26 @@ So far the api consists only `enable` `disable` and `isEnabled`.
 
 ## Usage
 
-For node-webkit apps you don't have to specify the path. It gets read from `process.execPath` :)
+For NW.js or Electron apps you don't have to specify the path. It gets read from `process.execPath` :)
 
 ```javascript
 var AutoLaunch = require('auto-launch');
 
-var nwAppLauncher = new AutoLaunch({
-	name: 'My node webkit app yao'
+var appLauncher = new AutoLaunch({
+	name: 'My NW.js or Electron app'
 });
 
-nwAppLauncher.isEnabled(function(enabled){
+appLauncher.isEnabled(function(enabled){
 	if(enabled) return;
 
-	nwAppLauncher.enable(function(err){
+	appLauncher.enable(function(err){
 
 	});
 
 });
 ```
 
-I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login item that might have been added to peoples accounts since the name change from node-webkit.
+Note: I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login item that might have been added to peoples accounts since the name change from node-webkit.
 
 For general apps
 
