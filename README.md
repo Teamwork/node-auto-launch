@@ -64,5 +64,5 @@ Note: I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login
 [travis-url]: http://travis-ci.org/Teamwork/node-auto-launch
 [travis-image]: http://img.shields.io/travis/Teamwork/node-auto-launch.svg?style=flat
 
-[depstat-url]: https://david-dm.org/teamwork/auto-launch
-[depstat-image]: https://david-dm.org/teamwork/auto-launch.svg?style=flat
+[depstat-url]: https://david-dm.org/teamwork/node-auto-launch
+[depstat-image]: https://david-dm.org/teamwork/node-auto-launch.svg?style=flat
