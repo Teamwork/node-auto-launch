@@ -11,11 +11,22 @@ Launch applications or executables at login (Mac, Windows and Linux). Perfect fo
 
 `npm install auto-launch`
 
-## General
-
-So far the api consists only `enable` `disable` and `isEnabled`.
-
 ## Usage
+
+The API consists only of `enable`, `disable`, and `isEnabled`.
+
+```javascript
+var AutoLaunch = require('auto-launch');
+
+var minecraftAutoLauncher = new AutoLaunch({
+	name: 'Minecraft',
+	path: '/Applications/Minecraft.app',
+	isHidden: true // hidden on launch - only works on a mac atm.
+});
+
+minecraftAutoLauncher.enable();
+//minecraftAutoLauncher.disable();
+```
 
 For NW.js or Electron apps you don't have to specify the path. It gets read from `process.execPath` :)
 
@@ -36,26 +47,12 @@ appLauncher.isEnabled(function(enabled){
 });
 ```
 
-Note: I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login item that might have been added to peoples accounts since the name change from node-webkit.
+Note: I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login item that might have been added to peoples accounts since the name change from node-webkit to NW.js.
 
-For general apps
-
-```javascript
-var AutoLaunch = require('auto-launch');
-
-var minecraftAutoLauncher = new AutoLaunch({
-	name: 'Minecraft',
-	path: '/Applications/Minecraft.app',
-	isHidden: true // hidden on launch - only works on a mac atm.
-});
-
-minecraftAutoLauncher.enable();
-//minecraftAutoLauncher.disable();
-```
 
 ## TODO:
 
-- Add `getCurrentPath` - So you can check if the app has moved a roundabout.
+- Add `getCurrentPath` - So you can check if the app has moved around.
 
 
 [npm-url]: https://npmjs.org/package/auto-launch
