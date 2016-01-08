@@ -8,14 +8,20 @@ module.exports =
     # This is just for testing
     regKey: regKey
 
-    enable: (opts, cb) ->
-        regKey.set opts.appName, Winreg.REG_SZ, "\"#{opts.appPath}\"", cb
+    enable: (opts) ->
+        new Promise (resolve, reject) ->
+            regKey.set opts.appName, Winreg.REG_SZ, "\"#{opts.appPath}\"", (err) ->
+                return reject(err) if err?
+                resolve()
 
+    disable: (opts) ->
+        new Promise (resolve, reject) ->
+            regKey.remove opts.appName, (err) ->
+                return reject(err) if err?
+                resolve()
 
-    disable: (opts, cb) ->
-        regKey.remove opts.appName, cb
-
-    isEnabled: (opts, cb) ->
-        regKey.get opts.appName, (err, item) ->
-            cb(item?)
-
+    isEnabled: (opts) ->
+        new Promise (resolve, reject) ->
+            regKey.get opts.appName, (err, item) ->
+                return reject(err) if err?
+                resolve(item?)

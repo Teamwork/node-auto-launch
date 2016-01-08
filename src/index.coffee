@@ -71,25 +71,22 @@ module.exports = class AutoLaunch
                 @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.app'.length)
 
     # enable
-    enable: (cb=()=>) =>
-        unless @api? then return cb(null)
+    enable: () ->
+        new Promise (resolve, reject) =>
+            return reject(new Error('Platform not supported')) unless @api?
 
-        @api.enable(@opts, cb)
-
-        return null
+            @api.enable(@opts).then(resolve).catch(reject)
 
     # disable
-    disable: (cb=()=>) =>
-        unless @api? then return cb(null)
+    disable: () ->
+        new Promise (resolve, reject) =>
+            return reject(new Error('Platform not supported')) unless @api?
 
-        @api.disable(@opts, cb)
-
-        return null
+            @api.disable(@opts).then(resolve).catch(reject)
 
     # isEnabled
-    isEnabled: (cb=()=>) =>
-        unless @api? then return cb(false)
+    isEnabled: () ->
+        new Promise (resolve, reject) =>
+            return reject(new Error('Platform not supported')) unless @api?
 
-        @api.isEnabled(@opts, cb)
-
-        return null
+            @api.isEnabled(@opts).then(resolve).catch(reject)
