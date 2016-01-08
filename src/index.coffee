@@ -72,21 +72,15 @@ module.exports = class AutoLaunch
 
     # enable
     enable: () ->
-        new Promise (resolve, reject) =>
-            return reject(new Error('Platform not supported')) unless @api?
-
-            @api.enable(@opts).then(resolve).catch(reject)
+        return Promise.reject(new Error('Platform not supported')) unless @api?
+        @api.enable(@opts)
 
     # disable
     disable: () ->
-        new Promise (resolve, reject) =>
-            return reject(new Error('Platform not supported')) unless @api?
-
-            @api.disable(@opts).then(resolve).catch(reject)
+        return Promise.reject(new Error('Platform not supported')) unless @api?
+        @api.disable(@opts)
 
     # isEnabled
     isEnabled: () ->
-        new Promise (resolve, reject) =>
-            return reject(new Error('Platform not supported')) unless @api?
-
-            @api.isEnabled(@opts).then(resolve).catch(reject)
+        return Promise.reject(new Error('Platform not supported')) unless @api?
+        @api.isEnabled(@opts)
