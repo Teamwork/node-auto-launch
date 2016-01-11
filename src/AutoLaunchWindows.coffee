@@ -23,5 +23,4 @@ module.exports =
     isEnabled: (opts) ->
         new Promise (resolve, reject) ->
             regKey.get opts.appName, (err, item) ->
-                return reject(err) if err?
                 resolve(item?)
