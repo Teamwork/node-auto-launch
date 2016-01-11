@@ -27,7 +27,7 @@ module.exports =
 
             mkdirp.sync(@getDir())
             fs.writeFile file, data, (err) ->
-                return reject if err?
+                return reject(err) if err?
                 resolve()
 
     disable: (opts) ->
