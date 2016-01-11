@@ -43,5 +43,8 @@
         "winreg": "0.0.12",
         "mkdirp": "0.5.1",
         "untildify": "2.1.0"
+    },
+    "engines": {
+        "node": ">=0.11"
     }
 }
