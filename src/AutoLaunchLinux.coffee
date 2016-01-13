@@ -36,8 +36,8 @@ module.exports =
 
             fs.stat file, (err) ->
                 return reject(err) if err?
-                fs.unlink file, (err) ->
-                    return reject if err?
+                fs.unlink file, (err2) ->
+                    return reject(err2) if err?
                     resolve()
 
     isEnabled: (opts) ->
@@ -45,4 +45,5 @@ module.exports =
             file = @getFile(opts)
 
             fs.stat file, (err, stat) ->
+                # TODO: Error handling
                 resolve(stat?)
