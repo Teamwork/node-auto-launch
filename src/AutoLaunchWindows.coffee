@@ -1,4 +1,5 @@
 Winreg = require 'winreg'
+Promise = require('es6-promise').Promise
 
 regKey = new Winreg
     hive: Winreg.HKCU

@@ -1,3 +1,4 @@
+Promise = require('es6-promise').Promise
 
 # Public: REPLACE_WITH_DESCRIPTION
 module.exports = class AutoLaunch
