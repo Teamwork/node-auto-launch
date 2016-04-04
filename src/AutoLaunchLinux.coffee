@@ -1,6 +1,7 @@
 fs = require('fs')
 mkdirp = require('mkdirp')
 untildify = require('untildify')
+Promise = require('es6-promise').Promise
 
 module.exports =
     getDir: (opts) ->
@@ -10,30 +11,40 @@ module.exports =
         file = @getDir()+opts.appName+'.desktop'
         return file
 
-    enable: (opts, cb) ->
-        file = @getFile(opts)
+    enable: (opts) ->
+        new Promise (resolve, reject) =>
+            file = @getFile(opts)
 
-        data = [
-          '[Desktop Entry]',
-          'Type=Application',
-          'Vestion=1.0',
-          'Name='+opts.appName,
-          'Comment=' + opts.appName + ' startup script',
-          'Exec=' + opts.appPath,
-          'StartupNotify=false',
-          'Terminal=false'
-        ].join('\n')
+            data = [
+                '[Desktop Entry]',
+                'Type=Application',
+                'Vestion=1.0',
+                'Name='+opts.appName,
+                'Comment=' + opts.appName + ' startup script',
+                'Exec=' + opts.appPath,
+                'StartupNotify=false',
+                'Terminal=false'
+            ].join('\n')
 
-        mkdirp.sync(@getDir())
-        fs.writeFileSync(file, data)
-        cb()
+            mkdirp.sync(@getDir())
+            fs.writeFile file, data, (err) ->
+                return reject(err) if err?
+                resolve()
 
-    disable: (opts, cb) ->
-        file = @getFile(opts)
-        if fs.existsSync(file)
-            fs.unlinkSync(file)
-        cb()
+    disable: (opts) ->
+        new Promise (resolve, reject) =>
+            file = @getFile(opts)
 
-    isEnabled: (opts, cb) ->
-        file = @getFile(opts)
-        cb(fs.existsSync(file))
+            fs.stat file, (err) ->
+                return reject(err) if err?
+                fs.unlink file, (err2) ->
+                    return reject(err2) if err?
+                    resolve()
+
+    isEnabled: (opts) ->
+        new Promise (resolve, reject) =>
+            file = @getFile(opts)
+
+            fs.stat file, (err, stat) ->
+                # TODO: Error handling
+                resolve(stat?)

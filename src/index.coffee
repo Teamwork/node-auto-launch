@@ -1,3 +1,4 @@
+Promise = require('es6-promise').Promise
 
 # Public: REPLACE_WITH_DESCRIPTION
 module.exports = class AutoLaunch
@@ -71,25 +72,16 @@ module.exports = class AutoLaunch
                 @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.app'.length)
 
     # enable
-    enable: (cb=()=>) =>
-        unless @api? then return cb(null)
-
-        @api.enable(@opts, cb)
-
-        return null
+    enable: () ->
+        return Promise.reject(new Error('Platform not supported')) unless @api?
+        @api.enable(@opts)
 
     # disable
-    disable: (cb=()=>) =>
-        unless @api? then return cb(null)
-
-        @api.disable(@opts, cb)
-
-        return null
+    disable: () ->
+        return Promise.reject(new Error('Platform not supported')) unless @api?
+        @api.disable(@opts)
 
     # isEnabled
-    isEnabled: (cb=()=>) =>
-        unless @api? then return cb(false)
-
-        @api.isEnabled(@opts, cb)
-
-        return null
+    isEnabled: () ->
+        return Promise.reject(new Error('Platform not supported')) unless @api?
+        @api.isEnabled(@opts)
