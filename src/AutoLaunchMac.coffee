@@ -31,4 +31,4 @@ module.exports =
                 return reject(err) if err?
 
                 isPresent = loginItems?.indexOf(opts.appName)
-                resolve(isPresent?)
+                resolve(isPresent? and isPresent isnt -1)
