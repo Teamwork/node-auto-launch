@@ -37,13 +37,11 @@ var appLauncher = new AutoLaunch({
 	name: 'My NW.js or Electron app'
 });
 
-appLauncher.isEnabled(function(enabled){
+appLauncher.isEnabled().then(function(enabled){
 	if(enabled) return;
-
-	appLauncher.enable(function(err){
-
-	});
-
+	return appLauncher.enable()
+}).then(function(err){
+	
 });
 ```
 
