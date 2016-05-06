@@ -14,6 +14,7 @@ module.exports =
     enable: (opts) ->
         new Promise (resolve, reject) =>
             file = @getFile(opts)
+            hiddenArg = if opts.isHiddenOnLaunch then ' --hidden' else ''
 
             data = [
                 '[Desktop Entry]',
@@ -21,7 +22,7 @@ module.exports =
                 'Vestion=1.0',
                 'Name='+opts.appName,
                 'Comment=' + opts.appName + ' startup script',
-                'Exec=' + opts.appPath,
+                'Exec=' + opts.appPath + hiddenArg,
                 'StartupNotify=false',
                 'Terminal=false'
             ].join('\n')
