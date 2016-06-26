@@ -1,7 +1,7 @@
 {
   "name": "auto-launch",
   "version": "2.0.1",
-  "description": "Launch node-webkit apps at login (mac & windows)",
+  "description": "Launch node applications or executables at login (Mac, Windows, and Linux)",
   "main": "dist/index.js",
   "scripts": {
     "test": "gulp test"
