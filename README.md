@@ -21,7 +21,7 @@ var AutoLaunch = require('auto-launch');
 var minecraftAutoLauncher = new AutoLaunch({
 	name: 'Minecraft',
 	path: '/Applications/Minecraft.app',
-	isHidden: true // hidden on launch - only works on a mac atm.
+	isHidden: true
 });
 
 minecraftAutoLauncher.enable();
