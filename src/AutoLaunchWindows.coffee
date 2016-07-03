@@ -11,7 +11,8 @@ module.exports =
 
     enable: (opts) ->
         new Promise (resolve, reject) ->
-            regKey.set opts.appName, Winreg.REG_SZ, "\"#{opts.appPath}\"", (err) ->
+            hiddenArg = if opts.isHiddenOnLaunch then ' --hidden' else ''
+            regKey.set opts.appName, Winreg.REG_SZ, "\"#{opts.appPath}\"#{hiddenArg}", (err) ->
                 return reject(err) if err?
                 resolve()
 

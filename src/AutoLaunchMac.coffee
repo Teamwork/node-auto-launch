@@ -7,7 +7,7 @@ module.exports =
 
     enable: (opts) ->
         new Promise (resolve, reject) ->
-            isHidden = if opts.isHiddenOnLaunch then 'false' else 'true'
+            isHidden = if opts.isHiddenOnLaunch then 'true' else 'false'
             properties = "{path:\"#{opts.appPath}\", hidden:#{isHidden}, name:\"#{opts.appName}\"}"
             command = "#{tellTo} make login item at end with properties #{properties}"
 
