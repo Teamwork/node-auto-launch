@@ -46,7 +46,9 @@ module.exports = class AutoLaunch
         # Does not match when the three are different
         # Also matches when the path is pointing not to the exectuable in the inner app at all but to the Electron
         # executable in the outer app
-        return path.replace /(^.+?[^\/]+?\.app)\/Contents\/(Frameworks\/((\1|[^\/]+?) Helper)\.app\/Contents\/MacOS\/\3|MacOS\/Electron)/, '$1'
+        path = path.replace /(^.+?[^\/]+?\.app)\/Contents\/(Frameworks\/((\1|[^\/]+?) Helper)\.app\/Contents\/MacOS\/\3|MacOS\/Electron)/, '$1'
+        path = path.replace /\.app\/Contents\/MacOS\/[^\/]*$/, '.app'
+        return path;
 
     removeNwjsLoginItem: ->
         @api.disable {appName: 'nwjs Helper'}, ->
