@@ -1,7 +1,6 @@
 fs = require('fs')
 mkdirp = require('mkdirp')
 untildify = require('untildify')
-Promise = require('es6-promise').Promise
 
 module.exports =
     getDir: (opts) ->

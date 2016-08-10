@@ -5,7 +5,11 @@ node-auto-launch
 
 ---
 
-Launch applications or executables at login (Mac, Windows and Linux). Perfect for [NW.js](https://github.com/nwjs/nw.js) and [Electron](http://electron.atom.io/) apps.
+Launch applications or executables at login (Mac, Windows and Linux). Perfect for [NW.js](https://github.com/nwjs/nw.js) and [Electron](http://electron.atom.io/) apps. Also handles Electron updates on Windows so the correct version of your app is launched when using the auto updater.
+
+## Notes
+ - Node V4 or greater is required.
+ - With v3.0 the ES6-Promise dependency has been removed. This module automatically overwrote Promise in the global namespace. If upgrading to v3 check to make sure this will not affect your project.
 
 ## Installation
 
@@ -41,7 +45,7 @@ appLauncher.isEnabled().then(function(enabled){
 	if(enabled) return;
 	return appLauncher.enable()
 }).then(function(err){
-	
+
 });
 ```
 
