@@ -9,7 +9,7 @@ Launch applications or executables at login (Mac, Windows and Linux). Perfect fo
 
 ## Notes
  - Node V4 or greater is required.
- - With v3.0 the ES6-Promise dependency has been removed. This module automatically overwrote Promise in the global namespace. If upgrading to v3 check to make sure this will not affect your project.
+ - With v4.0.0 the ES6-Promise dependency has been removed. This module automatically overwrote Promise in the global namespace. If upgrading to v3 check to make sure this will not affect your project.
 
 ## Installation
 
