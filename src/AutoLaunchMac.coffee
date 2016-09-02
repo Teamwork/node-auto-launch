@@ -6,8 +6,7 @@ dir = untildify('~/Library/LaunchAgents')
 
 module.exports =
     getFile: (opts) ->
-        file = dir+opts.appName+'.plist'
-        return file
+        return "#{dir}/#{opts.appName}.plist"
 
     enable: (opts) ->
         new Promise (resolve, reject) =>
