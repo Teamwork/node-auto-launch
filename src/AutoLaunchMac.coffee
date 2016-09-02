@@ -22,7 +22,7 @@ module.exports =
                     <plist version="1.0">
                     <dict>
                       <key>Label</key>
-                      <string>#{name}</string>
+                      <string>#{opts.appName}</string>
                       <key>ProgramArguments</key>
                       <array>
                       #{command}
