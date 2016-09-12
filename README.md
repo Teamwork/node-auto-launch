@@ -5,7 +5,7 @@ node-auto-launch
 
 ---
 
-Launch applications or executables at login (Mac, Windows and Linux). Perfect for [NW.js](https://github.com/nwjs/nw.js) and [Electron](http://electron.atom.io/) apps. Also handles Electron updates on Windows so the correct version of your app is launched when using the auto updater.
+Launch applications or executables at login (Mac, Windows and Linux). Perfect for [NW.js](https://github.com/nwjs/nw.js) and [Electron](http://electron.atom.io/) apps (with or without Squirrel). Also handles Electron updates on Windows so the correct version of your app is launched when using the auto updater.
 
 ## Notes
  - Node V4 or greater is required.
