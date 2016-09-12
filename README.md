@@ -57,6 +57,11 @@ Note: I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login
 - Add `getCurrentPath` - So you can check if the app has moved around.
 
 
+# Would you like to contribute?
+
+We're always open to your help and feedback. See our [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
 [npm-url]: https://npmjs.org/package/auto-launch
 [npm-image]: http://img.shields.io/npm/v/auto-launch.svg?style=flat
 
