@@ -16,6 +16,7 @@ Feel free to submit pull-requests or suggestions via issues to improve this proc
 
 1. `npm install -g gulp`
 2. `npm install`
+3. Install the [EditorConfig](http://editorconfig.org) plugin for your IDE / text-editor.
 
 
 # Compilation
