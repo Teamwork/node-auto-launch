@@ -43,7 +43,6 @@
   },
   "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
-    "applescript": "^1.0.0",
     "mkdirp": "^0.5.1",
     "untildify": "^2.1.0",
     "winreg": "1.0.1"

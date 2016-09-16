@@ -1,33 +1,55 @@
-applescript = require 'applescript'
+fs = require('fs')
+mkdirp = require('mkdirp')
+untildify = require('untildify')
 
-tellTo = 'tell application "System Events" to '
+dir = untildify('~/Library/LaunchAgents')
 
 module.exports =
+    getFile: (opts) ->
+        return "#{dir}/#{opts.appName}.plist"
 
     enable: (opts) ->
-        new Promise (resolve, reject) ->
-            isHidden = if opts.isHiddenOnLaunch then 'true' else 'false'
-            properties = "{path:\"#{opts.appPath}\", hidden:#{isHidden}, name:\"#{opts.appName}\"}"
-            command = "#{tellTo} make login item at end with properties #{properties}"
+        new Promise (resolve, reject) =>
+            file = @getFile(opts)
+            array = [opts.appPath]
+            if(opts.isHiddenOnLaunch) then array.push('--hidden')
+            command = array.map((a) -> "    <string>#{a}</string>")
+                .join('\n')
 
-            applescript.execString command, (err) ->
+            data = """<?xml version="1.0" encoding="UTF-8"?>
+                    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                    <plist version="1.0">
+                    <dict>
+                      <key>Label</key>
+                      <string>#{opts.appName}</string>
+                      <key>ProgramArguments</key>
+                      <array>
+                      #{command}
+                      </array>
+                      <key>RunAtLoad</key>
+                      <true/>
+                    </dict>
+                    </plist>"""
+
+            mkdirp.sync(dir)
+            fs.writeFile file, data, (err) ->
                 return reject(err) if err?
                 resolve()
 
     disable: (opts) ->
-        new Promise (resolve, reject) ->
-            command = tellTo + "delete login item \"#{opts.appName}\""
+        new Promise (resolve, reject) =>
+            file = @getFile(opts)
 
-            applescript.execString command, (err) ->
+            fs.stat file, (err) ->
                 return reject(err) if err?
-                resolve()
+                fs.unlink file, (err2) ->
+                    return reject(err2) if err?
+                    resolve()
 
     isEnabled: (opts) ->
-        new Promise (resolve, reject) ->
-            command = tellTo + "get the name of every login item"
+        new Promise (resolve) =>
+            file = @getFile(opts)
 
-            applescript.execString command, (err, loginItems) ->
-                return reject(err) if err?
-
-                isPresent = loginItems?.indexOf(opts.appName)
-                resolve(isPresent? and isPresent isnt -1)
+            fs.stat file, (err, stat) ->
+    # TODO: Error handling
+                resolve(stat?)
