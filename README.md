@@ -87,7 +87,7 @@ Disables your app from auto-launching at startup. Returns a Promise.
 
 ### `.isEnabled(callback)`
 
-**callback** - Function
+**`callback`** - Function
 
 Called with a Boolean; `true` if your app is set to launch on startup.
 
