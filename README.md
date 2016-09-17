@@ -11,7 +11,7 @@ Auto-launch your app on login.
 - :star: Supports Linux, Mac (via AppleScript or Launch Agent), and Windows.
 - :star: Supports [NW.js](http://nwjs.io/) and [Electron](http://electron.atom.io/) (with or without Squirrel; i.e. even if you're using Electron's built-in [`autoUpdater``](http://electron.atom.io/docs/api/auto-updater/) API).
 - :star: Auto-detects your app path for NW.js and Electron apps.
-- :disappointed: Not Mac App Store friendly. See [Make this Mac App Store compatible](TODO) for more information.
+- :disappointed: Not Mac App Store friendly. See [Make this Mac App Store compatible](https://github.com/Teamwork/node-auto-launch/issues/43) for more information.
 
 
 ## Usage
@@ -107,7 +107,7 @@ We execute an AppleScript command to instruct `System Events` to add or remove a
 
 ![Login Items screenshot](images/loginItemsScreenshot.png)
 
-Note: This is not Mac App Store friendly; if you use it in your app, it will be rejected by the Mac App Store. We're only 99% sure on this as we haven't actually tried ourselves. See [](TODO) for more information.
+Note: This is not Mac App Store friendly; if you use it in your app, it will be rejected by the Mac App Store. We're only 99% sure on this as we haven't actually tried ourselves. See [Make this Mac App Store compatible](https://github.com/Teamwork/node-auto-launch/issues/43) for more information.
 
 
 #### Launch Agent
@@ -125,9 +125,9 @@ This is a file-based method like Linux's Desktop Entry method. We add a `.plist`
 - Your app will not appear in the user's Login Items. Therefore the user can only toggle auto-launching inside your app, if you provide them with a setting of course (which you should!). This is not a huge deal as most users are not aware of Login Items preferences, but it would be ideal if your app appeared there.
 - If the user was to remove your app, the file would be left behind on the user's machine.
 
-If you find that the AppleScript method doesn't work for you and this method does, please let us know by [creating an issue](TODO).
+If you find that the AppleScript method doesn't work for you and this method does, please let us know by [creating an issue](https://github.com/Teamwork/node-auto-launch/issues/new).
 
-Note: This is not Mac App Store friendly; if you use it in your app, it will be rejected by the Mac App Store as this reaches outside of the app sandbox. See [Make this Mac App Store compatible](TODO) for more information.
+Note: This is not Mac App Store friendly; if you use it in your app, it will be rejected by the Mac App Store as this reaches outside of the app sandbox. See [Make this Mac App Store compatible](https://github.com/Teamwork/node-auto-launch/issues/43) for more information.
 
 
 ### Windows
