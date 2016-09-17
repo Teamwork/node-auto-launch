@@ -6,7 +6,7 @@
   "scripts": {
     "test": "gulp test"
   },
-  "engines" : {
+  "engines": {
     "node": ">=4.0.0"
   },
   "repository": {
@@ -44,6 +44,7 @@
   "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
     "mkdirp": "^0.5.1",
+    "path-is-absolute": "^1.0.0",
     "untildify": "^2.1.0",
     "winreg": "1.0.1"
   }

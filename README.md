@@ -85,11 +85,9 @@ Sets your app to auto-launch at startup. Returns a Promise.
 Disables your app from auto-launching at startup. Returns a Promise.
 
 
-### `.isEnabled(callback)`
+### `.isEnabled()`
 
-**`callback`** - Function
-
-Called with a Boolean; `true` if your app is set to launch on startup.
+Returns a Promise which resolves to a Boolean; `true` if your app is set to launch on startup.
 
 
 ## How does it work?

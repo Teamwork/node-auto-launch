@@ -17,11 +17,13 @@ describe 'node-auto-launch', ->
     autoLaunch = null
     autoLaunchHelper = null
 
+
     beforeEach ->
         autoLaunch = new AutoLaunch
             name: 'node-auto-launch test'
             path: executablePath
         autoLaunchHelper = new AutoLaunchHelper(autoLaunch)
+
 
     describe '.isEnabled', ->
         beforeEach ->
@@ -39,12 +41,6 @@ describe 'node-auto-launch', ->
 
             autoLaunch.isEnabled().catch done
 
-        it 'should throw an error if platform is not supported', (done) ->
-            autoLaunchHelper.mockApi null
-
-            autoLaunch.isEnabled().catch (error) ->
-                expect(error).to.be.an.instanceof(Error)
-                done()
 
     describe '.enable', ->
         beforeEach ->
@@ -63,12 +59,6 @@ describe 'node-auto-launch', ->
 
             autoLaunch.enable().catch done
 
-        it 'should throw an error if platform is not supported', (done) ->
-            autoLaunchHelper.mockApi null
-
-            autoLaunch.isEnabled().catch (error) ->
-                expect(error).to.be.an.instanceof(Error)
-                done()
 
     describe '.disable', ->
         beforeEach ->
@@ -86,10 +76,3 @@ describe 'node-auto-launch', ->
                     Promise.reject()
 
             autoLaunch.disable().catch done
-
-        it 'should throw an error if platform is not supported', (done) ->
-            autoLaunchHelper.mockApi null
-
-            autoLaunch.isEnabled().catch (error) ->
-                expect(error).to.be.an.instanceof(Error)
-                done()

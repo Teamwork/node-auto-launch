@@ -1,37 +1,58 @@
-# Public: REPLACE_WITH_DESCRIPTION
+isPathAbsolute = require 'path-is-absolute'
+
+# Public: The main auto-launch class
 module.exports = class AutoLaunch
 
     ### Public ###
 
-    constructor: (opts) ->
+    # options - {Object}
+    #   :name - {String}
+    #   :path - (Optional) {String}
+    #   :isHidden - (Optional) {Boolean}
+    constructor: ({name, isHidden, path}) ->
+        throw new Error 'You must specify a name' unless name?
 
-        unless opts.name?
-            throw new Error 'You must specify a name'
-
-        @opts = {}
-
-        @opts.appName = opts.name
-        @opts.isHiddenOnLaunch = if opts.isHidden? then opts.isHidden else false
+        @opts =
+            appName: name
+            isHiddenOnLaunch: if isHidden? then isHidden else false
 
         versions = process?.versions
+        if path?
+            # Verify that the path is absolute
+            throw new Error 'path must be absolute' unless isPathAbsolute path
+            @opts.appPath = path
 
-        if opts.path?
-            @opts.appPath = opts.path
         else if versions? and (versions.nw? or versions['node-webkit']? or versions.electron?)
             @opts.appPath = process.execPath
+
         else
             throw new Error "You must give a path (this is only auto-detected for NW.js and Electron apps)"
 
         @fixOpts()
 
         @api = null
-
         if /^win/.test process.platform
             @api = require './AutoLaunchWindows'
         else if /darwin/.test process.platform
             @api = require './AutoLaunchMac'
         else if /linux/.test process.platform
             @api = require './AutoLaunchLinux'
+        else
+            throw new Error 'Unsupported platform'
+
+
+    enable: => @api.enable @opts
+
+
+    disable: => @api.disable @opts.appName
+
+
+    # Returns a Promise which resolves to a {Boolean}
+    isEnabled: => @api.isEnabled @opts.appName
+
+
+    ### Private ###
+
 
     # Corrects the path to point to the outer .app
     # path - {String}
@@ -45,6 +66,7 @@ module.exports = class AutoLaunch
         # Also matches when the path is pointing not to the exectuable in the inner app at all but to the Electron
         # executable in the outer app
         return path.replace /(^.+?[^\/]+?\.app)\/Contents\/(Frameworks\/((\1|[^\/]+?) Helper)\.app\/Contents\/MacOS\/\3|MacOS\/Electron)/, '$1'
+
 
     fixOpts: =>
         @opts.appPath = @opts.appPath.replace /\/$/, ''
@@ -64,18 +86,3 @@ module.exports = class AutoLaunch
             # Remove ".app" from the appName if it exists
             if @opts.appName.indexOf('.app', @opts.appName.length - '.app'.length) isnt -1
                 @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.app'.length)
-
-    # enable
-    enable: () ->
-        return Promise.reject(new Error('Platform not supported')) unless @api?
-        @api.enable(@opts)
-
-    # disable
-    disable: () ->
-        return Promise.reject(new Error('Platform not supported')) unless @api?
-        @api.disable(@opts)
-
-    # isEnabled
-    isEnabled: () ->
-        return Promise.reject(new Error('Platform not supported')) unless @api?
-        @api.isEnabled(@opts)
