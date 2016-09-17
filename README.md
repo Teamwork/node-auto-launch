@@ -5,19 +5,16 @@ node-auto-launch
 
 ---
 
-Launch applications or executables at login (Mac, Windows and Linux). Perfect for [NW.js](https://github.com/nwjs/nw.js) and [Electron](http://electron.atom.io/) apps (with or without Squirrel). Also handles Electron updates on Windows so the correct version of your app is launched when using the auto updater.
+Auto-launch your app on login.
 
-## Notes
- - Node V4 or greater is required.
- - With v4.0.0 the ES6-Promise dependency has been removed. This module automatically overwrote Promise in the global namespace. If upgrading to v3 check to make sure this will not affect your project.
+- :star2: Launch any application or executable at startup / login / boot.
+- :star2: Supports Linux, Mac (via AppleScript or Launch Agent), and Windows.
+- :star2: Supports [NW.js](http://nwjs.io/) and [Electron](http://electron.atom.io/) (with or without Squirrel; i.e. even if you're using Electron's built-in [autoUpdater](http://electron.atom.io/docs/api/auto-updater/) API).
+- :star2: Auto-detects your app path for NW.js and Electron apps.
+- :disappointed: Not Mac App Store friendly. See [Make this Mac App Store compatible](TODO) for more information.
 
-## Installation
-
-`npm install auto-launch`
 
 ## Usage
-
-The API consists only of `enable`, `disable`, and `isEnabled`.
 
 ```javascript
 var AutoLaunch = require('auto-launch');
@@ -25,36 +22,130 @@ var AutoLaunch = require('auto-launch');
 var minecraftAutoLauncher = new AutoLaunch({
 	name: 'Minecraft',
 	path: '/Applications/Minecraft.app',
-	isHidden: true
 });
 
 minecraftAutoLauncher.enable();
+
 //minecraftAutoLauncher.disable();
-```
 
-For NW.js or Electron apps you don't have to specify the path. It gets read from `process.execPath` :)
 
-```javascript
-var AutoLaunch = require('auto-launch');
-
-var appLauncher = new AutoLaunch({
-	name: 'My NW.js or Electron app'
-});
-
-appLauncher.isEnabled().then(function(enabled){
-	if(enabled) return;
-	return appLauncher.enable()
-}).then(function(err){
-
+minecraftAutoLauncher.isEnabled()
+.then(function(isEnabled){
+	if(isEnabled){
+	    return;
+	}
+	minecraftAutoLauncher.enable();
+})
+.catch(function(err){
+    // handle error
 });
 ```
+
+## Installation
+
+`npm install --save auto-launch`
+
+
+## API
+
+### `new AutoLaunch(options)`
+
+**options** - Object
+
+**options.name** - String
+
+The name of your app.
+
+**options.path** - String (optional for NW.js and Electron apps)
+
+The absolute path to your app.
+
+For NW.js and Electron apps, you don't have to specify the path. We guess based on `process.execPath`.
+
+**options.isHidden** - (Optional) Boolean
+
+If `true`, we instruct the operating system to launch your app in hidden mode when launching at login. Defaults to `false`.
+
+**options.mac** (Optional) object
+
+For Mac-only options.
+
+**options.mac.useLaunchAgent** (optional) Boolean.
+
+TODO. Defaults to `false`.
+
+
+### `.enable`
+
+Sets your app to auto-launch at startup. Returns a Promise.
+
+
+### `.disable`
+
+Disables your app from auto-launching at startup. Returns a Promise.
+
+
+### `.isEnabled(callback)`
+
+**callback** - Function
+
+Called with a Boolean; `true` if your app is set to launch on startup.
+
+
+### `removeNwjsLoginItem` *(deprecated)*
 
 Note: I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login item that might have been added to peoples accounts since the name change from node-webkit to NW.js.
 
+Only works if mac.useLaunchAgent is false
 
-## TODO:
+TODO: remove!
 
-- Add `getCurrentPath` - So you can check if the app has moved around.
+
+## How does it work?
+
+### Linux
+
+A [Desktop Entry](https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html) is created; i.e. a `.desktop` file is created in `~/.config/autostart/`.
+
+Note: if auto-launch is enabled and then your app is removed, this desktop entry file would be left behind on the user's machine.
+
+
+### Mac
+
+#### AppleScript (default)
+
+We execute an AppleScript command to instruct `System Events` to add or remove a Login Item for your app. There are no files involved. To see your Login Items, you can go to *System Preferences*, *Users & Groups*, then *Login Items*. End users can add or disable items (including your app) here also, but most typical users aren't aware of it.
+
+![Login Items screenshot](images/loginItemsScreenshot.png)
+
+Note: This is not Mac App Store friendly; if you use it in your app, it will be rejected by the Mac App Store. We're only 99% sure on this as we haven't actually tried ourselves. See [](TODO) for more information.
+
+
+#### Launch Agent
+
+This is a file-based method like Linux's Desktop Entry method. We add a `.plist` file in the user's `Library/LaunchAgents` directory to create a [Launch Agent](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html) for your app.
+
+**Pros**
+
+- Launch Agents are intended for daemons / something without UI, which might be applicable depending on your app.
+- We *think* this method *seems* to be faster, as in to enable or disable auto-launching (there is no difference in the amount of time it takes your app to launch). Although, that's not really a concern.
+- You might not trust AppleScript.
+
+**Cons**
+
+- Your app will not appear in the user's Login Items. Therefore the user can only toggle auto-launching inside your app, if you provide them with a setting of course (which you should!). This is not a huge deal as most users are not aware of Login Items preferences, but it would be ideal if your app appeared there.
+- If the user was to remove your app, the file would be left behind on the user's machine.
+
+If you find that the AppleScript method doesn't work for you and this method does, please let us know by [creating an issue](TODO).
+
+Note: This is not Mac App Store friendly; if you use it in your app, it will be rejected by the Mac App Store as this reaches outside of the app sandbox. See [Make this Mac App Store compatible](TODO) for more information.
+
+
+### Windows
+
+We add a registry entry under `\Software\Microsoft\Windows\CurrentVersion\Run`.
+
+Note: If the user was to remove your app, this would be left in the registry, but that's not such a big deal. You can probably configure your uninstaller to unset it.
 
 
 # Would you like to contribute?
