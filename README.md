@@ -72,7 +72,7 @@ For Mac-only options.
 
 **`options.mac.useLaunchAgent`** (optional) Boolean.
 
-TODO. Defaults to `false`.
+By default, we use AppleScript to add a Login Item. If this is `true`, we use a Launch Agent to auto-launch your app. Defaults to `false`. For more information, see [How does it work? (mac)](#mac) below.
 
 
 ### `.enable`
