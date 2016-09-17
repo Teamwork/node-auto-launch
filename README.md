@@ -50,27 +50,27 @@ minecraftAutoLauncher.isEnabled()
 
 ### `new AutoLaunch(options)`
 
-**options** - Object
+**`options`** - Object
 
-**options.name** - String
+**`options.name`** - String
 
 The name of your app.
 
-**options.path** - String (optional for NW.js and Electron apps)
+**`options.path`** - String (optional for NW.js and Electron apps)
 
 The absolute path to your app.
 
 For NW.js and Electron apps, you don't have to specify the path. We guess based on `process.execPath`.
 
-**options.isHidden** - (Optional) Boolean
+**`options.isHidden`** - (Optional) Boolean
 
 If `true`, we instruct the operating system to launch your app in hidden mode when launching at login. Defaults to `false`.
 
-**options.mac** (Optional) object
+**`options.mac`** (Optional) object
 
 For Mac-only options.
 
-**options.mac.useLaunchAgent** (optional) Boolean.
+**`options.mac.useLaunchAgent`** (optional) Boolean.
 
 TODO. Defaults to `false`.
 
