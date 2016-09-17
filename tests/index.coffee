@@ -4,9 +4,12 @@ expect = chai.expect
 AutoLaunch = require '../src/'
 AutoLaunchHelper = require './helper'
 
+isMac = false
+
 if /^win/.test process.platform
     executablePath = path.resolve path.join './tests/executables', 'GitHubSetup.exe'
 else if /darwin/.test process.platform
+    isMac = true
     executablePath = '/Applications/Calculator.app'
 else if /linux/.test process.platform
     executablePath = path.resolve path.join './tests/executables', 'hv3-linux-x86'
@@ -17,11 +20,13 @@ describe 'node-auto-launch', ->
     autoLaunch = null
     autoLaunchHelper = null
 
+
     beforeEach ->
         autoLaunch = new AutoLaunch
             name: 'node-auto-launch test'
             path: executablePath
         autoLaunchHelper = new AutoLaunchHelper(autoLaunch)
+
 
     describe '.isEnabled', ->
         beforeEach ->
@@ -31,6 +36,8 @@ describe 'node-auto-launch', ->
             autoLaunch.isEnabled().then (enabled) ->
                 expect(enabled).to.equal false
                 done()
+            .catch done
+            return
 
         it 'should catch errors', (done) ->
             autoLaunchHelper.mockApi
@@ -38,47 +45,42 @@ describe 'node-auto-launch', ->
                     Promise.reject()
 
             autoLaunch.isEnabled().catch done
+            return
 
-        it 'should throw an error if platform is not supported', (done) ->
-            autoLaunchHelper.mockApi null
-
-            autoLaunch.isEnabled().catch (error) ->
-                expect(error).to.be.an.instanceof(Error)
-                done()
 
     describe '.enable', ->
         beforeEach ->
             autoLaunchHelper.ensureDisabled()
 
         it 'should enable auto launch', (done) ->
-            autoLaunch.enable().then ->
-                autoLaunch.isEnabled().then (enabled) ->
-                    expect(enabled).to.equal true
-                    done()
+            autoLaunch.enable()
+            .then -> autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal true
+                done()
+            .catch done
+            return
 
         it 'should catch errors', (done) ->
             autoLaunchHelper.mockApi
-                enable: ->
-                    Promise.reject()
+                enable: -> Promise.reject()
 
             autoLaunch.enable().catch done
+            return
 
-        it 'should throw an error if platform is not supported', (done) ->
-            autoLaunchHelper.mockApi null
-
-            autoLaunch.isEnabled().catch (error) ->
-                expect(error).to.be.an.instanceof(Error)
-                done()
 
     describe '.disable', ->
         beforeEach ->
             autoLaunchHelper.ensureEnabled()
 
         it 'should disable auto launch', (done) ->
-            autoLaunch.disable().then ->
-                autoLaunch.isEnabled().then (enabled) ->
-                    expect(enabled).to.equal false
-                    done()
+            autoLaunch.disable()
+            .then -> autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal false
+                done()
+            .catch done
+            return
 
         it 'should catch errors', (done) ->
             autoLaunchHelper.mockApi
@@ -86,10 +88,78 @@ describe 'node-auto-launch', ->
                     Promise.reject()
 
             autoLaunch.disable().catch done
+            return
 
-        it 'should throw an error if platform is not supported', (done) ->
-            autoLaunchHelper.mockApi null
 
-            autoLaunch.isEnabled().catch (error) ->
-                expect(error).to.be.an.instanceof(Error)
-                done()
+
+
+    # Let's test some Mac-only options
+    return unless isMac
+
+    describe 'mac.useLaunchAgent', ->
+        autoLaunchWithLaunchAgent = null
+        autoLaunchWithLaunchAgentHelper = null
+
+        beforeEach ->
+            autoLaunchWithLaunchAgent = new AutoLaunch
+                name: 'node-auto-launch test'
+                path: executablePath
+                mac:
+                    useLaunchAgent: true
+            autoLaunchWithLaunchAgentHelper = new AutoLaunchHelper autoLaunchWithLaunchAgent
+
+        describe '.isEnabled', ->
+            beforeEach -> autoLaunchWithLaunchAgentHelper.ensureDisabled()
+
+            it 'should be disabled', (done) ->
+                autoLaunchWithLaunchAgent.isEnabled().then (enabled) ->
+                    expect(enabled).to.equal false
+                    done()
+                .catch done
+                return
+
+            it 'should catch errors', (done) ->
+                autoLaunchWithLaunchAgentHelper.mockApi
+                    isEnabled: -> Promise.reject()
+
+                autoLaunchWithLaunchAgent.isEnabled().catch done
+                return
+
+
+        describe '.enable', ->
+            beforeEach -> autoLaunchWithLaunchAgentHelper.ensureDisabled()
+
+            it 'should enable auto launch', (done) ->
+                autoLaunchWithLaunchAgent.enable().then ->
+                    autoLaunchWithLaunchAgent.isEnabled().then (enabled) ->
+                        expect(enabled).to.equal true
+                        done()
+                .catch done
+                return
+
+            it 'should catch errors', (done) ->
+                autoLaunchWithLaunchAgentHelper.mockApi
+                    enable: -> Promise.reject()
+
+                autoLaunchWithLaunchAgent.enable().catch done
+                return
+
+
+        describe '.disable', ->
+            beforeEach -> autoLaunchWithLaunchAgentHelper.ensureEnabled()
+
+            it 'should disable auto launch', (done) ->
+                autoLaunchWithLaunchAgent.disable()
+                .then -> autoLaunchWithLaunchAgent.isEnabled()
+                .then (enabled) ->
+                    expect(enabled).to.equal false
+                    done()
+                .catch done
+                return
+
+            it 'should catch errors', (done) ->
+                autoLaunchWithLaunchAgentHelper.mockApi
+                    disable: -> Promise.reject()
+
+                autoLaunchWithLaunchAgent.disable().catch done
+                return

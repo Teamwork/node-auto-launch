@@ -1,50 +1,51 @@
-fs = require('fs')
-mkdirp = require('mkdirp')
-untildify = require('untildify')
+untildify           = require 'untildify'
+fileBasedUtilities  = require './fileBasedUtilities'
 
 module.exports =
-    getDir: (opts) ->
-        untildify("~/.config/autostart/")
 
-    getFile: (opts) ->
-        file = @getDir()+opts.appName+'.desktop'
-        return file
+    ### Public ###
 
-    enable: (opts) ->
-        new Promise (resolve, reject) =>
-            file = @getFile(opts)
-            hiddenArg = if opts.isHiddenOnLaunch then ' --hidden' else ''
+    # options - {Object}
+    #   :appName - {String}
+    #   :appPath - {String}
+    #   :isHiddenOnLaunch - {Boolean}
+    # Returns a Promise
+    enable: ({appName, appPath, isHiddenOnLaunch}) ->
+        hiddenArg = if isHiddenOnLaunch then ' --hidden' else ''
 
-            data = [
-                '[Desktop Entry]',
-                'Type=Application',
-                'Vestion=1.0',
-                'Name='+opts.appName,
-                'Comment=' + opts.appName + ' startup script',
-                'Exec=' + opts.appPath + hiddenArg,
-                'StartupNotify=false',
-                'Terminal=false'
-            ].join('\n')
+        data = """[Desktop Entry]
+                Type=Application
+                Version=1.0
+                Name=#{appName}
+                Comment=#{appName}startup script
+                Exec=#{appPath}#{hiddenArg}
+                StartupNotify=false
+                Terminal=false"""
 
-            mkdirp.sync(@getDir())
-            fs.writeFile file, data, (err) ->
-                return reject(err) if err?
-                resolve()
+        return fileBasedUtilities.createFile {
+            data
+            directory: @getDirectory()
+            filePath: @getFilePath appName
+        }
 
-    disable: (opts) ->
-        new Promise (resolve, reject) =>
-            file = @getFile(opts)
 
-            fs.stat file, (err) ->
-                return reject(err) if err?
-                fs.unlink file, (err2) ->
-                    return reject(err2) if err?
-                    resolve()
+    # appName - {String}
+    # Returns a Promise
+    disable: (appName) -> fileBasedUtilities.removeFile @getFilePath appName
 
-    isEnabled: (opts) ->
-        new Promise (resolve, reject) =>
-            file = @getFile(opts)
 
-            fs.stat file, (err, stat) ->
-                # TODO: Error handling
-                resolve(stat?)
+    # appName - {String}
+    # Returns a Promise which resolves to a {Boolean}
+    isEnabled: (appName) -> fileBasedUtilities.isEnabled @getFilePath appName
+
+
+    ### Private ###
+
+
+    # Returns a {String}
+    getDirectory: -> untildify '~/.config/autostart/'
+
+
+    # appName - {String}
+    # Returns a {String}
+    getFilePath: (appName) -> "#{@getDirectory()}#{appName}.desktop"

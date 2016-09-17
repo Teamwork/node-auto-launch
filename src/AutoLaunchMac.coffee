@@ -1,19 +1,27 @@
-fs = require('fs')
-mkdirp = require('mkdirp')
-untildify = require('untildify')
+applescript         = require 'applescript'
+untildify           = require 'untildify'
+fileBasedUtilities  = require './fileBasedUtilities'
 
-dir = untildify('~/Library/LaunchAgents')
 
 module.exports =
-    getFile: (opts) ->
-        return "#{dir}/#{opts.appName}.plist"
 
-    enable: (opts) ->
-        new Promise (resolve, reject) =>
-            file = @getFile(opts)
-            array = [opts.appPath]
-            if(opts.isHiddenOnLaunch) then array.push('--hidden')
-            command = array.map((a) -> "    <string>#{a}</string>")
+    ### Public ###
+
+    # options - {Object}
+    #   :appName - {String}
+    #   :appPath - {String}
+    #   :isHiddenOnLaunch - {Boolean}
+    #   :mac - (Optional) {Object}
+    #       :useLaunchAgent - (Optional) {Boolean}
+    # Returns a Promise
+    enable: ({appName, appPath, isHiddenOnLaunch, mac}) ->
+
+        # Add the file if we're using a Launch Agent
+        if mac.useLaunchAgent
+            programArguments = [appPath]
+            programArguments.push '--hidden' if isHiddenOnLaunch
+            programArgumentsSection = programArguments
+                .map((argument) -> "    <string>#{argument}</string>")
                 .join('\n')
 
             data = """<?xml version="1.0" encoding="UTF-8"?>
@@ -21,35 +29,71 @@ module.exports =
                     <plist version="1.0">
                     <dict>
                       <key>Label</key>
-                      <string>#{opts.appName}</string>
+                      <string>#{appName}</string>
                       <key>ProgramArguments</key>
                       <array>
-                      #{command}
+                      #{programArgumentsSection}
                       </array>
                       <key>RunAtLoad</key>
                       <true/>
                     </dict>
                     </plist>"""
 
-            mkdirp.sync(dir)
-            fs.writeFile file, data, (err) ->
-                return reject(err) if err?
-                resolve()
+            return fileBasedUtilities.createFile {
+                data
+                directory: @getDirectory()
+                filePath: @getFilePath appName
+            }
 
-    disable: (opts) ->
-        new Promise (resolve, reject) =>
-            file = @getFile(opts)
+        # Otherwise, use default method; use AppleScript to tell System Events to add a Login Item
 
-            fs.stat file, (err) ->
-                return reject(err) if err?
-                fs.unlink file, (err2) ->
-                    return reject(err2) if err?
-                    resolve()
+        isHiddenValue = if isHiddenOnLaunch then 'true' else 'false'
+        properties = "{path:\"#{appPath}\", hidden:#{isHiddenValue}, name:\"#{appName}\"}"
 
-    isEnabled: (opts) ->
-        new Promise (resolve) =>
-            file = @getFile(opts)
+        return @execApplescriptCommand "make login item at end with properties #{properties}"
 
-            fs.stat file, (err, stat) ->
-    # TODO: Error handling
-                resolve(stat?)
+
+    # appName - {String}
+    # mac - {Object}
+    #   :useLaunchAgent - {Object}
+    # Returns a Promise
+    disable: (appName, mac) ->
+        # Delete the file if we're using a Launch Agent
+        return fileBasedUtilities.removeFile @getFilePath appName if mac.useLaunchAgent
+
+        # Otherwise remove the Login Item
+        return @execApplescriptCommand "delete login item \"#{appName}\""
+
+
+    # appName - {String}
+    # mac - {Object}
+    #   :useLaunchAgent - {Object}
+    # Returns a Promise which resolves to a {Boolean}
+    isEnabled: (appName, mac) ->
+        # Check if the Launch Agent file exists
+        return fileBasedUtilities.isEnabled @getFilePath appName if mac.useLaunchAgent
+
+        # Otherwise check if a Login Item exists for our app
+        return @execApplescriptCommand('get the name of every login item').then (loginItems) ->
+            return loginItems? and appName in loginItems
+
+
+    ### Private ###
+
+
+    # commandSuffix - {String}
+    # Returns a Promise
+    execApplescriptCommand: (commandSuffix) ->
+        return new Promise (resolve, reject) ->
+            applescript.execString "tell application \"System Events\" to #{commandSuffix}", (err, result) ->
+                return reject err if err?
+                resolve result
+
+
+    # Returns a {String}
+    getDirectory: -> untildify '~/Library/LaunchAgents/'
+
+
+    # appName - {String}
+    # Returns a {String}
+    getFilePath: (appName) -> "#{@getDirectory()}#{appName}.plist"

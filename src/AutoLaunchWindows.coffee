@@ -1,38 +1,60 @@
-fs = require 'fs'
-path = require 'path'
-Winreg = require 'winreg'
+fs      = require 'fs'
+path    = require 'path'
+Winreg  = require 'winreg'
+
 
 regKey = new Winreg
     hive: Winreg.HKCU
     key:  '\\Software\\Microsoft\\Windows\\CurrentVersion\\Run'
 
+
 module.exports =
-    # This is just for testing
-    regKey: regKey
 
-    enable: (opts) ->
-        new Promise (resolve, reject) ->
-            appPath = opts.appPath
-            hiddenArg = if opts.isHiddenOnLaunch then ' --hidden' else ''
-            arg = ""
+    ### Public ###
+
+    # options - {Object}
+    #   :appName - {String}
+    #   :appPath - {String}
+    #   :isHiddenOnLaunch - {Boolean}
+    # Returns a Promise
+    enable: ({appName, appPath, isHiddenOnLaunch}) ->
+        return new Promise (resolve, reject) ->
+            pathToAutoLaunchedApp = appPath
+            args = ''
             updateDotExe = path.join(path.dirname(process.execPath), '..', 'update.exe')
-            versions = process?.versions
-            if fs.existsSync(updateDotExe) and versions.electron
-                appPath = updateDotExe
-                arg = " --processStart \"#{path.basename(process.execPath)}\""
-                hiddenArg = if opts.isHiddenOnLaunch then ' --process-start-args "--hidden"' else ''
-            regKey.set opts.appName, Winreg.REG_SZ, "\"#{appPath}\"#{arg}#{hiddenArg}", (err) ->
+
+            # If they're using Electron and Squirrel.Windows, point to its Update.exe instead
+            # Otherwise, we'll auto-launch an old version after the app has updated
+            if process.versions?.electron? and fs.existsSync updateDotExe
+                pathToAutoLaunchedApp = updateDotExe
+                args = " --processStart \"#{path.basename(process.execPath)}\""
+                args += ' --process-start-args "--hidden"' if isHiddenOnLaunch
+            else
+                args += ' --hidden' if isHiddenOnLaunch
+
+            regKey.set appName, Winreg.REG_SZ, "\"#{pathToAutoLaunchedApp}\"#{args}", (err) ->
                 return reject(err) if err?
                 resolve()
 
-    disable: (opts) ->
-        new Promise (resolve, reject) ->
-            regKey.remove opts.appName, (err) ->
-                return reject(err) if err?
+
+    # appName - {String}
+    # Returns a Promise
+    disable: (appName) ->
+        return new Promise (resolve, reject) ->
+            regKey.remove appName, (err) ->
+                if err?
+                    # The registry key should exist but in case it fails because it doesn't exist, resolve false instead
+                    # rejecting with an error
+                    if err.message.indexOf('The system was unable to find the specified registry key or value') isnt -1
+                        return resolve false
+                    return reject err
                 resolve()
 
-    isEnabled: (opts) ->
-        new Promise (resolve, reject) ->
-            regKey.get opts.appName, (err, item) ->
-                # TODO: Error handling
+
+    # appName - {String}
+    # Returns a Promise which resolves to a {Boolean}
+    isEnabled: (appName) ->
+        return new Promise (resolve, reject) ->
+            regKey.get appName, (err, item) ->
+                return resolve false if err?
                 resolve(item?)
