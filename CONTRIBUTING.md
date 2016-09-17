@@ -33,7 +33,7 @@ Feel free to submit pull-requests or suggestions via issues to improve this proc
 
 # Publishing a new version
 
-1. Tests must pass.
+1. Tests must pass. I.e. Travis and AppVeyor builds should have successfully ran for the last commit. It would be good if you ran the tests locally too to be safe, especially on Mac as we don't have a service like Travis or AppVeyor to run them on.
 2. Manually bump version in `package.json`.
 3. Publish new version to npm.
 4. Commit & push version bump as `{{new_version}}`.
