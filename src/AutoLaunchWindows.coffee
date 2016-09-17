@@ -42,7 +42,12 @@ module.exports =
     disable: (appName) ->
         return new Promise (resolve, reject) ->
             regKey.remove appName, (err) ->
-                return reject(err) if err?
+                if err?
+                    # The registry key should exist but in case it fails because it doesn't exist, resolve false instead
+                    # rejecting with an error
+                    if err.message.indexOf('The system was unable to find the specified registry key or value') isnt -1
+                        return resolve false
+                    return reject err
                 resolve()
 
 
@@ -51,5 +56,5 @@ module.exports =
     isEnabled: (appName) ->
         return new Promise (resolve, reject) ->
             regKey.get appName, (err, item) ->
-                return reject err if err?
+                return resolve false if err?
                 resolve(item?)
