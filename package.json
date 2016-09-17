@@ -37,14 +37,14 @@
     "gulp-coffeelint": "^0.6.0",
     "gulp-coffeelint-threshold": "^1.0.0",
     "gulp-load-plugins": "^1.2.0",
-    "gulp-mocha": "^2.2.0",
+    "gulp-mocha": "^3.0.1",
     "gulp-util": "^3.0.7",
     "teamwork-coffeelint-rules": "0.0.1"
   },
   "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "untildify": "^2.1.0",
-    "winreg": "1.0.1"
+    "untildify": "^3.0.2",
+    "winreg": "1.2.2"
   }
 }
