@@ -7,10 +7,10 @@ node-auto-launch
 
 Auto-launch your app on login.
 
-- :star2: Launch any application or executable at startup / login / boot.
-- :star2: Supports Linux, Mac (via AppleScript or Launch Agent), and Windows.
-- :star2: Supports [NW.js](http://nwjs.io/) and [Electron](http://electron.atom.io/) (with or without Squirrel; i.e. even if you're using Electron's built-in [`autoUpdater``](http://electron.atom.io/docs/api/auto-updater/) API).
-- :star2: Auto-detects your app path for NW.js and Electron apps.
+- :star: Launch any application or executable at startup / login / boot.
+- :star: Supports Linux, Mac (via AppleScript or Launch Agent), and Windows.
+- :star: Supports [NW.js](http://nwjs.io/) and [Electron](http://electron.atom.io/) (with or without Squirrel; i.e. even if you're using Electron's built-in [`autoUpdater``](http://electron.atom.io/docs/api/auto-updater/) API).
+- :star: Auto-detects your app path for NW.js and Electron apps.
 - :disappointed: Not Mac App Store friendly. See [Make this Mac App Store compatible](TODO) for more information.
 
 
