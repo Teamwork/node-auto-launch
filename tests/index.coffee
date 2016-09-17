@@ -36,6 +36,7 @@ describe 'node-auto-launch', ->
             autoLaunch.isEnabled().then (enabled) ->
                 expect(enabled).to.equal false
                 done()
+            return
 
         it 'should catch errors', (done) ->
             autoLaunchHelper.mockApi
@@ -43,6 +44,7 @@ describe 'node-auto-launch', ->
                     Promise.reject()
 
             autoLaunch.isEnabled().catch done
+            return
 
 
     describe '.enable', ->
@@ -54,13 +56,14 @@ describe 'node-auto-launch', ->
                 autoLaunch.isEnabled().then (enabled) ->
                     expect(enabled).to.equal true
                     done()
+            return
 
         it 'should catch errors', (done) ->
             autoLaunchHelper.mockApi
-                enable: ->
-                    Promise.reject()
+                enable: -> Promise.reject()
 
             autoLaunch.enable().catch done
+            return
 
 
     describe '.disable', ->
@@ -72,6 +75,7 @@ describe 'node-auto-launch', ->
                 autoLaunch.isEnabled().then (enabled) ->
                     expect(enabled).to.equal false
                     done()
+            return
 
         it 'should catch errors', (done) ->
             autoLaunchHelper.mockApi
@@ -79,6 +83,7 @@ describe 'node-auto-launch', ->
                     Promise.reject()
 
             autoLaunch.disable().catch done
+            return
 
 
 
@@ -105,12 +110,14 @@ describe 'node-auto-launch', ->
                 autoLaunchWithLaunchAgent.isEnabled().then (enabled) ->
                     expect(enabled).to.equal false
                     done()
+                return
 
             it 'should catch errors', (done) ->
                 autoLaunchWithLaunchAgentHelper.mockApi
                     isEnabled: -> Promise.reject()
 
                 autoLaunchWithLaunchAgent.isEnabled().catch done
+                return
 
 
         describe '.enable', ->
@@ -121,12 +128,14 @@ describe 'node-auto-launch', ->
                     autoLaunchWithLaunchAgent.isEnabled().then (enabled) ->
                         expect(enabled).to.equal true
                         done()
+                return
 
             it 'should catch errors', (done) ->
                 autoLaunchWithLaunchAgentHelper.mockApi
                     enable: -> Promise.reject()
 
                 autoLaunchWithLaunchAgent.enable().catch done
+                return
 
 
         describe '.disable', ->
@@ -137,9 +146,11 @@ describe 'node-auto-launch', ->
                     autoLaunchWithLaunchAgent.isEnabled().then (enabled) ->
                         expect(enabled).to.equal false
                         done()
+                return
 
             it 'should catch errors', (done) ->
                 autoLaunchWithLaunchAgentHelper.mockApi
                     disable: -> Promise.reject()
 
                 autoLaunchWithLaunchAgent.disable().catch done
+                return
