@@ -9,7 +9,7 @@ Auto-launch your app on login.
 
 - :star2: Launch any application or executable at startup / login / boot.
 - :star2: Supports Linux, Mac (via AppleScript or Launch Agent), and Windows.
-- :star2: Supports [NW.js](http://nwjs.io/) and [Electron](http://electron.atom.io/) (with or without Squirrel; i.e. even if you're using Electron's built-in [autoUpdater](http://electron.atom.io/docs/api/auto-updater/) API).
+- :star2: Supports [NW.js](http://nwjs.io/) and [Electron](http://electron.atom.io/) (with or without Squirrel; i.e. even if you're using Electron's built-in [`autoUpdater``](http://electron.atom.io/docs/api/auto-updater/) API).
 - :star2: Auto-detects your app path for NW.js and Electron apps.
 - :disappointed: Not Mac App Store friendly. See [Make this Mac App Store compatible](TODO) for more information.
 
@@ -146,6 +146,11 @@ Note: This is not Mac App Store friendly; if you use it in your app, it will be 
 We add a registry entry under `\Software\Microsoft\Windows\CurrentVersion\Run`.
 
 Note: If the user was to remove your app, this would be left in the registry, but that's not such a big deal. You can probably configure your uninstaller to unset it.
+
+
+#### Squirrel.Windows
+
+If you're using [Squirrel.Windows](https://github.com/Squirrel/Squirrel.Windows), i.e. what's underneath Electron's built-in [`autoUpdater`](http://electron.atom.io/docs/api/auto-updater/) API on Windows, we add a registry entry for your app's `Update.exe` instead of your actual application. This is due to how Squirrel.Windows works under the hood. What if we didn't? Well, if the user started / restarted their machine after updating your app, it would launch the old version by mistake.
 
 
 # Would you like to contribute?
