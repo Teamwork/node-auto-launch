@@ -46,10 +46,6 @@ module.exports = class AutoLaunch
         # executable in the outer app
         return path.replace /(^.+?[^\/]+?\.app)\/Contents\/(Frameworks\/((\1|[^\/]+?) Helper)\.app\/Contents\/MacOS\/\3|MacOS\/Electron)/, '$1'
 
-    removeNwjsLoginItem: ->
-        @api.disable {appName: 'nwjs Helper'}, ->
-            return null
-
     fixOpts: =>
         @opts.appPath = @opts.appPath.replace /\/$/, ''
 

@@ -92,15 +92,6 @@ Disables your app from auto-launching at startup. Returns a Promise.
 Called with a Boolean; `true` if your app is set to launch on startup.
 
 
-### `removeNwjsLoginItem` *(deprecated)*
-
-Note: I added a method (`removeNwjsLoginItem`) to remove 'nwjs helper' app login item that might have been added to peoples accounts since the name change from node-webkit to NW.js.
-
-Only works if mac.useLaunchAgent is false
-
-TODO: remove!
-
-
 ## How does it work?
 
 ### Linux
