@@ -6,15 +6,19 @@ module.exports = class AutoLaunch
     ### Public ###
 
     # options - {Object}
+    #   :isHidden - (Optional) {Boolean}
+    #   :mac - (Optional) {Object}
+    #       :useLaunchAgent - (Optional) {Boolean}. If `true`, use filed-based Launch Agent. Otherwise use AppleScript
+    #           to add Login Item
     #   :name - {String}
     #   :path - (Optional) {String}
-    #   :isHidden - (Optional) {Boolean}
-    constructor: ({name, isHidden, path}) ->
+    constructor: ({name, isHidden, mac, path}) ->
         throw new Error 'You must specify a name' unless name?
 
         @opts =
             appName: name
             isHiddenOnLaunch: if isHidden? then isHidden else false
+            mac: mac ? {}
 
         versions = process?.versions
         if path?
@@ -26,7 +30,7 @@ module.exports = class AutoLaunch
             @opts.appPath = process.execPath
 
         else
-            throw new Error "You must give a path (this is only auto-detected for NW.js and Electron apps)"
+            throw new Error 'You must give a path (this is only auto-detected for NW.js and Electron apps)'
 
         @fixOpts()
 
@@ -44,11 +48,11 @@ module.exports = class AutoLaunch
     enable: => @api.enable @opts
 
 
-    disable: => @api.disable @opts.appName
+    disable: => @api.disable @opts.appName, @opts.mac
 
 
     # Returns a Promise which resolves to a {Boolean}
-    isEnabled: => @api.isEnabled @opts.appName
+    isEnabled: => @api.isEnabled @opts.appName, @opts.mac
 
 
     ### Private ###
