@@ -36,6 +36,7 @@ describe 'node-auto-launch', ->
             autoLaunch.isEnabled().then (enabled) ->
                 expect(enabled).to.equal false
                 done()
+            .catch done
             return
 
         it 'should catch errors', (done) ->
@@ -52,10 +53,12 @@ describe 'node-auto-launch', ->
             autoLaunchHelper.ensureDisabled()
 
         it 'should enable auto launch', (done) ->
-            autoLaunch.enable().then ->
-                autoLaunch.isEnabled().then (enabled) ->
-                    expect(enabled).to.equal true
-                    done()
+            autoLaunch.enable()
+            .then -> autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal true
+                done()
+            .catch done
             return
 
         it 'should catch errors', (done) ->
@@ -71,10 +74,12 @@ describe 'node-auto-launch', ->
             autoLaunchHelper.ensureEnabled()
 
         it 'should disable auto launch', (done) ->
-            autoLaunch.disable().then ->
-                autoLaunch.isEnabled().then (enabled) ->
-                    expect(enabled).to.equal false
-                    done()
+            autoLaunch.disable()
+            .then -> autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal false
+                done()
+            .catch done
             return
 
         it 'should catch errors', (done) ->
@@ -110,6 +115,7 @@ describe 'node-auto-launch', ->
                 autoLaunchWithLaunchAgent.isEnabled().then (enabled) ->
                     expect(enabled).to.equal false
                     done()
+                .catch done
                 return
 
             it 'should catch errors', (done) ->
@@ -128,6 +134,7 @@ describe 'node-auto-launch', ->
                     autoLaunchWithLaunchAgent.isEnabled().then (enabled) ->
                         expect(enabled).to.equal true
                         done()
+                .catch done
                 return
 
             it 'should catch errors', (done) ->
@@ -142,10 +149,12 @@ describe 'node-auto-launch', ->
             beforeEach -> autoLaunchWithLaunchAgentHelper.ensureEnabled()
 
             it 'should disable auto launch', (done) ->
-                autoLaunchWithLaunchAgent.disable().then ->
-                    autoLaunchWithLaunchAgent.isEnabled().then (enabled) ->
-                        expect(enabled).to.equal false
-                        done()
+                autoLaunchWithLaunchAgent.disable()
+                .then -> autoLaunchWithLaunchAgent.isEnabled()
+                .then (enabled) ->
+                    expect(enabled).to.equal false
+                    done()
+                .catch done
                 return
 
             it 'should catch errors', (done) ->
