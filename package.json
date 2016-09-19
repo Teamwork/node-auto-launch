@@ -1,6 +1,6 @@
 {
   "name": "auto-launch",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Launch node applications or executables at login (Mac, Windows, and Linux)",
   "main": "dist/index.js",
   "scripts": {
@@ -43,6 +43,7 @@
   },
   "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
+    "applescript": "^1.0.0",
     "mkdirp": "^0.5.1",
     "path-is-absolute": "^1.0.0",
     "untildify": "^3.0.2",
