@@ -9,8 +9,9 @@ module.exports =
     #   :appName - {String}
     #   :appPath - {String}
     #   :isHiddenOnLaunch - {Boolean}
+    #   :addArgs - {Sting}
     # Returns a Promise
-    enable: ({appName, appPath, isHiddenOnLaunch}) ->
+    enable: ({appName, appPath, isHiddenOnLaunch, addArgs}) ->
         hiddenArg = if isHiddenOnLaunch then ' --hidden' else ''
 
         data = """[Desktop Entry]
@@ -18,7 +19,7 @@ module.exports =
                 Version=1.0
                 Name=#{appName}
                 Comment=#{appName}startup script
-                Exec=#{appPath}#{hiddenArg}
+                Exec=#{appPath}#{hiddenArg}#{addArgs}
                 StartupNotify=false
                 Terminal=false"""
 
