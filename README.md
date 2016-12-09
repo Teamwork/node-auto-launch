@@ -21,7 +21,7 @@ var AutoLaunch = require('auto-launch');
 
 var minecraftAutoLauncher = new AutoLaunch({
 	name: 'Minecraft',
-	path: '/Applications/Minecraft.app',
+	appPath: '/Applications/Minecraft.app',
 });
 
 minecraftAutoLauncher.enable();
@@ -56,7 +56,7 @@ minecraftAutoLauncher.isEnabled()
 
 The name of your app.
 
-**`options.path`** - String (optional for NW.js and Electron apps)
+**`options.appPath`** - String (optional for NW.js and Electron apps)
 
 The absolute path to your app.
 
