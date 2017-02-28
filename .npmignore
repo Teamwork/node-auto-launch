@@ -1,4 +1,4 @@
-*
-!README.md
-!LICENSE.md
-!package.json
+.gitignore
+.travis.yml
+node_modules
+test
