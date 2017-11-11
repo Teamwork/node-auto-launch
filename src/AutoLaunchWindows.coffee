@@ -33,7 +33,7 @@ module.exports =
             if process.versions?.electron? and fs.existsSync updateDotExe
                 pathToAutoLaunchedApp = updateDotExe
                 args = " --processStart \"#{path.basename(process.execPath)}\""
-                args += ' --process-start-args "' + process_args + '"' if isHiddenOnLaunch
+                args += ' --process-start-args "' + (process_args.replace /^\s+/g, "") + '"' if isHiddenOnLaunch
             else
                 args += process_args
 
