@@ -11,6 +11,7 @@ Auto-launch your app on login.
 - :star: Supports Linux, Mac (via AppleScript or Launch Agent), and Windows.
 - :star: Supports [NW.js](http://nwjs.io/) and [Electron](http://electron.atom.io/) (with or without Squirrel; i.e. even if you're using Electron's built-in [`autoUpdater`](http://electron.atom.io/docs/api/auto-updater/) API).
 - :star: Auto-detects your app path for NW.js and Electron apps.
+- :star: Supports NW.js and Electron apps in Windows Store (with some caveats). 
 - :disappointed: Not Mac App Store friendly. See [Make this Mac App Store compatible](https://github.com/Teamwork/node-auto-launch/issues/43) for more information.
 
 
@@ -140,6 +141,12 @@ Note: If the user was to remove your app, this would be left in the registry, bu
 #### Squirrel.Windows
 
 If you're using [Squirrel.Windows](https://github.com/Squirrel/Squirrel.Windows), i.e. what's underneath Electron's built-in [`autoUpdater`](http://electron.atom.io/docs/api/auto-updater/) API on Windows, we add a registry entry for your app's `Update.exe` instead of your actual application. This is due to how Squirrel.Windows works under the hood. What if we didn't? Well, if the user started / restarted their machine after updating your app, it would launch the old version by mistake.
+
+#### Windows App Store apps
+
+If you have your Electron-based app in the Windows Store and would like to include auto launch functionality, simply linking to the executable path will not work. The Appx packages required for Electron are sandboxed and the install location can only be accessed by the system itself. 
+
+There is a way to bypass that - it will require you to know the developer ID, app ID and package name of your app. Then, instead of using the exec path, you will need to set the path in `AutoLaunch()` config to: `explorer.exe shell:AppsFolder\DEV_ID.APP_ID!PACKAGE_NAME`. You can find your apps details by following [this article](http://winaero.com/blog/exclusive-how-to-start-a-modern-app-from-desktop-without-going-to-the-metro-start-screen/). Note that you might need to compile and submit your app to the store first to obtain these details.  
 
 
 # Would you like to contribute?
