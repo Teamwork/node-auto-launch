@@ -16,26 +16,30 @@ module.exports =
     #   :appName - {String}
     #   :appPath - {String}
     #   :isHiddenOnLaunch - {Boolean}
+    #   :extraArgs - {Sting}
     # Returns a Promise
-    enable: ({appName, appPath, isHiddenOnLaunch}) ->
+    enable: ({appName, appPath, isHiddenOnLaunch, extraArgs}) ->
         return new Promise (resolve, reject) ->
             pathToAutoLaunchedApp = appPath
             args = ''
+            process_args = ''
+            process_args += ' --hidden' if isHiddenOnLaunch
+            process_args += (' ' + extraArgs) if extraArgs?
             updateDotExe = path.join(path.dirname(process.execPath), '..', 'update.exe')
 
             # If they're using Electron and Squirrel.Windows, point to its Update.exe instead
             # Otherwise, we'll auto-launch an old version after the app has updated
+
             if process.versions?.electron? and fs.existsSync updateDotExe
                 pathToAutoLaunchedApp = updateDotExe
                 args = " --processStart \"#{path.basename(process.execPath)}\""
-                args += ' --process-start-args "--hidden"' if isHiddenOnLaunch
+                args += ' --process-start-args "' + process_args + '"' if isHiddenOnLaunch
             else
-                args += ' --hidden' if isHiddenOnLaunch
+                args += process_args
 
             regKey.set appName, Winreg.REG_SZ, "\"#{pathToAutoLaunchedApp}\"#{args}", (err) ->
                 return reject(err) if err?
                 resolve()
-
 
     # appName - {String}
     # Returns a Promise
