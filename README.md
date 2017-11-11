@@ -133,7 +133,7 @@ Note: This is not Mac App Store friendly; if you use it in your app, it will be 
 
 ### Windows
 
-We add a registry entry under `\Software\Microsoft\Windows\CurrentVersion\Run`.
+We add a registry entry under `\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`.
 
 Note: If the user was to remove your app, this would be left in the registry, but that's not such a big deal. You can probably configure your uninstaller to unset it.
 
