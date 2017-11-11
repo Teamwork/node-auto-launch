@@ -47,6 +47,6 @@
     "mkdirp": "^0.5.1",
     "path-is-absolute": "^1.0.0",
     "untildify": "^3.0.2",
-    "winreg": "1.2.3"
+    "winreg": "1.2.4"
   }
 }
