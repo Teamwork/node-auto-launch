@@ -1,0 +1,14 @@
+{
+    "extends": "airbnb-base",
+    "env": {
+        "browser": true,
+        "mocha": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+        "class-methods-use-this": 0
+    }
+}
