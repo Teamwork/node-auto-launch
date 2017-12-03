@@ -60,8 +60,9 @@ module.exports = class AutoLaunch
 
     # Corrects the path to point to the outer .app
     # path - {String}
+    # macOptions - {Object}
     # Returns a {String}
-    fixMacExecPath: (path) ->
+    fixMacExecPath: (path, macOptions) ->
         # This will match apps whose inner app and executable's basename is the outer app's basename plus "Helper"
         # (the default Electron app structure for example)
         # It will also match apps whose outer app's basename is different to the rest but the inner app and executable's
@@ -70,7 +71,8 @@ module.exports = class AutoLaunch
         # Also matches when the path is pointing not to the exectuable in the inner app at all but to the Electron
         # executable in the outer app
         path = path.replace /(^.+?[^\/]+?\.app)\/Contents\/(Frameworks\/((\1|[^\/]+?) Helper)\.app\/Contents\/MacOS\/\3|MacOS\/Electron)/, '$1'
-        path = path.replace /\.app\/Contents\/MacOS\/[^\/]*$/, '.app'
+        # When using a launch agent, it needs the inner executable path
+        path = path.replace /\.app\/Contents\/MacOS\/[^\/]*$/, '.app' unless macOptions.useLaunchAgent
         return path
 
 
@@ -78,7 +80,7 @@ module.exports = class AutoLaunch
         @opts.appPath = @opts.appPath.replace /\/$/, ''
 
         if /darwin/.test process.platform
-            @opts.appPath = @fixMacExecPath(@opts.appPath)
+            @opts.appPath = @fixMacExecPath(@opts.appPath, @opts.mac)
 
         if @opts.appPath.indexOf('/') isnt -1
             tempPath = @opts.appPath.split '/'

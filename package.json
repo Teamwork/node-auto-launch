@@ -1,6 +1,6 @@
 {
   "name": "auto-launch",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "Launch node applications or executables at login (Mac, Windows, and Linux)",
   "main": "dist/index.js",
   "scripts": {
