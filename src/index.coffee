@@ -12,13 +12,14 @@ module.exports = class AutoLaunch
     #           to add Login Item
     #   :name - {String}
     #   :path - (Optional) {String}
-    constructor: ({name, isHidden, mac, path}) ->
+    constructor: ({name, isHidden, mac, path,onlyMe}) ->
         throw new Error 'You must specify a name' unless name?
 
         @opts =
             appName: name
             isHiddenOnLaunch: if isHidden? then isHidden else false
-            mac: mac ? {}
+            mac: mac ? {},
+            onlyMe:onlyMe?true
 
         versions = process?.versions
         if path?
@@ -48,11 +49,11 @@ module.exports = class AutoLaunch
     enable: => @api.enable @opts
 
 
-    disable: => @api.disable @opts.appName, @opts.mac
+    disable: => @api.disable @opts.appName, @opts.mac,@opts.onlyMe
 
 
     # Returns a Promise which resolves to a {Boolean}
-    isEnabled: => @api.isEnabled @opts.appName, @opts.mac
+    isEnabled: => @api.isEnabled @opts.appName, @opts.mac,@opts.onlyMe
 
 
     ### Private ###
