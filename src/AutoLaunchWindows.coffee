@@ -16,8 +16,11 @@ module.exports =
     #   :appName - {String}
     #   :appPath - {String}
     #   :isHiddenOnLaunch - {Boolean}
+    #   :onlyMe - (Optional) {Boolean}
     # Returns a Promise
-    enable: ({appName, appPath, isHiddenOnLaunch}) ->
+    enable: ({appName, appPath, isHiddenOnLaunch,onlyMe}) ->
+        if(!onlyMe)
+            regKey.hive = Winreg.HKLM
         return new Promise (resolve, reject) ->
             pathToAutoLaunchedApp = appPath
             args = ''
@@ -38,8 +41,11 @@ module.exports =
 
 
     # appName - {String}
+    # onlyMe - (Optional) {Boolean}
     # Returns a Promise
-    disable: (appName) ->
+    disable: (appName,onlyMe) ->
+        if(!onlyMe)
+            regKey.hive = Winreg.HKLM
         return new Promise (resolve, reject) ->
             regKey.remove appName, (err) ->
                 if err?
@@ -52,8 +58,11 @@ module.exports =
 
 
     # appName - {String}
+    # onlyMe - (Optional) {Boolean}
     # Returns a Promise which resolves to a {Boolean}
-    isEnabled: (appName) ->
+    isEnabled: (appName,mac,onlyMe) ->
+        if(!onlyMe)
+            regKey.hive = Winreg.HKLM
         return new Promise (resolve, reject) ->
             regKey.get appName, (err, item) ->
                 return resolve false if err?
