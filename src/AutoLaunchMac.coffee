@@ -11,15 +11,17 @@ module.exports =
     #   :appName - {String}
     #   :appPath - {String}
     #   :isHiddenOnLaunch - {Boolean}
+    #   :extraArgs - {Sting}
     #   :mac - (Optional) {Object}
     #       :useLaunchAgent - (Optional) {Boolean}
     # Returns a Promise
-    enable: ({appName, appPath, isHiddenOnLaunch, mac}) ->
+    enable: ({appName, appPath, isHiddenOnLaunch, extraArgs, mac}) ->
 
         # Add the file if we're using a Launch Agent
         if mac.useLaunchAgent
             programArguments = [appPath]
             programArguments.push '--hidden' if isHiddenOnLaunch
+            programArguments = programArguments.concat extraArgs.split(" ") if extraArgs?
             programArgumentsSection = programArguments
                 .map((argument) -> "    <string>#{argument}</string>")
                 .join('\n')
