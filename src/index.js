@@ -58,7 +58,7 @@ const getPath = function getPath({ appPath, macOptions, meta }) {
       throw new Error('path must be absolute');
     }
     result = appPath;
-  } else if (this.meta.isNw || this.meta.isElectron) {
+  } else if (meta.isNw || meta.isElectron) {
     result = process.execPath;
   } else {
     throw new Error('You must give a path (this is only auto-detected for NW.js and Electron apps)');

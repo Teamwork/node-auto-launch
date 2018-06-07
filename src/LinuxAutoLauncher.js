@@ -50,8 +50,8 @@ module.exports = class LinuxAutoLauncher {
                   Type=Application
                   Version=1.0
                   Name=${appName}
-                  Comment=${appName}startup script
-                  Exec=${appPath}${hiddenArg}
+                  Comment=#{appName} Startup Script
+                  Exec="${appPath}"${hiddenArg}
                   StartupNotify=false
                   Terminal=false`;
 
