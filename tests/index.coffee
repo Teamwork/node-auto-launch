@@ -94,7 +94,7 @@ describe 'node-auto-launch', ->
 
     if isLinux
         it 'should use name option', (done) ->
-            expect(autoLaunch.name).to.equal 'node-auto-launch test'
+            expect(autoLaunch.opts.appName).to.equal 'node-auto-launch test'
             done()
             return
 
