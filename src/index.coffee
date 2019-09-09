@@ -39,7 +39,7 @@ module.exports = class AutoLaunch
             @api = require './AutoLaunchWindows'
         else if /darwin/.test process.platform
             @api = require './AutoLaunchMac'
-        else if /linux/.test process.platform
+        else if (/linux/.test process.platform) or (/freebsd/.test process.platform)
             @api = require './AutoLaunchLinux'
         else
             throw new Error 'Unsupported platform'
