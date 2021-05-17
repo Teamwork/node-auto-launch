@@ -33,6 +33,7 @@ module.exports = class AutoLaunch
             throw new Error 'You must give a path (this is only auto-detected for NW.js and Electron apps)'
 
         @fixOpts()
+        @fixLinuxExecPath()
 
         @api = null
         if /^win/.test process.platform
@@ -75,6 +76,11 @@ module.exports = class AutoLaunch
         path = path.replace /\.app\/Contents\/MacOS\/[^\/]*$/, '.app' unless macOptions.useLaunchAgent
         return path
 
+    fixLinuxExecPath: =>
+        # This is going to escape the spaces in the executable path
+        # Fixing all problems with unescaped paths for Linux
+        if /linux/.test process.platform
+            @opts.appPath = @opts.appPath.replace(/(\s+)/g, '\\$1')
 
     fixOpts: =>
         @opts.appPath = @opts.appPath.replace /\/$/, ''
