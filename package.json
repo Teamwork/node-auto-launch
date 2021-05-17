@@ -1,5 +1,5 @@
 {
-  "name": "auto-launch",
+  "name": "@izurii/auto-launch",
   "version": "5.0.6",
   "description": "Launch node applications or executables at login (Mac, Windows, and Linux)",
   "main": "dist/index.js",
