@@ -23,7 +23,7 @@ module.exports = class AutoLaunch
         versions = process?.versions
         if path?
             # Verify that the path is absolute
-            throw new Error 'path must be absolute' unless isPathAbsolute path
+            throw new Error 'path must be absolute' unless (isPathAbsolute path) and !process.windowsStore
             @opts.appPath = path
 
         else if versions? and (versions.nw? or versions['node-webkit']? or versions.electron?)
@@ -35,7 +35,9 @@ module.exports = class AutoLaunch
         @fixOpts()
 
         @api = null
-        if /^win/.test process.platform
+        if process.windowsStore
+            @api = require './AutoLaunchWindowsAppx'
+        else if /^win/.test process.platform
             @api = require './AutoLaunchWindows'
         else if /darwin/.test process.platform
             @api = require './AutoLaunchMac'
