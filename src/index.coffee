@@ -23,7 +23,7 @@ module.exports = class AutoLaunch
         versions = process?.versions
         if path?
             # Verify that the path is absolute
-            throw new Error 'path must be absolute' unless (isPathAbsolute path) and !process.windowsStore
+            throw new Error 'path must be absolute' unless (isPathAbsolute path) or process.windowsStore
             @opts.appPath = path
 
         else if versions? and (versions.nw? or versions['node-webkit']? or versions.electron?)
