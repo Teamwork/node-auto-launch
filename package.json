@@ -37,7 +37,7 @@
     "gulp-coffeelint": "^0.6.0",
     "gulp-coffeelint-threshold": "^1.0.0",
     "gulp-load-plugins": "^1.2.0",
-    "gulp-mocha": "^3.0.1",
+    "gulp-mocha": "^8.0.0",
     "gulp-util": "^3.0.7",
     "teamwork-coffeelint-rules": "0.0.1"
   },
