@@ -8,7 +8,7 @@ node-auto-launch
 Auto-launch your app on login.
 
 - :star: Launch any application or executable at startup / login / boot.
-- :star: Supports Linux, Mac (via AppleScript or Launch Agent), and Windows.
+- :star: Supports Linux, FreeBSD, Mac (via AppleScript or Launch Agent), and Windows.
 - :star: Supports [NW.js](http://nwjs.io/) and [Electron](http://electron.atom.io/) (with or without Squirrel; i.e. even if you're using Electron's built-in [`autoUpdater`](http://electron.atom.io/docs/api/auto-updater/) API).
 - :star: Auto-detects your app path for NW.js and Electron apps.
 - :star: Supports NW.js and Electron apps in Windows Store (with some caveats). 
@@ -93,7 +93,7 @@ Returns a Promise which resolves to a Boolean; `true` if your app is set to laun
 
 ## How does it work?
 
-### Linux
+### Linux / FreeBSD
 
 A [Desktop Entry](https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html) is created; i.e. a `.desktop` file is created in `~/.config/autostart/`.
 
