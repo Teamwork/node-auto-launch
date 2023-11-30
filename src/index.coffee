@@ -86,7 +86,7 @@ module.exports = class AutoLaunch
             path = process.env.APPIMAGE
 
         # As stated in the .desktop spec, Exec key's value must be properly escaped with reserved characters.
-        path = path.replace(/(\s+)/g, '\\$1')
+        path = path.replace /(\s+)/g, '\\$1'
 
         return path
 
