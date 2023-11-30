@@ -80,6 +80,11 @@ module.exports = class AutoLaunch
     # path - {String}
     # Returns a {String}
     fixLinuxExecPath: (path) ->
+        # If this is an AppImage, the actual AppImage's file path must be used, otherwise the mount path will be used.
+        # This will fail on the next launch, since AppImages are mount temporarily when executed in an everchanging mount folder.
+        if process.env.APPIMAGE?
+            path = process.env.APPIMAGE
+
         # As stated in the .desktop spec, Exec key's value must be properly escaped with reserved characters.
         path = path.replace(/(\s+)/g, '\\$1')
 
