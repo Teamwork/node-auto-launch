@@ -27,6 +27,7 @@ module.exports = class AutoLaunch
             @opts.appPath = path
 
         else if versions? and (versions.nw? or versions['node-webkit']? or versions.electron?)
+            # This appPath will need to be fixed later depending of the OS used
             @opts.appPath = process.execPath
 
         else
@@ -75,12 +76,24 @@ module.exports = class AutoLaunch
         path = path.replace /\.app\/Contents\/MacOS\/[^\/]*$/, '.app' unless macOptions.useLaunchAgent
         return path
 
+    # Under Linux and FreeBSD, fix the ExecPath when packaged as AppImage and escape the spaces correctly
+    # path - {String}
+    # Returns a {String}
+    fixLinuxExecPath: (path) ->
+        # As stated in the .desktop spec, Exec key's value must be properly escaped with reserved characters.
+        path = path.replace(/(\s+)/g, '\\$1')
+
+        return path
+
 
     fixOpts: =>
         @opts.appPath = @opts.appPath.replace /\/$/, ''
 
         if /darwin/.test process.platform
             @opts.appPath = @fixMacExecPath(@opts.appPath, @opts.mac)
+
+        if (/linux/.test process.platform) or (/freebsd/.test process.platform)
+            @opts.appPath = @fixLinuxExecPath(@opts.appPath)
 
         if @opts.appPath.indexOf('/') isnt -1
             tempPath = @opts.appPath.split '/'
