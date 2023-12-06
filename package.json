@@ -45,6 +45,7 @@
   "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
     "applescript": "^1.0.0",
+    "gulp-rimraf": "^1.0.0",
     "mkdirp": "^0.5.1",
     "natives": "^1.1.6",
     "path-is-absolute": "^1.0.0",

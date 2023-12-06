@@ -1,5 +1,6 @@
 gulp = require 'gulp'
 $ = require('gulp-load-plugins')()
+clean = require('gulp-rimraf')
 
 sourceDirectory = './src/'
 testDirectory = './tests/'
@@ -15,7 +16,11 @@ onCoffeelintFailure = (numberOfWarnings, numberOfErrors) =>
             Error count: #{numberOfErrors}.
     """
 
-gulp.task 'default', ['compile']
+gulp.task 'default', ['clean','compile']
+
+gulp.task 'clean', =>
+    gulp.src("build/*", { read: false })
+        .pipe(clean())
 
 gulp.task 'compile', =>
     gulp.src(scripts)
