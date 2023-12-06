@@ -103,15 +103,15 @@ module.exports = class AutoLaunch
         # Comment: why are we fiddling with the appName while this is a mandatory  when calling the constructor.
         # Shouldn't we honor the provided name? Windows use the name as a descriptor, macOS uses
         # it for naming the .plist file and Linux/FreeBSD use it to name the .desktop file.
-        if @opts.appPath.indexOf('/') isnt -1
-            tempPath = @opts.appPath.split '/'
-            @opts.appName = tempPath[tempPath.length - 1]
-        else if @opts.appPath.indexOf('\\') isnt -1
+        if @opts.appPath.indexOf('\\') isnt -1
+
             tempPath = @opts.appPath.split '\\'
             @opts.appName = tempPath[tempPath.length - 1]
             @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.exe'.length)
 
         if /darwin/.test process.platform
+            tempPath = @opts.appPath.split '/'
+            @opts.appName = tempPath[tempPath.length - 1]
             # Remove ".app" from the appName if it exists
             if @opts.appName.indexOf('.app', @opts.appName.length - '.app'.length) isnt -1
                 @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.app'.length)
