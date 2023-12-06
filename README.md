@@ -67,6 +67,12 @@ For NW.js and Electron apps, you don't have to specify the path. We guess based 
 
 If `true`, we instruct the operating system to launch your app in hidden mode when launching at login. Defaults to `false`.
 
+**`options.extraArgs`** - (Optional) String
+
+A string of additional command-line arguments to call at launch, including the leading hyphens, e.g. `"--foo --bar --baz"`.
+
+_Note: this is not compatible with the AppleScript Login Item on Mac._
+
 **`options.mac`** (Optional) object
 
 For Mac-only options.
