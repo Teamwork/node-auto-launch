@@ -16,6 +16,7 @@ else if (/linux/.test process.platform) or (/freebsd/.test process.platform)
 
 console.log "Executable being used for tests:", executablePath
 
+# General tests for all platforms
 describe 'node-auto-launch', ->
     autoLaunch = null
     autoLaunchHelper = null
