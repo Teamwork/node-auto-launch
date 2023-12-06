@@ -1,12 +1,12 @@
 name: CI
 
-on: [push, pull_request]
+on: [push]
 jobs:
   build:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        node-version: ["0.12", "4.9", "8.17", "14.0"]
+        node-version: ["4", "8", "14"]
 
     runs-on: ${{ matrix.os }}
 
