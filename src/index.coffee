@@ -6,11 +6,11 @@ module.exports = class AutoLaunch
     ### Public ###
 
     # options - {Object}
+    #   :name - {String}
     #   :isHidden - (Optional) {Boolean}
     #   :mac - (Optional) {Object}
     #       :useLaunchAgent - (Optional) {Boolean}. If `true`, use filed-based Launch Agent. Otherwise use AppleScript
     #           to add Login Item
-    #   :name - {String}
     #   :path - (Optional) {String}
     constructor: ({name, isHidden, mac, path}) ->
         throw new Error 'You must specify a name' unless name?
@@ -86,7 +86,7 @@ module.exports = class AutoLaunch
             path = process.env.APPIMAGE
 
         # As stated in the .desktop spec, Exec key's value must be properly escaped with reserved characters.
-        path = path.replace /(\s+)/g, '\\$1'
+        path = path.replace(/(\s+)/g, '\\$1')
 
         return path
 
@@ -100,6 +100,9 @@ module.exports = class AutoLaunch
         if (/linux/.test process.platform) or (/freebsd/.test process.platform)
             @opts.appPath = @fixLinuxExecPath(@opts.appPath)
 
+        # Comment: why are we fiddling with the appName while this is a mandatory  when calling the constructor.
+        # Shouldn't we honor the provided name? Windows use the name as a descriptor, macOS uses
+        # it for naming the .plist file and Linux/FreeBSD use it to name the .desktop file.
         if @opts.appPath.indexOf('/') isnt -1
             tempPath = @opts.appPath.split '/'
             @opts.appName = tempPath[tempPath.length - 1]
