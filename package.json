@@ -39,16 +39,15 @@
     "gulp-coffeelint-threshold": "^1.0.0",
     "gulp-load-plugins": "^1.2.0",
     "gulp-mocha": "^3.0.1",
+    "gulp-rimraf": "^1.0.0",
     "gulp-util": "^3.0.7",
     "teamwork-coffeelint-rules": "0.0.1"
   },
   "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
     "applescript": "^1.0.0",
-    "gulp-rimraf": "^1.0.0",
     "mkdirp": "^0.5.1",
     "natives": "^1.1.6",
-    "path-is-absolute": "^1.0.0",
     "untildify": "^3.0.2",
     "winreg": "1.2.4"
   },
