@@ -1,4 +1,4 @@
-isPathAbsolute = require 'path-is-absolute'
+pathTools = require 'path'
 
 # Public: The main auto-launch class
 module.exports = class AutoLaunch
@@ -6,11 +6,11 @@ module.exports = class AutoLaunch
     ### Public ###
 
     # options - {Object}
+    #   :name - {String}
     #   :isHidden - (Optional) {Boolean}
     #   :mac - (Optional) {Object}
     #       :useLaunchAgent - (Optional) {Boolean}. If `true`, use filed-based Launch Agent. Otherwise use AppleScript
     #           to add Login Item
-    #   :name - {String}
     #   :path - (Optional) {String}
     constructor: ({name, isHidden, mac, path}) ->
         throw new Error 'You must specify a name' unless name?
@@ -23,10 +23,11 @@ module.exports = class AutoLaunch
         versions = process?.versions
         if path?
             # Verify that the path is absolute
-            throw new Error 'path must be absolute' unless isPathAbsolute path
+            throw new Error 'path must be absolute' unless pathTools.isAbsolute path
             @opts.appPath = path
 
         else if versions? and (versions.nw? or versions['node-webkit']? or versions.electron?)
+            # This appPath will need to be fixed later depending of the OS used
             @opts.appPath = process.execPath
 
         else
@@ -75,6 +76,20 @@ module.exports = class AutoLaunch
         path = path.replace /\.app\/Contents\/MacOS\/[^\/]*$/, '.app' unless macOptions.useLaunchAgent
         return path
 
+    # Under Linux and FreeBSD, fix the ExecPath when packaged as AppImage and escape the spaces correctly
+    # path - {String}
+    # Returns a {String}
+    fixLinuxExecPath: (path) ->
+        # If this is an AppImage, the actual AppImage's file path must be used, otherwise the mount path will be used.
+        # This will fail on the next launch, since AppImages are mount temporarily when executed in an everchanging mount folder.
+        if process.env.APPIMAGE?
+            path = process.env.APPIMAGE
+
+        # As stated in the .desktop spec, Exec key's value must be properly escaped with reserved characters.
+        path = path.replace(/(\s+)/g, '\\$1')
+
+        return path
+
 
     fixOpts: =>
         @opts.appPath = @opts.appPath.replace /\/$/, ''
@@ -82,7 +97,14 @@ module.exports = class AutoLaunch
         if /darwin/.test process.platform
             @opts.appPath = @fixMacExecPath(@opts.appPath, @opts.mac)
 
+        if (/linux/.test process.platform) or (/freebsd/.test process.platform)
+            @opts.appPath = @fixLinuxExecPath(@opts.appPath)
+
+        # Comment: why are we fiddling with the appName while this is a mandatory  when calling the constructor.
+        # Shouldn't we honor the provided name? Windows use the name as a descriptor, macOS uses
+        # it for naming the .plist file and Linux/FreeBSD use it to name the .desktop file.
         if @opts.appPath.indexOf('\\') isnt -1
+
             tempPath = @opts.appPath.split '\\'
             @opts.appName = tempPath[tempPath.length - 1]
             @opts.appName = @opts.appName.substr(0, @opts.appName.length - '.exe'.length)
