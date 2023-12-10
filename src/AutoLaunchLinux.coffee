@@ -11,14 +11,14 @@ module.exports =
     #   :isHiddenOnLaunch - {Boolean}
     # Returns a Promise
     enable: ({appName, appPath, isHiddenOnLaunch}) ->
-        hiddenArg = if isHiddenOnLaunch then ' --hidden' else ''
+        hiddenArg = if isHiddenOnLaunch then '--hidden' else ''
 
         data = """[Desktop Entry]
                 Type=Application
                 Version=1.0
                 Name=#{appName}
-                Comment=#{appName}startup script
-                Exec=#{appPath}#{hiddenArg}
+                Comment=#{appName} startup script
+                Exec=#{appPath} #{hiddenArg}
                 StartupNotify=false
                 Terminal=false"""
 
@@ -41,10 +41,8 @@ module.exports =
 
     ### Private ###
 
-
     # Returns a {String}
     getDirectory: -> untildify '~/.config/autostart/'
-
 
     # appName - {String}
     # Returns a {String}
