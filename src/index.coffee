@@ -84,6 +84,7 @@ module.exports = class AutoLaunch
         # This will fail on the next launch, since AppImages are mount temporarily when executed in an everchanging mount folder.
         if process.env.APPIMAGE?
             path = process.env.APPIMAGE
+            console.log "Using real AppImage path at: %s", process.env.APPIMAGE
 
         # As stated in the .desktop spec, Exec key's value must be properly escaped with reserved characters.
         path = path.replace(/(\s+)/g, '\\$1')
