@@ -25,18 +25,18 @@ module.exports =
         return fileBasedUtilities.createFile {
             data
             directory: @getDirectory()
-            filePath: @getFilePath appName
+            filePath: @getFilePath appName.toLowerCase()
         }
 
 
     # appName - {String}
     # Returns a Promise
-    disable: (appName) -> fileBasedUtilities.removeFile @getFilePath appName
+    disable: (appName) -> fileBasedUtilities.removeFile @getFilePath appName.toLowerCase()
 
 
     # appName - {String}
     # Returns a Promise which resolves to a {Boolean}
-    isEnabled: (appName) -> fileBasedUtilities.isEnabled @getFilePath appName
+    isEnabled: (appName) -> fileBasedUtilities.isEnabled @getFilePath appName.toLowerCase()
 
 
     ### Private ###
@@ -46,4 +46,4 @@ module.exports =
 
     # appName - {String}
     # Returns a {String}
-    getFilePath: (appName) -> "#{@getDirectory()}#{appName}.desktop"
+    getFilePath: (appName) -> "#{@getDirectory()}#{appName.toLowerCase()}.desktop"
