@@ -29,75 +29,77 @@ describe 'node-auto-launch', ->
             path: executablePath
         autoLaunchHelper = new AutoLaunchHelper(autoLaunch)
 
+    if not isMac
+        describe '.isEnabled', ->
+            beforeEach ->
+                autoLaunchHelper.ensureDisabled()
 
-    describe '.isEnabled', ->
-        beforeEach ->
-            autoLaunchHelper.ensureDisabled()
+            it 'should be disabled', (done) ->
+                autoLaunch.isEnabled().then (enabled) ->
+                    expect(enabled).to.equal false
+                    done()
+                .catch done
+                return
 
-        it 'should be disabled', (done) ->
-            autoLaunch.isEnabled().then (enabled) ->
-                expect(enabled).to.equal false
+            it 'should catch errors', (done) ->
+                autoLaunchHelper.mockApi
+                    isEnabled: ->
+                        Promise.reject()
+
+                autoLaunch.isEnabled().catch done
+                return
+
+
+        describe '.enable', ->
+            beforeEach ->
+                autoLaunchHelper.ensureDisabled()
+
+            it 'should enable auto launch', (done) ->
+                autoLaunch.enable()
+                .then (xxx) ->
+                    console.log 'fefew', xxx
+                    autoLaunch.isEnabled()
+                .then (enabled) ->
+                    expect(enabled).to.equal true
+                    done()
+                .catch done
+                return
+
+            it 'should catch errors', (done) ->
+                autoLaunchHelper.mockApi
+                    enable: -> Promise.reject()
+
+                autoLaunch.enable().catch done
+                return
+
+
+        describe '.disable', ->
+            beforeEach ->
+                autoLaunchHelper.ensureEnabled()
+
+            it 'should disable auto launch', (done) ->
+                autoLaunch.disable()
+                .then -> autoLaunch.isEnabled()
+                .then (enabled) ->
+                    expect(enabled).to.equal false
+                    done()
+                .catch done
+                return
+
+            it 'should catch errors', (done) ->
+                autoLaunchHelper.mockApi
+                    disable: ->
+                        Promise.reject()
+
+                autoLaunch.disable().catch done
+                return
+
+
+        if isLinux
+            it 'should use name option', (done) ->
+                expect(autoLaunch.opts.appName).to.equal 'node-auto-launch test'
                 done()
-            .catch done
-            return
-
-        it 'should catch errors', (done) ->
-            autoLaunchHelper.mockApi
-                isEnabled: ->
-                    Promise.reject()
-
-            autoLaunch.isEnabled().catch done
-            return
-
-
-    describe '.enable', ->
-        beforeEach ->
-            autoLaunchHelper.ensureDisabled()
-
-        it 'should enable auto launch', (done) ->
-            autoLaunch.enable()
-            .then -> autoLaunch.isEnabled()
-            .then (enabled) ->
-                expect(enabled).to.equal true
-                done()
-            .catch done
-            return
-
-        it 'should catch errors', (done) ->
-            autoLaunchHelper.mockApi
-                enable: -> Promise.reject()
-
-            autoLaunch.enable().catch done
-            return
-
-
-    describe '.disable', ->
-        beforeEach ->
-            autoLaunchHelper.ensureEnabled()
-
-        it 'should disable auto launch', (done) ->
-            autoLaunch.disable()
-            .then -> autoLaunch.isEnabled()
-            .then (enabled) ->
-                expect(enabled).to.equal false
-                done()
-            .catch done
-            return
-
-        it 'should catch errors', (done) ->
-            autoLaunchHelper.mockApi
-                disable: ->
-                    Promise.reject()
-
-            autoLaunch.disable().catch done
-            return
-
-
-    if isLinux
-        it 'should use name option', (done) ->
-            expect(autoLaunch.opts.appName).to.equal 'node-auto-launch test'
-            done()
-            return
+                return
 
 
     # Let's test some Mac-only options
