@@ -24,7 +24,7 @@ module.exports =
 
             args += ' --hidden' if isHiddenOnLaunch
 
-            regKey.set appName, Winreg.REG_SZ, "\"C:\\Windows\\explorer.exe\" shell:AppsFolder\\#{pathToAutoLaunchedApp}#{args}", (err) ->
+            regKey.set appName, Winreg.REG_SZ, "\"explorer.exe\" shell:AppsFolder\\#{pathToAutoLaunchedApp}#{args}", (err) ->
                 return reject(err) if err?
                 resolve()
 
