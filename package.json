@@ -1,13 +1,15 @@
 {
   "name": "auto-launch",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "Launch node applications or executables at login (Mac, Windows, and Linux)",
   "main": "dist/index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "mocha --compilers coffee:coffeescript/register  tests/*.coffee",
+    "lint": "coffeelint -f ./node_modules/teamwork-coffeelint-rules/coffeelint.json src/ tests/",
+    "build": "coffee -c -o dist/ src/"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=12.0.0"
   },
   "repository": {
     "type": "git",
@@ -30,23 +32,20 @@
     "url": "https://github.com/4ver/node-auto-launch/issues"
   },
   "devDependencies": {
+    "@coffeelint/cli": "^5.2.11",
     "chai": "^3.5.0",
-    "coffee-script": "^1.10.0",
-    "gulp": "^3.9.1",
-    "gulp-coffee": "^2.3.2",
-    "gulp-coffeelint": "^0.6.0",
-    "gulp-coffeelint-threshold": "^1.0.0",
-    "gulp-load-plugins": "^1.2.0",
-    "gulp-mocha": "^3.0.1",
-    "gulp-util": "^3.0.7",
+    "coffeescript": "^2.7.0",
+    "mocha": "^3.0.0",
     "teamwork-coffeelint-rules": "0.0.1"
   },
   "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
     "applescript": "^1.0.0",
     "mkdirp": "^0.5.1",
-    "path-is-absolute": "^1.0.0",
     "untildify": "^3.0.2",
     "winreg": "1.2.4"
+  },
+  "overrides": {
+    "graceful-fs": "^4.2.11"
   }
 }

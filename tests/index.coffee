@@ -11,11 +11,13 @@ if /^win/.test process.platform
 else if /darwin/.test process.platform
     isMac = true
     executablePath = '/Applications/Calculator.app'
-else if /linux/.test process.platform
+else if (/linux/.test process.platform) or (/freebsd/.test process.platform)
+    isLinux = true
     executablePath = path.resolve path.join './tests/executables', 'hv3-linux-x86'
 
 console.log "Executable being used for tests:", executablePath
 
+# General tests for all platforms
 describe 'node-auto-launch', ->
     autoLaunch = null
     autoLaunchHelper = null
@@ -91,6 +93,11 @@ describe 'node-auto-launch', ->
             return
 
 
+    if isLinux
+        it 'should use name option', (done) ->
+            expect(autoLaunch.opts.appName).to.equal 'node-auto-launch test'
+            done()
+            return
 
 
     # Let's test some Mac-only options
