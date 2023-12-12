@@ -56,8 +56,7 @@ describe 'node-auto-launch', ->
 
             it 'should enable auto launch', (done) ->
                 autoLaunch.enable()
-                .then (xxx) ->
-                    console.log 'fefew', xxx
+                .then () ->
                     autoLaunch.isEnabled()
                 .then (enabled) ->
                     expect(enabled).to.equal true
