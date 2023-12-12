@@ -36,9 +36,7 @@ module.exports = class AutoLaunch
         @fixOpts()
 
         @api = null
-        if process.windowsStore
-            @api = require './AutoLaunchWindowsAppx'
-        else if /^win/.test process.platform
+        if /^win/.test process.platform
             @api = require './AutoLaunchWindows'
         else if /darwin/.test process.platform
             @api = require './AutoLaunchMac'
