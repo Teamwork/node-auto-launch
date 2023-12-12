@@ -95,10 +95,29 @@ describe 'node-auto-launch', ->
 
 
         if isLinux
-            it 'should use name option', (done) ->
-                expect(autoLaunch.opts.appName).to.equal 'node-auto-launch test'
-                done()
-                return
+            describe 'Honor provided appName', ->
+                it 'should use name option', (done) ->
+                    expect(autoLaunch.opts.appName).to.equal 'node-auto-launch test'
+                    done()
+                    return
+
+                # We should catch error
+
+            describe 'Test path name', ->
+                beforeEach ->
+                    delete autoLaunch
+                    executablePath = './path with spaces/'
+                    autoLaunch = new AutoLaunch
+                        name: 'node-auto-launch test'
+                        path: executablePath
+                    autoLaunchHelper = new AutoLaunchHelper(autoLaunch)
+
+                it 'should properly escape pathName', (done) ->
+                    expect(autoLaunch.opts.appPath).not.to.equal executablePath
+                    done()
+                    return
+
+                # We should catch error
 
 
     # Let's test some Mac-only options
