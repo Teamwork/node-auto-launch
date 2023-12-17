@@ -4,9 +4,14 @@
   "description": "Launch node applications or executables at login (Mac, Windows, and Linux)",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffeescript/register  tests/*.coffee",
-    "lint": "coffeelint -f ./node_modules/teamwork-coffeelint-rules/coffeelint.json src/ tests/",
-    "build": "coffee -c -o dist/ src/"
+    "lint": "eslint --ext .ts src script test",
+    "lint:fix": "pnpm lint --fix",
+    "test": "mocha tests/**/*.js --reporter spec"
+  },
+  "pre-commit": {
+    "run": [
+      "test"
+    ]
   },
   "engines": {
     "node": ">=12.0.0"
@@ -32,20 +37,18 @@
     "url": "https://github.com/4ver/node-auto-launch/issues"
   },
   "devDependencies": {
-    "@coffeelint/cli": "^5.2.11",
+    "@babel/eslint-parser": "^7.23.0",
     "chai": "^3.5.0",
-    "coffeescript": "^2.7.0",
-    "mocha": "^3.0.0",
-    "teamwork-coffeelint-rules": "0.0.1"
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "mocha": "^4.0.0"
   },
   "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
     "applescript": "^1.0.0",
-    "mkdirp": "^0.5.1",
-    "untildify": "^3.0.2",
+    "mkdirp": "^3.0.0",
+    "untildify": "^5.0.0",
     "winreg": "1.2.4"
-  },
-  "overrides": {
-    "graceful-fs": "^4.2.11"
   }
 }
