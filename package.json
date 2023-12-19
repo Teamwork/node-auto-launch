@@ -4,7 +4,7 @@
   "description": "Launch node applications or executables at login (Mac, Windows, and Linux)",
   "main": "dist/index.js",
   "scripts": {
-    "lint": "eslint --ext .ts src script test",
+    "lint": "eslint --ext .js src tests",
     "lint:fix": "pnpm lint --fix",
     "test": "mocha tests/**/*.js --reporter spec"
   },
@@ -37,6 +37,7 @@
     "url": "https://github.com/4ver/node-auto-launch/issues"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.6",
     "@babel/eslint-parser": "^7.23.0",
     "chai": "^3.5.0",
     "eslint": "^8.55.0",
