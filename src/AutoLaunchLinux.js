@@ -1,4 +1,5 @@
-const untildify           = require('untildify');
+import {untildify} from 'untildify';
+
 const fileBasedUtilities  = require('./fileBasedUtilities');
 
 module.exports = {
