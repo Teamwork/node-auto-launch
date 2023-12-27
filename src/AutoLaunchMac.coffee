@@ -40,9 +40,9 @@ module.exports =
                     </plist>"""
 
             return fileBasedUtilities.createFile {
-                data
                 directory: @getDirectory()
                 filePath: @getFilePath appName
+                data: data
             }
 
         # Otherwise, use default method; use AppleScript to tell System Events to add a Login Item
