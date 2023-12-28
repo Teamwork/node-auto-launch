@@ -4,12 +4,10 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-let AutoLaunch;
-const pathTools = require('path');
+import pathTools from 'path';
 
 // Public: The main auto-launch class
-module.exports = (AutoLaunch = class AutoLaunch {
-
+export default class AutoLaunch {
     /* Public */
 
     // options - {Object}
@@ -141,4 +139,4 @@ module.exports = (AutoLaunch = class AutoLaunch {
             }
         }
     }
-});
+}
