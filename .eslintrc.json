@@ -10,6 +10,17 @@
         "sourceType": "module"
     },
     "rules": {
-        "class-methods-use-this": 0
+        "brace-style": "warn",
+        "class-methods-use-this": 0,
+        "comma-dangle": ["warn", "only-multiline"],
+        "indent": ["warn", 4, { "SwitchCase": 1 }],
+        "lines-between-class-members": "off",
+        "max-len": ["warn", 128],
+        "no-var": "error",
+        "no-useless-constructor": "off",
+        "object-curly-newline": "warn",
+        "object-curly-spacing": "warn",
+        "prefer-arrow-callback": "off",
+        "prefer-destructuring": "off"
     }
-} 
+}
