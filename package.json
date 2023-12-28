@@ -2,7 +2,9 @@
   "name": "auto-launch",
   "version": "5.0.6",
   "description": "Launch node applications or executables at login (Mac, Windows, and Linux)",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
   "scripts": {
     "lint": "eslint --ext .js src tests",
     "lint:fix": "pnpm lint --fix",
