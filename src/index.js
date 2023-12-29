@@ -22,7 +22,8 @@ export default class AutoLaunch {
         this.disable = this.disable.bind(this);
         this.isEnabled = this.isEnabled.bind(this);
         this.fixOpts = this.fixOpts.bind(this);
-        if (name == null) { throw new Error('You must specify a name'); }
+        // Name is the only mandatory parameter and must neither be null nor empty
+        if (!name) { throw new Error('You must specify a name'); }
 
         this.opts = {
             appName: name,
