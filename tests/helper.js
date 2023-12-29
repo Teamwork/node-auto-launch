@@ -1,22 +1,28 @@
-let AutoLaunchHelper;
-module.exports = (AutoLaunchHelper = class AutoLaunchHelper {
+export default class AutoLaunchHelper {
     constructor(autoLaunch) {
         this.autoLaunch = autoLaunch;
     }
 
     ensureEnabled() {
-        return this.autoLaunch.isEnabled().then(enabled => {
-            if (!enabled) { return this.autoLaunch.enable(); }
+        return this.autoLaunch.isEnabled().then((enabled) => {
+            if (!enabled) {
+                return this.autoLaunch.enable();
+            }
+            return enabled;
         });
     }
 
     ensureDisabled() {
-        return this.autoLaunch.isEnabled().then(enabled => {
-            if (enabled) { return this.autoLaunch.disable(); }
+        return this.autoLaunch.isEnabled().then((enabled) => {
+            if (enabled) {
+                return this.autoLaunch.disable();
+            }
+            return enabled;
         });
     }
 
     mockApi(stubs) {
-        return this.autoLaunch.api = stubs;
+        this.autoLaunch.api = stubs;
+        return this.autoLaunch.api;
     }
-});
+}

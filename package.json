@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint --ext .js src tests",
     "lint:fix": "pnpm lint --fix",
-    "test": "mocha tests/**/*.js --reporter spec"
+    "test": "mocha tests/index.js --reporter spec"
   },
   "pre-commit": {
     "run": [
