@@ -55,7 +55,6 @@ export default class AutoLaunch {
 
     // Corrects the path to point to the outer .app
     // path - {String}
-    // macOptions - {Object}
     // Returns a {String}
     fixMacExecPath(path, macOptions) {
         // This will match apps whose inner app and executable's basename is the outer app's basename plus "Helper"
@@ -93,7 +92,7 @@ export default class AutoLaunch {
         this.opts.appPath = this.opts.appPath.replace(/\/$/, '');
 
         if (/darwin/.test(process.platform)) {
-            this.opts.appPath = this.fixMacExecPath(this.opts.appPath, this.opts.mac);
+            this.opts.appPath = this.fixMacExecPath(this.opts.appPath);
         }
 
         if ((/linux/.test(process.platform)) || (/freebsd/.test(process.platform))) {
