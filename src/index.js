@@ -70,33 +70,12 @@ export default class AutoLaunch {
         return path;
     }
 
-    // Under Linux and FreeBSD, fix the ExecPath when packaged as AppImage and escape the spaces correctly
-    // path - {String}
-    // Returns a {String}
-    fixLinuxExecPath(path) {
-        // If this is an AppImage, the actual AppImage's file path must be used, otherwise the mount path will be used.
-        // This will fail on the next launch, since AppImages are mount temporarily when executed in an everchanging mount folder.
-        if (process.env.APPIMAGE != null) {
-            path = process.env.APPIMAGE;
-            console.log('Using real AppImage path at: %s', process.env.APPIMAGE);
-        }
-
-        // As stated in the .desktop spec, Exec key's value must be properly escaped with reserved characters.
-        path = path.replace(/(\s+)/g, '\\$1');
-
-        return path;
-    }
-
     fixOpts() {
         let tempPath;
         this.opts.appPath = this.opts.appPath.replace(/\/$/, '');
 
         if (/darwin/.test(process.platform)) {
             this.opts.appPath = this.fixMacExecPath(this.opts.appPath);
-        }
-
-        if ((/linux/.test(process.platform)) || (/freebsd/.test(process.platform))) {
-            this.opts.appPath = this.fixLinuxExecPath(this.opts.appPath);
         }
 
         // Comment: why are we fiddling with the appName while this is mandatory when calling the constructor.

@@ -1,3 +1,4 @@
+import path from 'node:path';
 import untildify from 'untildify';
 import * as fileBasedUtilities from '../fileBasedUtilities.js';
 import AutoLaunchAPI from './autoLaunchAPI.js'
@@ -19,6 +20,7 @@ export default class AutoLaunchAPILinux extends AutoLaunchAPI {
 
     constructor(init) {
         super(init);
+        this.appPath = this.#fixAppPath();
     }
 
     // Returns a Promise
@@ -65,9 +67,23 @@ export default class AutoLaunchAPILinux extends AutoLaunchAPI {
         return untildify(LINUX_AUTOSTART_DIR);
     }
 
-    // appName - {String}
     // Returns a {String}
-    #getDesktopFilePath(appName) {
-        return `${this.#getAutostartDirectory()}${appName}.desktop`;
+    #getDesktopFilePath() {
+        return path.join(this.#getAutostartDirectory(), `${this.appName}.desktop`);
+    }
+
+    #fixAppPath() {
+        let execPath = this.appPath;
+
+        // If this is an AppImage, the actual AppImage's file path must be used, otherwise the mount path will be used.
+        // This will fail on the next launch, since AppImages are mount temporarily when executed
+        // in an everchanging mount folder.
+        if (process.env?.APPIMAGE != null) {
+            execPath = process.env.APPIMAGE;
+        }
+
+        // As stated in the .desktop entry spec, Exec key's value must be properly escaped with reserved characters.
+        execPath = execPath.replace(/(\s+)/g, '\\$1');
+        return execPath;
     }
 }
