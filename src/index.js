@@ -14,16 +14,16 @@ export default class AutoLaunch {
     //          :useLaunchAgent - (Optional) {Boolean}. If `true`, use filed-based Launch Agent. Otherwise use AppleScript
     //           to add Login Item
     //      :extraArgs - (Optional) {Array}
-    constructor({ name, path, options}) {
+    constructor({ name, path, options }) {
         // Name is the only mandatory parameter and must neither be null nor empty
         if (!name) { throw new Error('You must specify a name'); }
 
         this.opts = {
             appName: name,
             options: {
-                launchInBackground: (options.launchInBackground != null) ? options.launchInBackground : false,
-                mac: (options.mac != null) ? options.mac : {},
-                extraArguments: (options.extraArguments != null) ? options.extraArgs : []
+                launchInBackground: (options && (options.launchInBackground != null)) ? options.launchInBackground : false,
+                mac: (options && (options.mac != null)) ? options.mac : {},
+                extraArguments: (options && (options.extraArguments != null)) ? options.extraArgs : []
             }
         };
 
