@@ -35,7 +35,7 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
 
         // Add the file if we're using a Launch Agent
         if (this.options.mac.useLaunchAgent) {
-            const programArguments = this.appPath;
+            const programArguments = [this.appPath];
 
             // Manage arguments
             if (hiddenArg) {
