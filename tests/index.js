@@ -142,8 +142,10 @@ describe('node-auto-launch', function () {
                 autoLaunchWithLaunchAgent = new AutoLaunch({
                     name: 'node-auto-launch test',
                     path: executablePath,
-                    mac: {
-                        useLaunchAgent: true
+                    options: {
+                        mac: {
+                            useLaunchAgent: true
+                        }
                     }
                 });
                 autoLaunchWithLaunchAgentHelper = new AutoLaunchHelper(autoLaunchWithLaunchAgent);
