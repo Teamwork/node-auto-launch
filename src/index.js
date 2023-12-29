@@ -5,30 +5,32 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 import pathTools from 'path';
+import autoLaunchHandler from './library/autoLaunchHandler.js'
 
 // Public: The main auto-launch class
 export default class AutoLaunch {
     /* Public */
 
-    // options - {Object}
-    //   :name - {String}
-    //   :isHidden - (Optional) {Boolean}
-    //   :mac - (Optional) {Object}
-    //       :useLaunchAgent - (Optional) {Boolean}. If `true`, use filed-based Launch Agent. Otherwise use AppleScript
+    // {Object}
+    //  :appName - {String}
+    //  :execPath - (Optional) {String}
+    //  :options - (Optional) {Object}
+    //      :launchInBackground, - (Optional) {String}. If set, either use default --hidden arg or specified one.
+    //      :mac - (Optional) {Object}
+    //          :useLaunchAgent - (Optional) {Boolean}. If `true`, use filed-based Launch Agent. Otherwise use AppleScript
     //           to add Login Item
-    //   :path - (Optional) {String}
-    constructor({name, isHidden, mac, path}) {
-        this.enable = this.enable.bind(this);
-        this.disable = this.disable.bind(this);
-        this.isEnabled = this.isEnabled.bind(this);
-        this.fixOpts = this.fixOpts.bind(this);
+    //      :extraArgs - (Optional) {Array}
+    constructor({ name, path, options}) {
         // Name is the only mandatory parameter and must neither be null nor empty
         if (!name) { throw new Error('You must specify a name'); }
 
         this.opts = {
             appName: name,
-            isHiddenOnLaunch: (isHidden != null) ? isHidden : false,
-            mac: mac != null ? mac : {}
+            options: {
+                launchInBackground: (options.launchInBackground != null) ? options.launchInBackground : false,
+                mac: (options.mac != null) ? options.mac : {},
+                extraArguments: (options.extraArguments != null) ? options.extraArgs : []
+            }
         };
 
         const versions = typeof process !== 'undefined' && process !== null ? process.versions : undefined;
@@ -36,42 +38,26 @@ export default class AutoLaunch {
             // Verify that the path is absolute
             if ((!pathTools.isAbsolute(path)) && !process.windowsStore) { throw new Error('path must be absolute'); }
             this.opts.appPath = path;
-
         } else if ((versions != null) && ((versions.nw != null) || (versions['node-webkit'] != null) || (versions.electron != null))) {
             // This appPath will need to be fixed later depending of the OS used
             this.opts.appPath = process.execPath;
-
         } else {
             throw new Error('You must give a path (this is only auto-detected for NW.js and Electron apps)');
         }
 
         this.fixOpts();
 
-        this.api = null;
-        if (/^win/.test(process.platform)) {
-            this.api = require('./AutoLaunchWindows');
-        } else if (/darwin/.test(process.platform)) {
-            this.api = require('./AutoLaunchMac');
-        } else if ((/linux/.test(process.platform)) || (/freebsd/.test(process.platform))) {
-            this.api = require('./AutoLaunchLinux');
-        } else {
-            throw new Error('Unsupported platform');
-        }
+        this.api = autoLaunchHandler(this.opts);
     }
 
+    enable() { return this.api.enable(); }
 
-    enable() { return this.api.enable(this.opts); }
-
-
-    disable() { return this.api.disable(this.opts.appName, this.opts.mac); }
-
+    disable() { return this.api.disable(); }
 
     // Returns a Promise which resolves to a {Boolean}
-    isEnabled() { return this.api.isEnabled(this.opts.appName, this.opts.mac); }
-
+    isEnabled() { return this.api.isEnabled(); }
 
     /* Private */
-
 
     // Corrects the path to point to the outer .app
     // path - {String}
