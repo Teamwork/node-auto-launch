@@ -1,4 +1,5 @@
 import applescript from 'applescript';
+import path from 'node:path';
 import untildify from 'untildify';
 import * as fileBasedUtilities from '../fileBasedUtilities.js';
 import AutoLaunchAPI from './autoLaunchAPI.js'
@@ -24,6 +25,7 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
 
     constructor(init) {
         super(init);
+        this.appPath = this.#fixAppPath();
     }
 
     // Returns a Promise
@@ -100,9 +102,33 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
     }
 
     // Returns a {String}
-    #getLaunchAgentsDirectory() { return untildify(MAC_LAUNCHAGENTS_DIR); }
+    #getLaunchAgentsDirectory() {
+        return untildify(MAC_LAUNCHAGENTS_DIR);
+    }
 
-    // appName - {String}
     // Returns a {String}
-    #getPlistFilePath(appName) { return `${this.#getLaunchAgentsDirectory()}${appName}.plist`; }
+    #getPlistFilePath() {
+        return path.join(this.#getLaunchAgentsDirectory(), `${this.appName}.plist`);
+    }
+
+    // Corrects the path to point to the outer .app
+    // Returns a {String}
+    #fixAppPath() {
+        let execPath = this.appPath;
+
+        // This will match apps whose inner app and executable's basename is the outer app's basename plus "Helper"
+        // (the default Electron app structure for example)
+        // It will also match apps whose outer app's basename is different to the rest but the inner app and executable's
+        // basenames are matching (a typical distributed NW.js app for example)
+        // Does not match when the three are different
+        // Also matches when the path is pointing not to the exectuable in the inner app at all but to the Electron
+        // executable in the outer app
+        execPath = execPath.replace(/(^.+?[^\/]+?\.app)\/Contents\/(Frameworks\/((\1|[^\/]+?) Helper)\.app\/Contents\/MacOS\/\3|MacOS\/Electron)/, '$1');
+
+        // When using a launch agent, it needs the inner executable path
+        if (!this.options.mac.useLaunchAgent) {
+            execPath = execPath.replace(/\.app\/Contents\/MacOS\/[^\/]*$/, '.app');
+        }
+        return execPath;
+    }
 }

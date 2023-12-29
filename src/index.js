@@ -53,39 +53,8 @@ export default class AutoLaunch {
 
     /* Private */
 
-    // Corrects the path to point to the outer .app
-    // path - {String}
-    // Returns a {String}
-    fixMacExecPath(path, macOptions) {
-        // This will match apps whose inner app and executable's basename is the outer app's basename plus "Helper"
-        // (the default Electron app structure for example)
-        // It will also match apps whose outer app's basename is different to the rest but the inner app and executable's
-        // basenames are matching (a typical distributed NW.js app for example)
-        // Does not match when the three are different
-        // Also matches when the path is pointing not to the exectuable in the inner app at all but to the Electron
-        // executable in the outer app
-        path = path.replace(/(^.+?[^\/]+?\.app)\/Contents\/(Frameworks\/((\1|[^\/]+?) Helper)\.app\/Contents\/MacOS\/\3|MacOS\/Electron)/, '$1');
-        // When using a launch agent, it needs the inner executable path
-        if (!macOptions.useLaunchAgent) { path = path.replace(/\.app\/Contents\/MacOS\/[^\/]*$/, '.app'); }
-        return path;
-    }
-
     fixOpts() {
         let tempPath;
-        this.opts.appPath = this.opts.appPath.replace(/\/$/, '');
-
-        if (/darwin/.test(process.platform)) {
-            this.opts.appPath = this.fixMacExecPath(this.opts.appPath);
-        }
-
-        // Comment: why are we fiddling with the appName while this is mandatory when calling the constructor.
-        // Shouldn't we honor the provided name? Windows use the name as a descriptor, macOS uses
-        // it for naming the .plist file and Linux/FreeBSD use it to name the .desktop file.
-        if (this.opts.appPath.indexOf('\\') !== -1) {
-            tempPath = this.opts.appPath.split('\\');
-            this.opts.appName = tempPath[tempPath.length - 1];
-            this.opts.appName = this.opts.appName.substr(0, this.opts.appName.length - '.exe'.length);
-        }
 
         if (/darwin/.test(process.platform)) {
             tempPath = this.opts.appPath.split('/');
