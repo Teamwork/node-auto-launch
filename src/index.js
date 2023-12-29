@@ -110,7 +110,6 @@ export default class AutoLaunch {
         // Shouldn't we honor the provided name? Windows use the name as a descriptor, macOS uses
         // it for naming the .plist file and Linux/FreeBSD use it to name the .desktop file.
         if (this.opts.appPath.indexOf('\\') !== -1) {
-
             tempPath = this.opts.appPath.split('\\');
             this.opts.appName = tempPath[tempPath.length - 1];
             this.opts.appName = this.opts.appName.substr(0, this.opts.appName.length - '.exe'.length);
@@ -121,8 +120,10 @@ export default class AutoLaunch {
             this.opts.appName = tempPath[tempPath.length - 1];
             // Remove ".app" from the appName if it exists
             if (this.opts.appName.indexOf('.app', this.opts.appName.length - '.app'.length) !== -1) {
-                return this.opts.appName = this.opts.appName.substr(0, this.opts.appName.length - '.app'.length);
+                this.opts.appName = this.opts.appName.substr(0, this.opts.appName.length - '.app'.length);
             }
         }
+
+        return this.opts.appName;
     }
 }
