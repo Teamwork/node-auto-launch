@@ -16,11 +16,13 @@
         "indent": ["warn", 4, { "SwitchCase": 1 }],
         "lines-between-class-members": "off",
         "max-len": ["warn", 128],
+        "no-promise-executor-return": "warn",
         "no-var": "error",
         "no-useless-constructor": "off",
         "object-curly-newline": "warn",
         "object-curly-spacing": "warn",
         "prefer-arrow-callback": "off",
+        "prefer-const": "warn",
         "prefer-destructuring": "off"
     }
 }
