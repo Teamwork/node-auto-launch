@@ -34,7 +34,7 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
         const extraArgs = this.options.extraArguments;
 
         // Add the file if we're using a Launch Agent
-        if (this.mac.useLaunchAgent) {
+        if (this.options.mac.useLaunchAgent) {
             const programArguments = this.appPath;
 
             // Manage arguments
@@ -70,7 +70,9 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
     // Returns a Promise
     disable() {
         // Delete the file if we're using a Launch Agent
-        if (this.mac.useLaunchAgent) { return fileBasedUtilities.removeFile(this.#getPlistFilePath(this.appName)); }
+        if (this.options.mac.useLaunchAgent) {
+            return fileBasedUtilities.removeFile(this.#getPlistFilePath(this.appName));
+        }
 
         // Otherwise remove the Login Item
         return this.#execApplescriptCommand(`delete login item "${this.appName}"`);
@@ -79,7 +81,9 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
     // Returns a Promise which resolves to a {Boolean}
     isEnabled() {
         // Check if the Launch Agent file exists
-        if (this.mac.useLaunchAgent) { return fileBasedUtilities.fileExists(this.#getPlistFilePath(this.appName)); }
+        if (this.options.mac.useLaunchAgent) {
+            return fileBasedUtilities.fileExists(this.#getPlistFilePath(this.appName));
+        }
 
         // Otherwise check if a Login Item exists for our app
         return this.#execApplescriptCommand('get the name of every login item')
