@@ -52,12 +52,12 @@ export default class AutoLaunchAPILinux extends AutoLaunchAPI {
 
     // Returns a Promise
     disable() {
-        return fileBasedUtilities.removeFile(this.#getDesktopFilePath(this.appName));
+        return fileBasedUtilities.removeFile(this.#getDesktopFilePath());
     }
 
     // Returns a Promise which resolves to a {Boolean}
     isEnabled() {
-        return fileBasedUtilities.fileExists(this.#getDesktopFilePath(this.appName));
+        return fileBasedUtilities.fileExists(this.#getDesktopFilePath());
     }
 
     /* Private */
