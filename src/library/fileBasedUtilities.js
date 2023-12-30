@@ -11,13 +11,18 @@ import { mkdirp } from 'mkdirp';
 // Returns a Promise
 export function createFile({directory, filePath, data}) {
     return new Promise((resolve, reject) => {
-        mkdirp(directory, function(mkdirErr) {
-            if (mkdirErr != null) { return reject(mkdirErr); }
-            return fs.writeFile(filePath, data, function(writeErr) {
-                if (writeErr != null) { return reject(writeErr); }
-                return resolve();
+        mkdirp(directory)
+            .then((mkdirErr) => {
+                if (mkdirErr != null) {
+                    return reject(mkdirErr);
+                }
+                return fs.writeFile(filePath, data, (writeErr) => {
+                    if (writeErr != null) {
+                        return reject(writeErr);
+                    }
+                    return resolve();
+                });
             });
-        });
     });
 }
 
@@ -26,7 +31,7 @@ export function createFile({directory, filePath, data}) {
 // Returns a Promise
 export function fileExists(filePath) {
     return new Promise((resolve, reject) => {
-        fs.stat(filePath, function(err, stat) {
+        fs.stat(filePath, (err, stat) => {
             if (err != null) {
                 return resolve(false);
             }
@@ -40,12 +45,16 @@ export function fileExists(filePath) {
 // Returns a Promise
 export function removeFile(filePath) {
     return new Promise((resolve, reject) => {
-        fs.stat(filePath, function(statErr) {
+        fs.stat(filePath, (statErr) => {
             // If it doesn't exist, this is good so resolve
-            if (statErr != null) { return resolve(); }
+            if (statErr != null) {
+                return resolve();
+            }
 
-            return fs.unlink(filePath, function(unlinkErr) {
-                if (unlinkErr != null) { return reject(unlinkErr); }
+            return fs.unlink(filePath, (unlinkErr) => {
+                if (unlinkErr != null) {
+                    return reject(unlinkErr);
+                }
                 return resolve();
             });
         });
