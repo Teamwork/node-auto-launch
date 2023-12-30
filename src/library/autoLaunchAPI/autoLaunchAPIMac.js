@@ -53,7 +53,7 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
 
             return fileBasedUtilities.createFile({
                 directory: this.#getLaunchAgentsDirectory(),
-                filePath: this.#getPlistFilePath(this.appName),
+                filePath: this.#getPlistFilePath(),
                 data: plistData
             });
         }
@@ -71,7 +71,7 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
     disable() {
         // Delete the file if we're using a Launch Agent
         if (this.options.mac.useLaunchAgent) {
-            return fileBasedUtilities.removeFile(this.#getPlistFilePath(this.appName));
+            return fileBasedUtilities.removeFile(this.#getPlistFilePath());
         }
 
         // Otherwise remove the Login Item
@@ -82,7 +82,7 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
     isEnabled() {
         // Check if the Launch Agent file exists
         if (this.options.mac.useLaunchAgent) {
-            return fileBasedUtilities.fileExists(this.#getPlistFilePath(this.appName));
+            return fileBasedUtilities.fileExists(this.#getPlistFilePath());
         }
 
         // Otherwise check if a Login Item exists for our app
