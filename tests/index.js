@@ -136,7 +136,7 @@ if (isPosix || isMac) {
 
         describe('.appName', () => {
             it('should honor name option', (done) => {
-                expect(autoLaunchPosix.opts.appName).to.equal('node-auto-launch test');
+                expect(autoLaunchPosix.appName).to.equal('node-auto-launch test');
                 done();
             });
         });
