@@ -15,6 +15,7 @@
         "comma-dangle": ["warn", "only-multiline"],
         "indent": ["warn", 4, { "SwitchCase": 1 }],
         "lines-between-class-members": "off",
+        "linebreak-style": "off",
         "max-len": ["warn", 128],
         "no-promise-executor-return": "warn",
         "no-var": "error",
