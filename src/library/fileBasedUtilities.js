@@ -60,3 +60,9 @@ export function removeFile(filePath) {
         });
     });
 }
+
+// Escape reserved characters in path
+export function escapeFilePath(filePath) {
+    filePath.replace(/(\s+)/g, '\\$1');
+//    filePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // https://github.com/tc39/proposal-regex-escaping
+}

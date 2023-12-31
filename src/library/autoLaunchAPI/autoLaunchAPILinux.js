@@ -84,7 +84,8 @@ export default class AutoLaunchAPILinux extends AutoLaunchAPI {
         }
 
         // As stated in the .desktop entry spec, Exec key's value must be properly escaped with reserved characters.
-        execPath = execPath.replace(/(\s+)/g, '\\$1');
+        execPath = fileBasedUtilities.escapeFilePath(execPath);
+
         return execPath;
     }
 }
