@@ -111,6 +111,14 @@ if (!isMac) {
                 autoLaunch.disable().catch(done);
             });
         });
+
+        /* On macOS, we modify the appName (leftover from Coffeescript that had no explaination) */
+        describe('.appName', () => {
+            it('should honor name parameter', (done) => {
+                expect(autoLaunch.api.appName).to.equal('node-auto-launch test');
+                done();
+            });
+        });
     });
 }
 
@@ -131,13 +139,6 @@ if (isPosix || isMac) {
                 }
             });
             // autoLaunchPosixHelper = new AutoLaunchHelper(autoLaunchPosix);
-        });
-
-        describe('.appName', () => {
-            it('should honor name option', (done) => {
-                expect(autoLaunchPosix.api.appName).to.equal('node-auto-launch test');
-                done();
-            });
         });
 
         describe('testing path name', () => {
