@@ -39,8 +39,6 @@ export default class AutoLaunch {
             throw new Error('You must give a path (this is only auto-detected for NW.js and Electron apps)');
         }
 
-        opts = this.#fixOpts(opts);
-
         this.api = autoLaunchHandler(opts);
     }
 
@@ -55,25 +53,5 @@ export default class AutoLaunch {
     // Returns a Promise which resolves to a {Boolean}
     isEnabled() {
         return this.api.isEnabled();
-    }
-
-    /* Private */
-
-    #fixOpts(opts) {
-        const options = opts;
-
-        if (/darwin/.test(process.platform)) {
-            let name;
-            const tempPath = options.appPath.split('/');
-
-            name = tempPath[tempPath.length - 1];
-            // Remove ".app" from the appName if it exists
-            if (name.indexOf('.app', name.length - '.app'.length) !== -1) {
-                name = name.substr(0, name.length - '.app'.length);
-            }
-            options.appName = name;
-        }
-
-        return options;
     }
 }

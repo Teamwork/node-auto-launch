@@ -25,6 +25,7 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
 
     constructor(init) {
         super(init);
+        this.appName = this.#fixAppName();
         this.appPath = this.#fixAppPath();
     }
 
@@ -134,5 +135,22 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
             execPath = execPath.replace(/\.app\/Contents\/MacOS\/[^\/]*$/, '.app');
         }
         return execPath;
+    }
+
+    #fixAppName() {
+        let fixedName;
+
+        // Kept from Coffeescript, but should we honor the name given to autoLaunch or should we change it for macOS?
+        if (/darwin/.test(process.platform)) {
+            const tempPath = this.appPath.split('/');
+
+            fixedName = tempPath[tempPath.length - 1];
+            // Remove ".app" from the appName if it exists
+            if (fixedName.indexOf('.app', fixedName.length - '.app'.length) !== -1) {
+                fixedName = fixedName.substr(0, fixedName.length - '.app'.length);
+            }
+        }
+
+        return fixedName;
     }
 }
