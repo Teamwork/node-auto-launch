@@ -136,7 +136,7 @@ if (isPosix || isMac) {
 
         describe('.appName', () => {
             it('should honor name option', (done) => {
-                expect(autoLaunchPosix.appName).to.equal('node-auto-launch test');
+                expect(autoLaunchPosix.api.appName).to.equal('node-auto-launch test');
                 done();
             });
         });
@@ -144,7 +144,7 @@ if (isPosix || isMac) {
         describe('testing path name', () => {
             it('should properly escape reserved caracters', (done) => {
                 // console.log(autoLaunchPosix.appPath, ' VS ', executablePathPosix);
-                expect(autoLaunchPosix.appPath).not.to.equal(executablePathPosix);
+                expect(autoLaunchPosix.api.appPath).not.to.equal(executablePathPosix);
                 done();
             });
         });

@@ -6,8 +6,8 @@ export default class AutoLaunch {
     /* Public */
 
     // {Object}
-    //  :appName - {String}
-    //  :execPath - (Optional) {String}
+    //  :name - {String}
+    //  :path - (Optional) {String}
     //  :options - (Optional) {Object}
     //      :launchInBackground, - (Optional) {String}. If set, either use default --hidden arg or specified one.
     //      :mac - (Optional) {Object}
@@ -18,7 +18,7 @@ export default class AutoLaunch {
         // Name is the only mandatory parameter and must neither be null nor empty
         if (!name) { throw new Error('You must specify a name'); }
 
-        this.opts = {
+        let opts = {
             appName: name,
             options: {
                 launchInBackground: (options && (options.launchInBackground != null)) ? options.launchInBackground : false,
@@ -31,40 +31,49 @@ export default class AutoLaunch {
         if (path != null) {
             // Verify that the path is absolute
             if ((!pathTools.isAbsolute(path)) && !process.windowsStore) { throw new Error('path must be absolute'); }
-            this.opts.appPath = path;
+            opts.appPath = path;
         } else if ((versions != null) && ((versions.nw != null) || (versions['node-webkit'] != null) || (versions.electron != null))) {
             // This appPath will need to be fixed later depending of the OS used
-            this.opts.appPath = process.execPath;
+            opts.appPath = process.execPath;
         } else {
             throw new Error('You must give a path (this is only auto-detected for NW.js and Electron apps)');
         }
 
-        this.fixOpts();
+        opts = this.#fixOpts(opts);
 
-        this.api = autoLaunchHandler(this.opts);
+        this.api = autoLaunchHandler(opts);
     }
 
-    enable() { return this.api.enable(); }
+    enable() {
+        return this.api.enable();
+    }
 
-    disable() { return this.api.disable(); }
+    disable() {
+        return this.api.disable();
+    }
 
     // Returns a Promise which resolves to a {Boolean}
-    isEnabled() { return this.api.isEnabled(); }
+    isEnabled() {
+        return this.api.isEnabled();
+    }
 
     /* Private */
 
-    fixOpts() {
-        let tempPath;
+    #fixOpts(opts) {
+        const options = opts;
 
         if (/darwin/.test(process.platform)) {
-            tempPath = this.opts.appPath.split('/');
-            this.opts.appName = tempPath[tempPath.length - 1];
+            let name;
+            const tempPath = options.appPath.split('/');
+
+            name = tempPath[tempPath.length - 1];
             // Remove ".app" from the appName if it exists
-            if (this.opts.appName.indexOf('.app', this.opts.appName.length - '.app'.length) !== -1) {
-                this.opts.appName = this.opts.appName.substr(0, this.opts.appName.length - '.app'.length);
+            if (name.indexOf('.app', name.length - '.app'.length) !== -1) {
+                name = name.substr(0, name.length - '.app'.length);
             }
+            options.appName = name;
         }
 
-        return this.opts.appName;
+        return options;
     }
 }

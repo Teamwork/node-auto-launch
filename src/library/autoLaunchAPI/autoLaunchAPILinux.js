@@ -72,6 +72,7 @@ export default class AutoLaunchAPILinux extends AutoLaunchAPI {
         return path.join(this.#getAutostartDirectory(), `${this.appName}.desktop`);
     }
 
+    // Returns a {String}
     #fixAppPath() {
         let execPath = this.appPath;
 
