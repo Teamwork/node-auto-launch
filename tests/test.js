@@ -143,7 +143,7 @@ if (isPosix || isMac) {
 
         describe('testing path name', () => {
             it('should properly escape reserved caracters', (done) => {
-                // console.log(autoLaunchPosix.appPath, ' VS ', executablePathPosix);
+                console.log(autoLaunchPosix.api.appPath, ' VS ', executablePathPosix);
                 expect(autoLaunchPosix.api.appPath).not.to.equal(executablePathPosix);
                 done();
             });
