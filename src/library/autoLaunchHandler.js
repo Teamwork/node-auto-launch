@@ -7,17 +7,15 @@ import AutoLaunchAPIWindows from './autoLaunchAPI/autoLaunchAPIWindows.js';
 // Returns a AutoLaunchAPI object
 
 export default function autoLaunchHandler(options) {
-    let api;
-
     if (/^win/.test(process.platform)) {
-        api = new AutoLaunchAPIWindows(options);
-    } else if (/darwin/.test(process.platform)) {
-        api = new AutoLaunchAPIMac(options);
-    } else if ((/linux/.test(process.platform)) || (/freebsd/.test(process.platform))) {
-        api = new AutoLaunchAPILinux(options);
-    } else {
-        throw new Error('Unsupported platform');
+        return new AutoLaunchAPIWindows(options);
+    }
+    if (/darwin/.test(process.platform)) {
+        return new AutoLaunchAPIMac(options);
+    }
+    if ((/linux/.test(process.platform)) || (/freebsd/.test(process.platform))) {
+        return new AutoLaunchAPILinux(options);
     }
 
-    return api;
+    throw new Error('Unsupported platform');
 }
