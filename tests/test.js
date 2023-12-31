@@ -72,8 +72,7 @@ if (!isMac) {
                                 expect(enabled).to.equal(true);
                                 return done();
                             });
-                    })
-                    .catch(done);
+                    });
             });
 
             return it('should catch errors', (done) => {
