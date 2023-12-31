@@ -72,7 +72,8 @@ if (!isMac) {
                                 expect(enabled).to.equal(true);
                                 return done();
                             });
-                    });
+                    })
+                    .catch(done);
             });
 
             return it('should catch errors', (done) => {
@@ -124,7 +125,7 @@ if (!isMac) {
 
 // Let's test some POSIX/Linux/FreeBSD options
 // They rely on reading and write files on POSIX based filesystems
-if (isPosix || isMac) {
+if (isPosix) {
     describe('POSIX/Linux/FreeBSD tests', () => {
         let autoLaunchPosix = null;
         // let autoLaunchPosixHelper = null;

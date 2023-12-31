@@ -134,6 +134,7 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
         if (!this.options.mac.useLaunchAgent) {
             execPath = execPath.replace(/\.app\/Contents\/MacOS\/[^\/]*$/, '.app');
         }
+
         return execPath;
     }
 
