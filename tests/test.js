@@ -67,7 +67,7 @@ if (!isMac) {
             it('should enable auto launch', (done) => {
                 autoLaunch.enable()
                     .then(() => {
-                        autoLaunch.isEnabled()
+                        autoLaunch.isEnabled();
                     })
                     .then((enabled) => {
                         expect(enabled).to.equal(true);
