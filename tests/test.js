@@ -66,11 +66,13 @@ if (!isMac) {
 
             it('should enable auto launch', (done) => {
                 autoLaunch.enable()
-                    .then(() => autoLaunch.isEnabled()
-                        .then((enabled) => {
-                            expect(enabled).to.equal(true);
-                            done();
-                        }))
+                    .then(() => {
+                        autoLaunch.isEnabled()
+                            .then((enabled) => {
+                                expect(enabled).to.equal(true);
+                                done();
+                            });
+                    })
                     .catch(done);
             });
 
@@ -97,9 +99,9 @@ if (!isMac) {
                             .then((enabled) => {
                                 expect(enabled).to.equal(false);
                                 done();
-                            })
-                            .catch(done);
-                    });
+                            });
+                    })
+                    .catch(done);
             });
 
             it('should catch errors', (done) => {
@@ -203,11 +205,13 @@ if (isMac) {
 
             it('should enable auto launch', (done) => {
                 autoLaunchWithLaunchAgent.enable()
-                    .then(() => autoLaunchWithLaunchAgent.isEnabled()
-                        .then((enabled) => {
-                            expect(enabled).to.equal(true);
-                            done();
-                        }))
+                    .then(() => {
+                        autoLaunchWithLaunchAgent.isEnabled()
+                            .then((enabled) => {
+                                expect(enabled).to.equal(true);
+                                done();
+                            });
+                    })
                     .catch(done);
             });
 
@@ -234,9 +238,9 @@ if (isMac) {
                             .then((enabled) => {
                                 expect(enabled).to.equal(false);
                                 done();
-                            })
-                            .catch(done);
-                    });
+                            });
+                    })
+                    .catch(done);
             });
 
             it('should catch errors', (done) => {
