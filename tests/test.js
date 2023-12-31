@@ -43,12 +43,12 @@ if (!isMac) {
                 autoLaunch.isEnabled()
                     .then((enabled) => {
                         expect(enabled).to.equal(false);
-                        return done();
+                        done();
                     })
                     .catch(done);
             });
 
-            return it('should catch errors', (done) => {
+            it('should catch errors', (done) => {
                 autoLaunchHelper.mockApi({
                     isEnabled() {
                         return Promise.reject();
@@ -67,17 +67,16 @@ if (!isMac) {
             it('should enable auto launch', (done) => {
                 autoLaunch.enable()
                     .then(() => {
-                        autoLaunch.isEnabled();
-                    })
-                    .then((enabled) => {
-                        expect(enabled).to.equal(true);
-                        return done();
+                        autoLaunch.isEnabled()
+                            .then((enabled) => {
+                                expect(enabled).to.equal(true);
+                                done();
+                            })
+                            .catch(done);
                     });
-                })
-                .catch(done);
             });
 
-            return it('should catch errors', (done) => {
+            it('should catch errors', (done) => {
                 autoLaunchHelper.mockApi({
                     enable() {
                         return Promise.reject();
@@ -96,16 +95,16 @@ if (!isMac) {
             it('should disable auto launch', (done) => {
                 autoLaunch.disable()
                     .then(() => {
-                        autoLaunch.isEnabled();
-                    })
-                    .then((enabled) => {
-                        expect(enabled).to.equal(false);
-                        return done();
-                    })
-                    .catch(done);
+                        autoLaunch.isEnabled()
+                            .then((enabled) => {
+                                expect(enabled).to.equal(false);
+                                done();
+                            })
+                            .catch(done);
+                    });
             });
 
-            return it('should catch errors', (done) => {
+            it('should catch errors', (done) => {
                 autoLaunchHelper.mockApi({
                     disable() {
                         return Promise.reject();
@@ -184,12 +183,12 @@ if (isMac) {
                 autoLaunchWithLaunchAgent.isEnabled()
                     .then((enabled) => {
                         expect(enabled).to.equal(false);
-                        return done();
+                        done();
                     })
                     .catch(done);
             });
 
-            return it('should catch errors', (done) => {
+            it('should catch errors', (done) => {
                 autoLaunchWithLaunchAgentHelper.mockApi({
                     isEnabled() {
                         return Promise.reject();
@@ -214,7 +213,7 @@ if (isMac) {
                     .catch(done);
             });
 
-            return it('should catch errors', (done) => {
+            it('should catch errors', (done) => {
                 autoLaunchWithLaunchAgentHelper.mockApi({
                     enable() {
                         return Promise.reject();
@@ -232,15 +231,17 @@ if (isMac) {
 
             it('should disable auto launch', (done) => {
                 autoLaunchWithLaunchAgent.disable()
-                    .then(() => autoLaunchWithLaunchAgent.isEnabled())
-                    .then((enabled) => {
-                        expect(enabled).to.equal(false);
-                        return done();
-                    })
-                    .catch(done);
+                    .then(() => {
+                        autoLaunchWithLaunchAgent.isEnabled()
+                            .then((enabled) => {
+                                expect(enabled).to.equal(false);
+                                done();
+                            })
+                            .catch(done);
+                    });
             });
 
-            return it('should catch errors', (done) => {
+            it('should catch errors', (done) => {
                 autoLaunchWithLaunchAgentHelper.mockApi({
                     disable() {
                         return Promise.reject();
