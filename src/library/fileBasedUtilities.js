@@ -62,7 +62,9 @@ export function removeFile(filePath) {
 }
 
 // Escape reserved characters in path
+// filePath - {String}
+// Returns {String}
 export function escapeFilePath(filePath) {
-    filePath.replace(/(\s+)/g, '\\$1');
-//    filePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // https://github.com/tc39/proposal-regex-escaping
+    return filePath.replace(/(\s+)/g, '\\$1');
+//    return filePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // https://github.com/tc39/proposal-regex-escaping
 }
