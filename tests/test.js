@@ -70,6 +70,9 @@ if (!isMac) {
                         autoLaunch.isEnabled()
                             .then((enabled) => {
                                 expect(enabled).to.equal(true);
+                                // done();
+                            })
+                            .then(() => {
                                 done();
                             });
                     })
