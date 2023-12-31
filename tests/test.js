@@ -66,14 +66,12 @@ if (!isMac) {
 
             it('should enable auto launch', (done) => {
                 autoLaunch.enable()
-                    .then(() => {
-                        autoLaunch.isEnabled()
-                            .then((enabled) => {
-                                expect(enabled).to.equal(true);
-                                done();
-                            })
-                            .catch(done);
-                    });
+                    .then(() => autoLaunch.isEnabled()
+                        .then((enabled) => {
+                            expect(enabled).to.equal(true);
+                            done();
+                        }))
+                    .catch(done);
             });
 
             it('should catch errors', (done) => {
@@ -208,7 +206,7 @@ if (isMac) {
                     .then(() => autoLaunchWithLaunchAgent.isEnabled()
                         .then((enabled) => {
                             expect(enabled).to.equal(true);
-                            return done();
+                            done();
                         }))
                     .catch(done);
             });
