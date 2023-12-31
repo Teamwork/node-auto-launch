@@ -147,7 +147,7 @@ if (isPosix) {
         describe('testing path name', () => {
             it('should properly escape reserved caracters', (done) => {
                 console.log(autoLaunchPosix.api.appPath, ' VS ', executablePathPosix.replace(/(\s+)/g, '\\$1'));
-                expect(autoLaunchPosix.api.appPath).equal.to(executablePathPosix.replace(/(\s+)/g, '\\$1'));
+                expect(autoLaunchPosix.api.appPath).to.equal(executablePathPosix.replace(/(\s+)/g, '\\$1'));
                 done();
             });
         });
