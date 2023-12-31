@@ -71,10 +71,10 @@ if (!isMac) {
                             .then((enabled) => {
                                 expect(enabled).to.equal(true);
                                 // done();
-                            })
-                            .then(() => {
-                                done();
                             });
+                    })
+                    .then(() => {
+                        done();
                     })
                     .catch(done);
             });
