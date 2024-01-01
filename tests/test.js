@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { expect, should } from 'chai';
 import path from 'path';
 import AutoLaunch from '../src/index.js';
 import AutoLaunchHelper from './helper.js';
@@ -32,6 +32,30 @@ if (!isMac) {
             });
             autoLaunchHelper = new AutoLaunchHelper(autoLaunch);
             return autoLaunchHelper;
+        });
+
+        describe('AutoLaunch constructor', () => {
+            it('should fail without a name', function (done) {
+                try {
+                    autoLaunch = new AutoLaunch({name: null});
+                    // Force the test to fail since error wasn't thrown
+                    should.fail('It should have failed...');
+                } catch (error) {
+                    // Constructor threw Error, so test succeeded.
+                    done();
+                }
+            });
+
+            it('should fail with an empty name', function (done) {
+                try {
+                    autoLaunch = new AutoLaunch({name: ''});
+                    // Force the test to fail since error wasn't thrown
+                    should.fail('It should have failed...');
+                } catch (error) {
+                    // Constructor threw Error, so test succeeded.
+                    done();
+                }
+            });
         });
 
         describe('.isEnabled', () => {
