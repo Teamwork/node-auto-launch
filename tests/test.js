@@ -96,10 +96,13 @@ if (!isMac) {
                                 .then((enabled) => {
                                     try {
                                         expect(enabled).to.equal(true);
+                                        console.error('isEnabled() returned true.');
                                         return resolve(enabled);
                                     } catch (error) {
+                                        console.error('isEnabled() returned false.');
                                         return reject(enabled);
                                     }
+                                    return resolve(enabled);
                                 });
                         });
                 });
