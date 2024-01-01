@@ -64,20 +64,21 @@ if (!isMac) {
                 autoLaunchHelper.ensureDisabled();
             });
 
-            it('should enable auto launch', (done) => {
-                autoLaunch.enable()
-                    .then(() => {
-                        autoLaunch.isEnabled()
-                            .then((enabled) => {
-                                expect(enabled).to.equal(true);
-                                // done();
-                            });
-                    })
-                    // This should prevent done() from catching non-errors
-                    .then(() => {
-                        done();
-                    })
-                    .catch(done);
+            it('should enable auto launch', function () {
+                return new Promise((resolve, reject) => {
+                    autoLaunch.enable()
+                        .then(() => {
+                            autoLaunch.isEnabled()
+                                .then((enabled) => {
+                                    try {
+                                        expect(enabled).to.equal(true);
+                                        return resolve(enabled);
+                                    } catch (error) {
+                                        return reject(enabled);
+                                    }
+                                });
+                        });
+                });
             });
 
             it('should catch errors', function (done) {
