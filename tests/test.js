@@ -39,7 +39,7 @@ if (!isMac) {
                 autoLaunchHelper.ensureDisabled();
             });
 
-            it('should be disabled', (done) => {
+            it('should be disabled', function (done) {
                 autoLaunch.isEnabled()
                     .then((enabled) => {
                         expect(enabled).to.equal(false);
@@ -48,7 +48,7 @@ if (!isMac) {
                     .catch(done);
             });
 
-            it('should catch errors', (done) => {
+            it('should catch errors', function (done) {
                 autoLaunchHelper.mockApi({
                     isEnabled() {
                         return Promise.reject();
@@ -80,7 +80,7 @@ if (!isMac) {
                     .catch(done);
             });
 
-            it('should catch errors', (done) => {
+            it('should catch errors', function (done) {
                 autoLaunchHelper.mockApi({
                     enable() {
                         return Promise.reject();
@@ -96,7 +96,7 @@ if (!isMac) {
                 autoLaunchHelper.ensureEnabled();
             });
 
-            it('should disable auto launch', (done) => {
+            it('should disable auto launch', function (done) {
                 autoLaunch.disable()
                     .then(() => {
                         autoLaunch.isEnabled()
@@ -108,7 +108,7 @@ if (!isMac) {
                     .catch(done);
             });
 
-            it('should catch errors', (done) => {
+            it('should catch errors', function (done) {
                 autoLaunchHelper.mockApi({
                     disable() {
                         return Promise.reject();
@@ -121,7 +121,7 @@ if (!isMac) {
 
         /* On macOS, we modify the appName (leftover from Coffeescript that had no explaination) */
         describe('.appName', () => {
-            it('should honor name parameter', (done) => {
+            it('should honor name parameter', function (done) {
                 expect(autoLaunch.api.appName).to.equal('node-auto-launch test');
                 done();
             });
@@ -149,7 +149,7 @@ if (isPosix) {
         });
 
         describe('testing path name', () => {
-            it('should properly escape reserved caracters', (done) => {
+            it('should properly escape reserved caracters', function (done) {
                 expect(autoLaunchPosix.api.appPath).to.equal(executablePathPosix.replace(/(\s+)/g, '\\$1'));
                 done();
             });
@@ -182,7 +182,7 @@ if (isMac) {
                 autoLaunchWithLaunchAgentHelper.ensureDisabled();
             });
 
-            it('should be disabled', (done) => {
+            it('should be disabled', function (done) {
                 autoLaunchWithLaunchAgent.isEnabled()
                     .then((enabled) => {
                         expect(enabled).to.equal(false);
@@ -191,7 +191,7 @@ if (isMac) {
                     .catch(done);
             });
 
-            it('should catch errors', (done) => {
+            it('should catch errors', function (done) {
                 autoLaunchWithLaunchAgentHelper.mockApi({
                     isEnabled() {
                         return Promise.reject();
@@ -206,7 +206,7 @@ if (isMac) {
                 autoLaunchWithLaunchAgentHelper.ensureDisabled();
             });
 
-            it('should enable auto launch', (done) => {
+            it('should enable auto launch', function (done) {
                 autoLaunchWithLaunchAgent.enable()
                     .then(() => {
                         autoLaunchWithLaunchAgent.isEnabled()
@@ -218,7 +218,7 @@ if (isMac) {
                     .catch(done);
             });
 
-            it('should catch errors', (done) => {
+            it('should catch errors', function (done) {
                 autoLaunchWithLaunchAgentHelper.mockApi({
                     enable() {
                         return Promise.reject();
@@ -234,7 +234,7 @@ if (isMac) {
                 autoLaunchWithLaunchAgentHelper.ensureEnabled();
             });
 
-            it('should disable auto launch', (done) => {
+            it('should disable auto launch', function (done) {
                 autoLaunchWithLaunchAgent.disable()
                     .then(() => {
                         autoLaunchWithLaunchAgent.isEnabled()
@@ -246,7 +246,7 @@ if (isMac) {
                     .catch(done);
             });
 
-            it('should catch errors', (done) => {
+            it('should catch errors', function (done) {
                 autoLaunchWithLaunchAgentHelper.mockApi({
                     disable() {
                         return Promise.reject();
