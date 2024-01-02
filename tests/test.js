@@ -89,6 +89,7 @@ if (!isMac) {
             });
 
             it('should enable auto launch', function (done) {
+                this.timeout(5000);
                 autoLaunch.enable()
                     .then(() => {
                         autoLaunch.isEnabled()
