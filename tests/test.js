@@ -102,10 +102,11 @@ describe('node-auto-launch', () => {
                             }
                             return null;
                         })
-                        .then((checked) => {
-                            done(checked);
+                        .then((error) => {
+                            done(error);
                         });
-                });
+                })
+                .catch(done);
         });
 
         it('should catch errors', function (done) {
