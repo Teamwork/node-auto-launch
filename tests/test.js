@@ -98,6 +98,7 @@ describe('node-auto-launch', () => {
                             try {
                                 expect(enabled).to.equal(true);
                             } catch (error) {
+                                console.log('Oops, .isEnabled() failed? ', error);
                                 return error;
                             }
                             return null;
