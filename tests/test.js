@@ -39,7 +39,7 @@ describe('node-auto-launch', () => {
     describe('AutoLaunch constructor', () => {
         it('should fail without a name', function (done) {
             try {
-                autoLaunch = new AutoLaunch({name: null});
+                autoLaunch = new AutoLaunch({ name: null });
                 // Force the test to fail since error wasn't thrown
                 should.fail('It should have failed...');
             } catch (error) {
@@ -50,7 +50,7 @@ describe('node-auto-launch', () => {
 
         it('should fail with an empty name', function (done) {
             try {
-                autoLaunch = new AutoLaunch({name: ''});
+                autoLaunch = new AutoLaunch({ name: '' });
                 // Force the test to fail since error wasn't thrown
                 should.fail('It should have failed...');
             } catch (error) {
@@ -95,22 +95,11 @@ describe('node-auto-launch', () => {
                 .then(() => {
                     autoLaunch.isEnabled()
                         .then((enabled) => {
-                            try {
-                                expect(enabled).to.equal(true);
-                            } catch (error) {
-                                return error;
-                            }
-                            return null;
+                            expect(enabled).to.equal(true);
+                            done();
                         })
-                        .then((error) => {
-                            if (error instanceof Error) {
-                                done(error);
-                            } else {
-                                done();
-                            }
-                        });
-                })
-                .catch(done);
+                        .catch(done);
+                });
         });
 
         it('should catch errors', function (done) {
@@ -136,9 +125,9 @@ describe('node-auto-launch', () => {
                         .then((enabled) => {
                             expect(enabled).to.equal(false);
                             done();
-                        });
-                })
-                .catch(done);
+                        })
+                        .catch(done);
+                });
         });
 
         it('should catch errors', function (done) {

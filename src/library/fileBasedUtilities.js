@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { mkdirp } from 'mkdirp';
 
 // Public: a few utils for file-based auto-launching
 
@@ -11,18 +10,17 @@ import { mkdirp } from 'mkdirp';
 // Returns a Promise
 export function createFile({directory, filePath, data}) {
     return new Promise((resolve, reject) => {
-        mkdirp(directory)
-            .then((mkdirErr) => {
-                if (mkdirErr != null) {
-                    return reject(mkdirErr);
+        fs.mkdir(directory, { recursive: true }, (mkdirErr, path) => {
+            if (mkdirErr != null) {
+                return reject(mkdirErr);
+            }
+            return fs.writeFile(filePath, data, (writeErr) => {
+                if (writeErr != null) {
+                    return reject(writeErr);
                 }
-                return fs.writeFile(filePath, data, (writeErr) => {
-                    if (writeErr != null) {
-                        return reject(writeErr);
-                    }
-                    return resolve();
-                });
+                return resolve();
             });
+        });
     });
 }
 
