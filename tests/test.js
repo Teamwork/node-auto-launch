@@ -20,137 +20,140 @@ if (/^win/.test(process.platform)) {
 console.log('Executable being used for tests:', executablePath);
 
 // General tests for all platforms
-if (!isMac) {
-    describe('node-auto-launch', () => {
-        let autoLaunch = null;
-        let autoLaunchHelper = null;
+describe('node-auto-launch', () => {
+    let autoLaunch = null;
+    let autoLaunchHelper = null;
 
+    beforeEach(() => {
+        autoLaunch = new AutoLaunch({
+            name: 'node-auto-launch test',
+            path: executablePath,
+            options: {
+                mac: isMac ? { useLaunchAgent: true } : {}
+            }
+        });
+        autoLaunchHelper = new AutoLaunchHelper(autoLaunch);
+        return autoLaunchHelper;
+    });
+
+    describe('AutoLaunch constructor', () => {
+        it('should fail without a name', function (done) {
+            try {
+                autoLaunch = new AutoLaunch({name: null});
+                // Force the test to fail since error wasn't thrown
+                should.fail('It should have failed...');
+            } catch (error) {
+                // Constructor threw Error, so test succeeded.
+                done();
+            }
+        });
+
+        it('should fail with an empty name', function (done) {
+            try {
+                autoLaunch = new AutoLaunch({name: ''});
+                // Force the test to fail since error wasn't thrown
+                should.fail('It should have failed...');
+            } catch (error) {
+                // Constructor threw Error, so test succeeded.
+                done();
+            }
+        });
+    });
+
+    describe('.isEnabled', () => {
         beforeEach(() => {
-            autoLaunch = new AutoLaunch({
-                name: 'node-auto-launch test',
-                path: executablePath
-            });
-            autoLaunchHelper = new AutoLaunchHelper(autoLaunch);
-            return autoLaunchHelper;
+            autoLaunchHelper.ensureDisabled();
         });
 
-        describe('AutoLaunch constructor', () => {
-            it('should fail without a name', function (done) {
-                try {
-                    autoLaunch = new AutoLaunch({name: null});
-                    // Force the test to fail since error wasn't thrown
-                    should.fail('It should have failed...');
-                } catch (error) {
-                    // Constructor threw Error, so test succeeded.
+        it('should be disabled', function (done) {
+            autoLaunch.isEnabled()
+                .then((enabled) => {
+                    expect(enabled).to.equal(false);
                     done();
+                })
+                .catch(done);
+        });
+
+        it('should catch errors', function (done) {
+            autoLaunchHelper.mockApi({
+                isEnabled() {
+                    return Promise.reject();
                 }
             });
 
-            it('should fail with an empty name', function (done) {
-                try {
-                    autoLaunch = new AutoLaunch({name: ''});
-                    // Force the test to fail since error wasn't thrown
-                    should.fail('It should have failed...');
-                } catch (error) {
-                    // Constructor threw Error, so test succeeded.
-                    done();
+            autoLaunch.isEnabled().catch(done);
+        });
+    });
+
+    describe('.enable', () => {
+        beforeEach(() => {
+            autoLaunchHelper.ensureDisabled();
+        });
+
+        it('should enable auto launch', function (done) {
+            autoLaunch.enable()
+                .then(() => {
+                    autoLaunch.isEnabled()
+                        .then((enabled) => {
+                            try {
+                                expect(enabled).to.equal(true);
+                            } catch (error) {
+                                return done(error);
+                            }
+                            return done();
+                        });
+                });
+        });
+
+        it('should catch errors', function (done) {
+            autoLaunchHelper.mockApi({
+                enable() {
+                    return Promise.reject();
                 }
             });
+
+            autoLaunch.enable().catch(done);
+        });
+    });
+
+    describe('.disable', () => {
+        beforeEach(() => {
+            autoLaunchHelper.ensureEnabled();
         });
 
-        describe('.isEnabled', () => {
-            beforeEach(() => {
-                autoLaunchHelper.ensureDisabled();
-            });
-
-            it('should be disabled', function (done) {
-                autoLaunch.isEnabled()
-                    .then((enabled) => {
-                        expect(enabled).to.equal(false);
-                        done();
-                    })
-                    .catch(done);
-            });
-
-            it('should catch errors', function (done) {
-                autoLaunchHelper.mockApi({
-                    isEnabled() {
-                        return Promise.reject();
-                    }
-                });
-
-                autoLaunch.isEnabled().catch(done);
-            });
+        it('should disable auto launch', function (done) {
+            autoLaunch.disable()
+                .then(() => {
+                    autoLaunch.isEnabled()
+                        .then((enabled) => {
+                            expect(enabled).to.equal(false);
+                            done();
+                        });
+                })
+                .catch(done);
         });
 
-        describe('.enable', () => {
-            beforeEach(() => {
-                autoLaunchHelper.ensureDisabled();
+        it('should catch errors', function (done) {
+            autoLaunchHelper.mockApi({
+                disable() {
+                    return Promise.reject();
+                }
             });
 
-            it('should enable auto launch', function (done) {
-                autoLaunch.enable()
-                    .then(() => {
-                        autoLaunch.isEnabled()
-                            .then((enabled) => {
-                                try {
-                                    expect(enabled).to.equal(true);
-                                } catch (error) {
-                                    return done(error);
-                                }
-                                return done();
-                            });
-                    });
-            });
-
-            it('should catch errors', function (done) {
-                autoLaunchHelper.mockApi({
-                    enable() {
-                        return Promise.reject();
-                    }
-                });
-
-                autoLaunch.enable().catch(done);
-            });
+            autoLaunch.disable().catch(done);
         });
+    });
 
-        describe('.disable', () => {
-            beforeEach(() => {
-                autoLaunchHelper.ensureEnabled();
-            });
-
-            it('should disable auto launch', function (done) {
-                autoLaunch.disable()
-                    .then(() => {
-                        autoLaunch.isEnabled()
-                            .then((enabled) => {
-                                expect(enabled).to.equal(false);
-                                done();
-                            });
-                    })
-                    .catch(done);
-            });
-
-            it('should catch errors', function (done) {
-                autoLaunchHelper.mockApi({
-                    disable() {
-                        return Promise.reject();
-                    }
-                });
-
-                autoLaunch.disable().catch(done);
-            });
-        });
-
-        /* On macOS, we modify the appName (leftover from Coffeescript that had no explaination) */
+    /* On macOS, we modify the appName (leftover from Coffeescript that had no explaination) */
+    if (!isMac) {
         describe('.appName', () => {
             it('should honor name parameter', function (done) {
                 expect(autoLaunch.api.appName).to.equal('node-auto-launch test');
                 done();
             });
         });
-    });
-}
+    }
+});
 
 // Let's test some POSIX/Linux/FreeBSD options
 // They rely on reading and write files on POSIX based filesystems
@@ -175,108 +178,6 @@ if (isPosix) {
             it('should properly escape reserved caracters', function (done) {
                 expect(autoLaunchPosix.api.appPath).to.equal(executablePathPosix.replace(/(\s+)/g, '\\$1'));
                 done();
-            });
-        });
-    });
-}
-
-// Let's test some Mac-only options
-if (isMac) {
-    describe('mac.useLaunchAgent', () => {
-        let autoLaunchWithLaunchAgent = null;
-        let autoLaunchWithLaunchAgentHelper = null;
-
-        beforeEach(() => {
-            autoLaunchWithLaunchAgent = new AutoLaunch({
-                name: 'node-auto-launch test',
-                path: executablePath,
-                options: {
-                    mac: {
-                        useLaunchAgent: true
-                    }
-                }
-            });
-            autoLaunchWithLaunchAgentHelper = new AutoLaunchHelper(autoLaunchWithLaunchAgent);
-            return autoLaunchWithLaunchAgentHelper;
-        });
-
-        describe('.isEnabled', () => {
-            beforeEach(() => {
-                autoLaunchWithLaunchAgentHelper.ensureDisabled();
-            });
-
-            it('should be disabled', function (done) {
-                autoLaunchWithLaunchAgent.isEnabled()
-                    .then((enabled) => {
-                        expect(enabled).to.equal(false);
-                        done();
-                    })
-                    .catch(done);
-            });
-
-            it('should catch errors', function (done) {
-                autoLaunchWithLaunchAgentHelper.mockApi({
-                    isEnabled() {
-                        return Promise.reject();
-                    }
-                });
-                autoLaunchWithLaunchAgent.isEnabled().catch(done);
-            });
-        });
-
-        describe('.enable', () => {
-            beforeEach(() => {
-                autoLaunchWithLaunchAgentHelper.ensureDisabled();
-            });
-
-            it('should enable auto launch', function (done) {
-                autoLaunchWithLaunchAgent.enable()
-                    .then(() => {
-                        autoLaunchWithLaunchAgent.isEnabled()
-                            .then((enabled) => {
-                                expect(enabled).to.equal(true);
-                                done();
-                            });
-                    })
-                    .catch(done);
-            });
-
-            it('should catch errors', function (done) {
-                autoLaunchWithLaunchAgentHelper.mockApi({
-                    enable() {
-                        return Promise.reject();
-                    }
-                });
-
-                autoLaunchWithLaunchAgent.enable().catch(done);
-            });
-        });
-
-        describe('.disable', () => {
-            beforeEach(() => {
-                autoLaunchWithLaunchAgentHelper.ensureEnabled();
-            });
-
-            it('should disable auto launch', function (done) {
-                autoLaunchWithLaunchAgent.disable()
-                    .then(() => {
-                        autoLaunchWithLaunchAgent.isEnabled()
-                            .then((enabled) => {
-                                expect(enabled).to.equal(false);
-                                done();
-                            });
-                    })
-                    .catch(done);
-            });
-
-            it('should catch errors', function (done) {
-                autoLaunchWithLaunchAgentHelper.mockApi({
-                    disable() {
-                        return Promise.reject();
-                    }
-                });
-
-                autoLaunchWithLaunchAgent.disable().catch(done);
             });
         });
     });
