@@ -95,10 +95,10 @@ if (!isMac) {
                             .then((enabled) => {
                                 try {
                                     expect(enabled).to.equal(true);
-                                    done();
                                 } catch (error) {
-                                    done(error);
+                                    return done(error);
                                 }
+                                return done();
                             });
                     });
             });
