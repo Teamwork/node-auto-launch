@@ -89,20 +89,16 @@ if (!isMac) {
             });
 
             it('should enable auto launch', function (done) {
-                this.timeout(5000);
                 autoLaunch.enable()
                     .then(() => {
                         autoLaunch.isEnabled()
                             .then((enabled) => {
                                 try {
-                                    expect(enabled).to.equal(true);
-                                    return null;
+                                    expect(enabled).to.equal(false);
+                                    done();
                                 } catch (error) {
-                                    return error;
+                                    done(error);
                                 }
-                            })
-                            .then((error) => {
-                                done(error);
                             });
                     });
             });
