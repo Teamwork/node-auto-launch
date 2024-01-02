@@ -88,24 +88,22 @@ if (!isMac) {
                 autoLaunchHelper.ensureDisabled();
             });
 
-            it('should enable auto launch', function () {
-                return new Promise((resolve, reject) => {
-                    autoLaunch.enable()
-                        .then(() => {
-                            autoLaunch.isEnabled()
-                                .then((enabled) => {
-                                    try {
-                                        expect(enabled).to.equal(true);
-                                        console.error('isEnabled() returned true.');
-                                        return resolve(enabled);
-                                    } catch (error) {
-                                        console.error('isEnabled() returned false.');
-                                        return reject(enabled);
-                                    }
-                                    return resolve(enabled);
-                                });
-                        });
-                });
+            it('should enable auto launch', function (done) {
+                autoLaunch.enable()
+                    .then(() => {
+                        autoLaunch.isEnabled()
+                            .then((enabled) => {
+                                try {
+                                    expect(enabled).to.equal(true);
+                                    return null;
+                                } catch (error) {
+                                    return error;
+                                }
+                            })
+                            .then((error) => {
+                                done(error);
+                            });
+                    });
             });
 
             it('should catch errors', function (done) {
