@@ -98,9 +98,12 @@ describe('node-auto-launch', () => {
                             try {
                                 expect(enabled).to.equal(true);
                             } catch (error) {
-                                return done(error);
+                                return error;
                             }
-                            return done();
+                            return null;
+                        })
+                        .then((checked) => {
+                            done(checked);
                         });
                 });
         });
