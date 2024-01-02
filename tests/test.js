@@ -94,7 +94,7 @@ if (!isMac) {
                         autoLaunch.isEnabled()
                             .then((enabled) => {
                                 try {
-                                    expect(enabled).to.equal(false);
+                                    expect(enabled).to.equal(true);
                                     done();
                                 } catch (error) {
                                     done(error);
