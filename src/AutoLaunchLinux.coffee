@@ -23,9 +23,9 @@ module.exports =
                 Terminal=false"""
 
         return fileBasedUtilities.createFile {
-            data
             directory: @getDirectory()
             filePath: @getFilePath appName
+            data: data
         }
 
 

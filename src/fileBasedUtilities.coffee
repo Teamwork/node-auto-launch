@@ -8,9 +8,9 @@ module.exports =
 
     # This is essentially enabling auto-launching
     # options - {Object}
-    #   :data - {String}
     #   :directory - {String}
     #   :filePath - {String}
+    #   :data - {String}
     # Returns a Promise
     createFile: ({directory, filePath, data}) ->
         return new Promise (resolve, reject) ->

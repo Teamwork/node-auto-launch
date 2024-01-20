@@ -144,7 +144,11 @@ If you're using [Squirrel.Windows](https://github.com/Squirrel/Squirrel.Windows)
 
 #### Windows App Store apps
 
-It requires some extra steps:
+If you have your Electron-based app in the Windows Store and would like to include auto launch functionality, simply linking to the executable path will not work. The Appx packages required for Electron are sandboxed and the install location can only be accessed by the system itself.
+
+There is a way to bypass that - it will require you to know the developer ID, app ID and package name of your app. Then, instead of using the exec path, you will need to set the path in `AutoLaunch()` config to: `explorer.exe shell:AppsFolder\DEV_ID.APP_ID!PACKAGE_NAME`. One of the way you can find your apps details is by following [this article](http://winaero.com/blog/exclusive-how-to-start-a-modern-app-from-desktop-without-going-to-the-metro-start-screen/). Note that you might need to compile and submit your app to the store first to obtain these details.
+
+If you've already submitted your app, you may use the follow steps to find the path:
  - Install a beta version on your Windows device from Microsoft Store
  - Go to Windows apps folder: press `Win+R` and type `shell:AppsFolder`
  - Right-click and create shortcut on Desktop
