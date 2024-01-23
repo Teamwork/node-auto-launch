@@ -21,8 +21,7 @@ export default class AutoLaunchHelper {
         });
     }
 
-    mockApi(stubs) {
-        this.autoLaunch.api = stubs;
-        return this.autoLaunch.api;
+    mockApi(stub) {
+        this.autoLaunch.api = stub;
     }
 }
