@@ -1,10 +1,13 @@
 import { expect, should } from 'chai';
+import fs from 'fs';
 import path from 'path';
+import untildify from 'untildify';
 import AutoLaunch from '../src/index.js';
 import AutoLaunchHelper from './helper.js';
 
 let executablePath = '';
-let isPosix = false;
+let followsXDG = false;
+let isPOSIX = false;
 let isMac = false;
 
 if (/^win/.test(process.platform)) {
@@ -13,7 +16,8 @@ if (/^win/.test(process.platform)) {
     isMac = true;
     executablePath = '/Applications/Calculator.app';
 } else if ((/linux/.test(process.platform)) || (/freebsd/.test(process.platform))) {
-    isPosix = true;
+    followsXDG = true;
+    isPOSIX = true;
     executablePath = path.resolve(path.join('./tests/executables', 'hv3-linux-x86'));
 }
 
@@ -33,7 +37,6 @@ describe('node-auto-launch', () => {
             }
         });
         autoLaunchHelper = new AutoLaunchHelper(autoLaunch);
-        return autoLaunchHelper;
     });
 
     describe('AutoLaunch constructor', () => {
@@ -61,7 +64,7 @@ describe('node-auto-launch', () => {
     });
 
     describe('.isEnabled', () => {
-        beforeEach(() => {
+        before(() => {
             autoLaunchHelper.ensureDisabled();
         });
 
@@ -74,19 +77,13 @@ describe('node-auto-launch', () => {
                 .catch(done);
         });
 
-        it('should catch errors', function (done) {
-            autoLaunchHelper.mockApi({
-                isEnabled() {
-                    return Promise.reject();
-                }
-            });
-
-            autoLaunch.isEnabled().catch(done);
+        after(() => {
+            autoLaunchHelper.ensureDisabled();
         });
     });
 
     describe('.enable', () => {
-        beforeEach(() => {
+        before(() => {
             autoLaunchHelper.ensureDisabled();
         });
 
@@ -102,14 +99,8 @@ describe('node-auto-launch', () => {
                 });
         });
 
-        it('should catch errors', function (done) {
-            autoLaunchHelper.mockApi({
-                enable() {
-                    return Promise.reject();
-                }
-            });
-
-            autoLaunch.enable().catch(done);
+        after(() => {
+            autoLaunchHelper.ensureDisabled();
         });
     });
 
@@ -130,13 +121,39 @@ describe('node-auto-launch', () => {
                 });
         });
 
-        it('should catch errors', function (done) {
+        afterEach(() => {
+            autoLaunchHelper.ensureDisabled();
+        });
+    });
+
+    describe('Let\'s catch errors', () => {
+        it('should catch isEnable() errors', function (done) {
+            autoLaunchHelper.mockApi({
+                isEnabled() {
+                    return Promise.reject();
+                }
+            });
+
+            autoLaunch.isEnabled().catch(done);
+        });
+
+        it('should catch enable() errors', function (done) {
+            autoLaunchHelper.mockApi({
+                enable() {
+                    return Promise.reject();
+                }
+            });
+            autoLaunch.enable().catch(done);
+        });
+
+        it('should catch disable() errors', function (done) {
+            autoLaunchHelper.ensureEnabled();
+
             autoLaunchHelper.mockApi({
                 disable() {
                     return Promise.reject();
                 }
             });
-
             autoLaunch.disable().catch(done);
         });
     });
@@ -153,28 +170,112 @@ describe('node-auto-launch', () => {
 });
 
 // Let's test some POSIX/Linux/FreeBSD options
-// They rely on reading and write files on POSIX based filesystems
-if (isPosix) {
+// They rely on reading and write files on POSIX based filesystems and
+if (isPOSIX) {
     describe('POSIX/Linux/FreeBSD tests', () => {
-        let autoLaunchPosix = null;
-        // let autoLaunchPosixHelper = null;
+        let autoLaunch = null;
+        let autoLaunchHelper = null;
         const executablePathPosix = path.resolve('./path with spaces/');
 
-        beforeEach(() => {
-            autoLaunchPosix = new AutoLaunch({
-                name: 'node-auto-launch test',
-                path: executablePathPosix,
-                options: {
-                    mac: isMac ? { useLaunchAgent: true } : {}
-                }
+        // OSes/window managers that follow XDG (cross desktop group) specifications
+        if (followsXDG) {
+            describe('testing .appName', () => {
+                beforeEach(() => {
+                    autoLaunch = null;
+                    autoLaunchHelper = null;
+                });
+
+                it('without space', function (done) {
+                    autoLaunch = new AutoLaunch({
+                        name: 'node-auto-launch',
+                        path: executablePathPosix
+                    });
+                    autoLaunchHelper = new AutoLaunchHelper(autoLaunch);
+                    autoLaunchHelper.ensureDisabled();
+
+                    autoLaunch.enable()
+                        .then(() => {
+                            const desktopEntryPath = untildify(path.join('~/.config/autostart/', autoLaunch.api.appName + '.desktop'));
+                            fs.stat(desktopEntryPath, (err, stats) => {
+                                if (err) {
+                                    done(err);
+                                }
+                                expect(stats.isFile()).to.equal(true);
+                                done();
+                            });
+                        })
+                        .catch(done);
+                });
+
+                it('with space', function (done) {
+                    autoLaunch = new AutoLaunch({
+                        name: 'node-auto-launch test',
+                        path: executablePathPosix
+                    });
+                    autoLaunchHelper = new AutoLaunchHelper(autoLaunch);
+                    autoLaunchHelper.ensureDisabled();
+
+                    autoLaunch.enable()
+                        .then(() => {
+                            const desktopEntryPath = untildify(path.join('~/.config/autostart/', autoLaunch.api.appName + '.desktop'));
+                            fs.stat(desktopEntryPath, (err, stats) => {
+                                if (err) {
+                                    done(err);
+                                }
+                                expect(stats.isFile()).to.equal(true);
+                                done();
+                            });
+                        })
+                        .catch(done);
+                });
+
+                it('with capital letters', function (done) {
+                    autoLaunch = new AutoLaunch({
+                        name: 'Node-Auto-Launch',
+                        path: executablePathPosix
+                    });
+                    autoLaunchHelper = new AutoLaunchHelper(autoLaunch);
+                    autoLaunchHelper.ensureDisabled();
+
+                    autoLaunch.enable()
+                        .then(() => {
+                            const desktopEntryPath = untildify(path.join('~/.config/autostart/', autoLaunch.api.appName + '.desktop'));
+                            fs.stat(desktopEntryPath, (err, stats) => {
+                                if (err) {
+                                    done(err);
+                                }
+                                expect(stats.isFile()).to.equal(true);
+                                done();
+                            });
+                        })
+                        .catch(done);
+                });
+
+                afterEach(() => {
+                    autoLaunchHelper.ensureDisabled();
+                });
             });
-            // autoLaunchPosixHelper = new AutoLaunchHelper(autoLaunchPosix);
-        });
+        }
 
         describe('testing path name', () => {
+            beforeEach(() => {
+                autoLaunch = null;
+                autoLaunchHelper = null;
+            });
+
             it('should properly escape reserved caracters', function (done) {
-                expect(autoLaunchPosix.api.appPath).to.equal(executablePathPosix.replace(/(\s+)/g, '\\$1'));
+                autoLaunch = new AutoLaunch({
+                    name: 'node-auto-launch test',
+                    path: executablePathPosix
+                });
+                autoLaunchHelper = new AutoLaunchHelper(autoLaunch);
+
+                expect(autoLaunch.api.appPath).to.equal(executablePathPosix.replace(/(\s+)/g, '\\$1'));
                 done();
+            });
+
+            afterEach(() => {
+                autoLaunchHelper.ensureDisabled();
             });
         });
     });
