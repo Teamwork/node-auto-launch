@@ -56,6 +56,19 @@ module.exports = class AutoLaunch
     isEnabled: => @api.isEnabled @opts.appName, @opts.mac
 
 
+    toggle: (value = undefined) =>
+        return @isEnabled(@opts.appName).then (isEnabled) =>
+            if isEnabled and (value == false or value == undefined)
+                # If auto launch is enabled and we want to disable it
+                return @disable(@opts.appName)
+            else if !isEnabled and (value == true or value == undefined)
+                # If auto launch is disabled and we want to enable it
+                return @enable(@opts)
+            else
+                # If the value is already what we want, return the current state
+                return isEnabled
+
+
     ### Private ###
 
 
