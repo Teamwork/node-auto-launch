@@ -91,6 +91,12 @@ Disables your app from auto-launching at startup. Returns a Promise.
 Returns a Promise which resolves to a Boolean; `true` if your app is set to launch on startup.
 
 
+### `.toggle(value)`
+
+**`value`** - (Optional) Boolean
+
+Toggles the auto-launch to the desired state. If value is not specified it will be toggled to the inverted state.
+
 ## How does it work?
 
 ### Linux / FreeBSD

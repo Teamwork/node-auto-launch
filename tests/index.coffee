@@ -94,6 +94,77 @@ describe 'node-auto-launch', ->
             autoLaunch.disable().catch done
             return
 
+    describe '.toggle', ->
+        beforeEach ->
+            autoLaunchHelper.ensureDisabled()
+
+        it 'should enable auto launch', (done) ->
+            autoLaunch.toggle(true)
+            .then () ->
+                autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal true
+                done()
+            .catch done
+            return
+
+        it 'should disable auto launch', (done) ->
+            before ->
+                autoLaunchHelper.ensureEnabled()
+            autoLaunch.toggle(false)
+            .then () ->
+                autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal false
+                done()
+            .catch done
+            return
+
+        it 'should toggle auto launch', (done) ->
+            autoLaunch.toggle()
+            .then () ->
+                autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal true
+                return autoLaunch.toggle()
+            .then () ->
+                autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal false
+                done()
+            .catch done
+            return
+
+        it 'should do nothing if already enabled', (done) ->
+            autoLaunchHelper.ensureEnabled()
+            autoLaunch.toggle(true)
+            .then () ->
+                autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal true
+                done()
+            .catch done
+            return
+
+        it 'should do nothing if already disabled', (done) ->
+            autoLaunchHelper.ensureDisabled()
+            autoLaunch.toggle(false)
+            .then () ->
+                autoLaunch.isEnabled()
+            .then (enabled) ->
+                expect(enabled).to.equal false
+                done()
+            .catch done
+            return
+
+        it 'should catch errors', (done) ->
+            autoLaunchHelper.mockApi
+                disable: ->
+                    Promise.reject()
+
+            autoLaunch.disable().catch done
+            return
+
     return unless followsXDG
 
     describe 'testing .appName', ->
