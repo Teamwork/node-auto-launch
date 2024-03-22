@@ -138,18 +138,17 @@ export default class AutoLaunchAPIMac extends AutoLaunchAPI {
         return execPath;
     }
 
+    // Kept from Coffeescript, but should we honor the name given to autoLaunch or should we change it specifically for macOS?
+    // No explanation, see issue 92: https://github.com/Teamwork/node-auto-launch/issues/92
     #fixAppName() {
         let fixedName;
 
-        // Kept from Coffeescript, but should we honor the name given to autoLaunch or should we change it for macOS?
-        if (/darwin/.test(process.platform)) {
-            const tempPath = this.appPath.split('/');
+        const tempPath = this.appPath.split('/');
 
-            fixedName = tempPath[tempPath.length - 1];
-            // Remove ".app" from the appName if it exists
-            if (fixedName.indexOf('.app', fixedName.length - '.app'.length) !== -1) {
-                fixedName = fixedName.substr(0, fixedName.length - '.app'.length);
-            }
+        fixedName = tempPath[tempPath.length - 1];
+        // Remove ".app" from the appName if it exists
+        if (fixedName.indexOf('.app', fixedName.length - '.app'.length) !== -1) {
+            fixedName = fixedName.substr(0, fixedName.length - '.app'.length);
         }
 
         return fixedName;

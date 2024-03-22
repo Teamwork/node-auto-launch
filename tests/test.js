@@ -159,6 +159,7 @@ describe('node-auto-launch', () => {
     });
 
     /* On macOS, we modify the appName (leftover from Coffeescript that had no explaination) */
+    // See issue 92: https://github.com/Teamwork/node-auto-launch/issues/92
     if (!isMac) {
         describe('.appName', () => {
             it('should honor name parameter', function (done) {

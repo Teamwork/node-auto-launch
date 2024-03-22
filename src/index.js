@@ -29,11 +29,15 @@ export default class AutoLaunch {
 
         const versions = typeof process !== 'undefined' && process !== null ? process.versions : undefined;
         if (path != null) {
-            // Verify that the path is absolute
-            if ((!pathTools.isAbsolute(path)) && !process.windowsStore) { throw new Error('path must be absolute'); }
+            // Verify that the path is absolute or is an AppX path
+            if ((!pathTools.isAbsolute(path)) && !process.windowsStore) {
+                throw new Error('path must be absolute');
+            }
             opts.appPath = path;
         } else if ((versions != null) && ((versions.nw != null) || (versions['node-webkit'] != null) || (versions.electron != null))) {
+            // Autodetecting the appPath from the execPath.
             // This appPath will need to be fixed later depending of the OS used
+            // TODO: is this the reason behind issue 92: https://github.com/Teamwork/node-auto-launch/issues/92
             opts.appPath = process.execPath;
         } else {
             throw new Error('You must give a path (this is only auto-detected for NW.js and Electron apps)');
