@@ -18,16 +18,17 @@ export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
     // Returns a Promise
     enable() {
         return new Promise((resolve, reject) => {
-            // If they're using Electron and Squirrel.Windows, point to its Update.exe instead of the actual appPath
-            // Otherwise, we'll auto-launch an old version after the app has updated
             let args = '';
             let pathToAutoLaunchedApp;
             const hiddenArg = this.options.launchInBackground;
             const extraArgs = this.options.extraArguments;
             const updateDotExe = path.join(path.dirname(process.execPath), '..', 'update.exe');
 
+            // If they're using Electron and Squirrel.Windows, point to its Update.exe instead of the actual appPath
+            // Otherwise, we'll auto-launch an old version after the app has updated
             if (((process.versions != null ? process.versions.electron : undefined) != null) && fs.existsSync(updateDotExe)) {
                 pathToAutoLaunchedApp = `"${updateDotExe}"`;
+                console.log('This application is built on Electron and is launched through: ', pathToAutoLaunchedApp);
                 args = ` --processStart "${path.basename(process.execPath)}"`;
 
                 // Manage arguments
@@ -47,14 +48,18 @@ export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
                 // If this is an AppX (from Microsoft Store), the path doesn't point to a directory per se,
                 // but it's made of "DEV_ID.APP_ID!PACKAGE_NAME". It's used to identify the app in the AppsFolder.
                 // To launch the app, explorer.exe must be call in combination with its path relative to AppsFolder
-                if (process.windowsStore != null) {
+                if (process.windowsStore) {
                     pathToAutoLaunchedApp = `"explorer.exe" shell:AppsFolder\\${this.appPath}`;
+                    console.log('This application is an AppX and is launched through: ', pathToAutoLaunchedApp);
                 } else {
                     pathToAutoLaunchedApp = `"${this.appPath}"`;
+                    console.log('This application is launched through: ', pathToAutoLaunchedApp);
                 }
 
                 // Manage arguments
-                if (hiddenArg) { args = [(hiddenArg !== true) ? hiddenArg : ' --hidden']; }
+                if (hiddenArg) {
+                    args = [(hiddenArg !== true) ? hiddenArg : ' --hidden'];
+                }
                 // Add any extra arguments
                 if (extraArgs) {
                     args += ' ';
@@ -64,6 +69,7 @@ export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
 
             regKey.set(this.appName, Winreg.REG_SZ, `"${pathToAutoLaunchedApp}"${args}`, (err) => {
                 if (err != null) {
+                    console.log(err.message);
                     return reject(err);
                 }
                 return resolve();
@@ -94,6 +100,7 @@ export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
         return new Promise((resolve, reject) => {
             regKey.valueExists(this.appName, (err, exists) => {
                 if (err != null) {
+                    console.log(err.message);
                     return resolve(false);
                 }
                 return resolve(exists);
