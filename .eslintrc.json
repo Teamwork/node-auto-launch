@@ -1,0 +1,48 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "sourceType": "module"
+  },
+  "rules": {
+    "brace-style": "warn",
+    "class-methods-use-this": 0,
+    "comma-dangle": [
+      "warn",
+      "only-multiline"
+    ],
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "lines-between-class-members": "off",
+    "linebreak-style": "off",
+    "max-len": [
+      "warn",
+      128
+    ],
+    "no-promise-executor-return": "warn",
+    "no-var": "error",
+    "no-useless-constructor": "off",
+    "object-curly-newline": "warn",
+    "object-curly-spacing": "warn",
+    "prefer-arrow-callback": "off",
+    "prefer-const": "warn",
+    "prefer-destructuring": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "always"
+      }
+   ]
+  }
+}

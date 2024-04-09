@@ -1,19 +1,26 @@
 {
   "name": "auto-launch",
-  "version": "5.1.0",
+  "version": "6.0.0-rc.2",
   "description": "Launch node applications or executables at login (Mac, Windows, Linux and FreeBSD)",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffeescript/register  tests/*.coffee",
-    "lint": "coffeelint -f ./node_modules/teamwork-coffeelint-rules/coffeelint.json src/ tests/",
-    "build": "coffee -c -o dist/ src/"
+    "lint": "eslint --ext .js src tests",
+    "lint:fix": "eslint --ext .js src tests --fix",
+    "test": "mocha tests/test.js --reporter spec"
+  },
+  "pre-commit": {
+    "run": [
+      "test"
+    ]
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=14.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/4ver/node-auto-launch"
+    "url": "https://github.com/Teamwork/node-auto-launch"
   },
   "keywords": [
     "login",
@@ -27,25 +34,24 @@
   "contributors": [
     "Adam Lynch <adam@teamwork.com>"
   ],
+  "homepage": "https://github.com/Teamwork/node-auto-launch",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/4ver/node-auto-launch/issues"
+    "url": "https://github.com/Teamwork/node-auto-launch/issues"
   },
   "devDependencies": {
-    "@coffeelint/cli": "^5.2.11",
-    "chai": "^3.5.0",
-    "coffeescript": "^2.7.0",
-    "mocha": "^3.0.0",
-    "teamwork-coffeelint-rules": "0.0.1"
+    "@babel/core": "^7.23.6",
+    "@babel/eslint-parser": "^7.23.0",
+    "@babel/preset-env": "^7.23.6",
+    "chai": "^4.3.0",
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "mocha": "^10.2.0"
   },
-  "homepage": "https://github.com/4ver/node-auto-launch",
   "dependencies": {
     "applescript": "^1.0.0",
-    "mkdirp": "^0.5.1",
-    "untildify": "^3.0.2",
+    "untildify": "^5.0.0",
     "winreg": "1.2.4"
-  },
-  "overrides": {
-    "graceful-fs": "^4.2.11"
   }
 }
