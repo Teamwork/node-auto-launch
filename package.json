@@ -7,7 +7,7 @@
   "exports": "./src/index.js",
   "scripts": {
     "lint": "eslint --ext .js src tests",
-    "lint:fix": "pnpm lint --fix",
+    "lint:fix": "eslint --ext .js src tests --fix",
     "test": "mocha tests/test.js --reporter spec"
   },
   "pre-commit": {
