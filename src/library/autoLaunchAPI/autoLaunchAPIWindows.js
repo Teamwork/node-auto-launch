@@ -3,9 +3,14 @@ import path from 'path';
 import Winreg from 'winreg';
 import AutoLaunchAPI from './autoLaunchAPI.js';
 
-const regKey = new Winreg({
+const runRegKey = new Winreg({
   hive: Winreg.HKCU,
-  key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Run'
+  key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Run',
+});
+
+const startupApprovedRegKey = new Winreg({
+  hive: Winreg.HKCU,
+  key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run',
 });
 
 export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
@@ -64,10 +69,18 @@ export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
         }
       }
 
-      regKey.set(this.appName, Winreg.REG_SZ, `"${pathToAutoLaunchedApp}"${args}`, (err) => {
+      runRegKey.set(this.appName, Winreg.REG_SZ, `"${pathToAutoLaunchedApp}"${args}`, (err) => {
         if (err != null) {
           return reject(err);
         }
+
+        // Enable the startup task in StartupApproved
+        startupApprovedRegKey.set(this.appName, Winreg.REG_BINARY, Buffer.from('03000000', 'hex'), (err_) => {
+          if (err_ != null) {
+            return reject(err_);
+          }
+          return resolve();
+        });
         return resolve();
       });
     });
@@ -76,7 +89,7 @@ export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
   // Returns a Promise
   disable() {
     return new Promise((resolve, reject) => {
-      regKey.remove(this.appName, (err) => {
+      runRegKey.remove(this.appName, (err) => {
         if (err != null) {
           // The registry key should exist but, in case it fails because it doesn't exist,
           // resolve false instead of rejecting with an error
@@ -85,6 +98,14 @@ export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
           }
           return reject(err);
         }
+
+        // Disable the startup task in StartupApproved
+        startupApprovedRegKey.set(this.appName, Winreg.REG_BINARY, Buffer.from('02000000', 'hex'), (err_) => {
+          if (err_ != null) {
+            return reject(err_);
+          }
+          return resolve();
+        });
         return resolve();
       });
     });
@@ -93,10 +114,19 @@ export default class AutoLaunchAPIWindows extends AutoLaunchAPI {
   // Returns a Promise which resolves to a {Boolean}
   isEnabled() {
     return new Promise((resolve) => {
-      regKey.valueExists(this.appName, (err, exists) => {
+      runRegKey.valueExists(this.appName, (err, exists) => {
         if (err != null) {
           return resolve(false);
         }
+
+        // Check if the startup task is enabled
+        startupApprovedRegKey.get(this.appName, (err_, item) => {
+          if (err_ != null || !item || item.value.toString('hex') !== '03000000') {
+            return resolve(false);
+          }
+          return resolve(true);
+        });
+
         return resolve(exists);
       });
     });
